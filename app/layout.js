@@ -7,6 +7,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Reveal from "@/components/Reveal";
 import Ridge from "@/components/Ridge";
 import CalEmbed from "@/components/CalEmbed";
+import { Analytics } from "@vercel/analytics/next";
 import { LangProvider } from "@/lib/LangContext";
 
 const SITE = "https://jimmyferon.com";
@@ -81,6 +82,10 @@ export default function RootLayout({ children }) {
           <Header />
           <main>{children}</main>
         </LangProvider>
+        {/* Mesure d'audience Vercel : sans cookie, sans identifiant
+            personnel. Le script ne se charge qu'après l'affichage de la
+            page, il n'entre donc pas dans le calcul des temps de chargement. */}
+        <Analytics />
       </body>
     </html>
   );
