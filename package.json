@@ -1,0 +1,23 @@
+{
+  "name": "jimmyferon-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio de Jimmy Feron, brand designer & UI/UX — Next.js 14, React 18, WebGL.",
+  "author": "Jimmy Feron <jimmyferon08@gmail.com> (https://jimmyferon.com)",
+  "license": "UNLICENSED",
+  "homepage": "https://jimmyferon.com",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}
