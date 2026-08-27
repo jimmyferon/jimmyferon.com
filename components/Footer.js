@@ -7,6 +7,7 @@ import { I18N } from "@/lib/i18n";
 import Roll from "@/components/Roll";
 import useMagnetic from "@/lib/useMagnetic";
 import Lake3D from "@/components/Lake3D";
+import { openCal } from "@/components/CalEmbed";
 
 const LOGO_PATHS = [
   "M70.5042 908.157L-91.9997 796.155L239.558 718.319C239.558 718.319 345.421 693.25 427.851 750.062C510.28 806.875 524.529 914.729 524.529 914.729L569.792 1252.28L407.288 1140.28L354.232 856.876L70.5042 908.157Z",
@@ -115,7 +116,7 @@ export default function Footer({ uid = "foot" }) {
             lettre par lettre, un fondu de bloc par-dessus l'écraserait. */}
         <div className="lt-inner">
           <p className="lt-big" ref={bigRef}>{t("lt.big")}</p>
-          <a className="btnf btnf-ghost lt-cta" data-rv style={{ "--rvd": "120ms" }} href="https://cal.com/jimmy-feron/intro-call" target="_blank" rel="noopener noreferrer">
+          <a className="btnf btnf-ghost lt-cta" data-rv style={{ "--rvd": "120ms" }} href="https://cal.com/jimmy-feron/intro-call" target="_blank" rel="noopener noreferrer" onClick={openCal}>
             <Roll text={t("lt.cta")} /> <span className="arr" aria-hidden="true">→</span>
           </a>
         </div>

@@ -5,6 +5,7 @@ import { useLang } from "@/lib/LangContext";
 import { I18N } from "@/lib/i18n";
 import { SVX, SVX_CATS } from "@/lib/services-data";
 import Roll from "@/components/Roll";
+import { openCal } from "@/components/CalEmbed";
 
 // Section Services — portée à l'identique de index.html.
 // Deux adaptations tactiles (voir CSS) : les cartes s'ouvrent au clic plutôt
@@ -75,6 +76,7 @@ export default function Services() {
             href="https://cal.com/jimmy-feron/intro-call"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={openCal}
             data-reveal
             style={{ "--rd": ".24s" }}
           >
