@@ -6,6 +6,7 @@ import ReactiveField from "@/components/ReactiveField";
 import SmoothScroll from "@/components/SmoothScroll";
 import Reveal from "@/components/Reveal";
 import Ridge from "@/components/Ridge";
+import CalEmbed from "@/components/CalEmbed";
 import { LangProvider } from "@/lib/LangContext";
 
 const SITE = "https://jimmyferon.com";
@@ -74,6 +75,7 @@ export default function RootLayout({ children }) {
           <SmoothScroll />
           <Reveal />
           <Ridge />
+          <CalEmbed />
           <Veil />
           <div id="cursor" className="cursor-badge">See the project</div>
           <Header />

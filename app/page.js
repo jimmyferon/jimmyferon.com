@@ -11,6 +11,7 @@ import About from "@/components/About";
 import Faq from "@/components/Faq";
 import { useLang } from "@/lib/LangContext";
 import { I18N } from "@/lib/i18n";
+import { openCal } from "@/components/CalEmbed";
 
 // Un span par caractère : c'est ce qu'exige le grain de .m-acc (voir index.html).
 const grain = (txt) =>
@@ -64,6 +65,7 @@ export default function Home() {
             href="https://cal.com/jimmy-feron/intro-call"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={openCal}
           >
             {t("lt.cta")} <span className="arr" aria-hidden="true">→</span>
           </a>

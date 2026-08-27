@@ -1490,3 +1490,7 @@ body.pre-done [data-rv-group].rv [data-reveal]{opacity:1; transform:none;}
   .manif--left{margin-top:clamp(70px,11vh,140px);}
 
 }
+
+/* Voile de la modale cal.com : un peu plus léger que celui par défaut,
+   pour rester dans la teinte du site. */
+cal-modal-box{background:rgba(17,17,17,.65)!important}
