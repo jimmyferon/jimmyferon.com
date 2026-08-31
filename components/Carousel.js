@@ -321,7 +321,9 @@ export default function Carousel() {
               key={p.id + "-" + i}
               className="pcard"
               href="/work"
+              aria-label={`${p.title} — ${cat}`}
               aria-hidden={i >= PROJECTS.length ? "true" : undefined}
+              tabIndex={i >= PROJECTS.length ? -1 : undefined}
               style={{ "--g1": g[0], "--g2": g[1] }}
             >
               <div className="thumb">
@@ -346,6 +348,7 @@ export default function Carousel() {
                 ) : p.video ? (
                   <video
                     className="thumb-vid"
+                    aria-label={p.ph || `${p.title} — ${cat}`}
                     autoPlay
                     loop
                     muted
@@ -361,7 +364,7 @@ export default function Carousel() {
                     src={`/images/${p.img}-1600.webp`}
                     srcSet={`/images/${p.img}-600.webp 600w, /images/${p.img}-1200.webp 1200w, /images/${p.img}-1600.webp 1600w, /images/${p.img}-2000.webp 2000w`}
                     sizes="(max-width:760px) 95vw, 52vw"
-                    alt={p.title}
+                    alt={p.ph || `${p.title} — ${cat}`}
                     draggable="false"
                   />
                 ) : (
