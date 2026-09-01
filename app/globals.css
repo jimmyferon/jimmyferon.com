@@ -1494,3 +1494,80 @@ body.pre-done [data-rv-group].rv [data-reveal]{opacity:1; transform:none;}
 /* Voile de la modale cal.com : un peu plus léger que celui par défaut,
    pour rester dans la teinte du site. */
 cal-modal-box{background:rgba(17,17,17,.65)!important}
+
+/* ============================================================
+   14. Anneau du hero (desktop et tablette)
+   ------------------------------------------------------------
+   Tout est enfermé au-dessus de 760px : sur téléphone, le carrousel en
+   colonne d'origine reste seul et n'est pas touché.
+   ============================================================ */
+@media(min-width:761px){
+  .rg{position:relative;flex:1;width:100%;height:100%;
+    cursor:grab;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+  .rg:active{cursor:grabbing}
+
+  .rg-tile{position:absolute;left:0;top:0;--sc:1;border-radius:2px;overflow:hidden;
+    background:transparent;cursor:pointer;
+    -webkit-backface-visibility:hidden;backface-visibility:hidden;
+    /* Course longue et courbe souple : le mouvement glisse au lieu de claquer. */
+    transition:filter .5s var(--smooth),transform .62s cubic-bezier(.22,.85,.26,1)}
+  .rg-tile img,.rg-tile video{width:100%;height:100%;object-fit:cover;display:block;
+    -webkit-user-drag:none;transform:scale(1.22);transform-origin:center;
+    transition:transform 1.05s cubic-bezier(.2,.72,.24,1)}
+  /* Au survol l'image se rétracte vers son cadrage réel et s'élargit un peu.
+     Elle reste au-delà du cadre (1,02) : aucun liseré possible sur les bords. */
+  .rg-tile.hot img,.rg-tile.hot video{transform:scale(1.02) scaleX(1.045)}
+  .rg.spot .rg-tile:not(.hot){filter:grayscale(1) saturate(0) brightness(.62)}
+  .rg-tile.hot{filter:none!important;z-index:500!important}
+
+  /* Le voile couvre toute la fenêtre, comme une fenêtre modale. Il reste dans
+     le contexte d'empilement du hero, sinon la vignette survolée ne pourrait
+     pas repasser devant. */
+  .rg-veil{position:fixed;inset:0;background:var(--ink);opacity:0;z-index:400;
+    pointer-events:none;transition:opacity .38s var(--smooth)}
+  .rg.spot .rg-veil{opacity:.72}
+  /* Pendant le survol, le hero passe devant le header et le bloc du bas. */
+  body.rg-spot .home-mid{z-index:5000}
+  body.rg-spot .logorev-hero{opacity:.12}
+
+  /* Légende : rien au repos, tout au survol. Trois colonnes de largeur égale,
+     donc le titre ne se décale jamais quand la catégorie change de longueur. */
+  .rg-cap{position:absolute;left:0;right:0;bottom:0;z-index:600;pointer-events:none;
+    display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:16px;
+    padding:0 var(--pad) clamp(18px,3vh,34px);
+    font-family:var(--mono);font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--paper);opacity:0;transition:opacity .3s var(--smooth)}
+  .rg.spot .rg-cap{opacity:1}
+  .rg-cap .l{justify-self:start;min-width:0;opacity:.55}
+  .rg-cap .mid{justify-self:center;text-align:center;font-size:.72rem;min-width:0}
+  .rg-cap .r{justify-self:end;min-width:0;white-space:nowrap;opacity:.55}
+  .rg-cap .idx{color:#8d95ff;opacity:1}
+}
+
+/* ============================================================
+   15. Bascule clair / sombre du hero
+   ------------------------------------------------------------
+   Le hero seul change de fond, le reste de la page est inchangé.
+   Les couleurs sont redéclarées localement : aucun sélecteur du site n'a
+   besoin d'être touché, tout ce qui vit dans le hero suit automatiquement.
+   ============================================================ */
+.hero{transition:background .55s var(--smooth),color .55s var(--smooth)}
+.hero.dark{
+  --paper:#111111; --ink:#F5F5F5;
+  --line:rgba(245,245,245,.14); --line-2:rgba(245,245,245,.28);
+  --muted:rgba(245,245,245,.58); --muted-2:rgba(245,245,245,.4);
+  background:#111111; color:#F5F5F5;
+}
+.hero.dark .hb-val{color:#F5F5F5}
+.hero.dark .hero-scroll{color:rgba(245,245,245,.45)}
+.hero.dark .home-glow{opacity:.62}
+
+/* Le bouton, en bas à gauche, au-dessus du nom */
+.hero-theme{position:absolute;left:var(--pad);bottom:clamp(96px,15vh,150px);z-index:2800;
+  width:30px;height:30px;display:grid;place-items:center;cursor:pointer;
+  background:transparent;border:1px solid var(--line-2);border-radius:5px;
+  color:var(--ink);padding:0;
+  transition:background .3s var(--e),color .3s var(--e),border-color .3s var(--e)}
+.hero-theme:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.hero-theme svg{width:15px;height:15px;display:block}
+@media(max-width:760px){ .hero-theme{display:none} }

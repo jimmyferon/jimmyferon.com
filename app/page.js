@@ -1,7 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 import Footer from "@/components/Footer";
 import Carousel from "@/components/Carousel";
+import Ring from "@/components/Ring";
 import Manif from "@/components/Manif";
 import Services from "@/components/Services";
 import ClientWork from "@/components/ClientWork";
@@ -21,12 +24,23 @@ const grain = (txt) =>
 
 // Page d'accueil — hero repris à l'identique de index.html.
 export default function Home() {
+  // null au premier rendu : on ne décide qu'une fois côté navigateur.
+  const [wide, setWide] = useState(null);
+  const [darkHero, setDarkHero] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width:761px)");
+    const upd = () => setWide(mq.matches);
+    upd();
+    mq.addEventListener("change", upd);
+    return () => mq.removeEventListener("change", upd);
+  }, []);
+
   const { lang } = useLang();
   const t = (k) => (I18N[lang] && I18N[lang][k]) || k;
 
   return (
     <section className="page active" id="home" data-page="home">
-      <div className="hero">
+      <div className={"hero" + (darkHero ? " dark" : "")}>
         <div className="home-glow"></div>
 
         {/* Bloc haut du hero — téléphone uniquement (masqué au-dessus de 760px) */}
@@ -79,8 +93,32 @@ export default function Home() {
           </a>
         </div>
 
+        {/* Desktop et tablette : l'anneau. Téléphone : le carrousel en colonne
+            d'origine, inchangé. Le choix se fait après le montage pour ne
+            jamais monter les deux (le rendu serveur n'affiche rien).
+            L'ancienne version desktop est gardée dans Carousel.legacy.js. */}
+        {/* Bascule clair / sombre : n'affecte que le hero */}
+        <button
+          type="button"
+          className="hero-theme"
+          onClick={() => setDarkHero((v) => !v)}
+          aria-pressed={darkHero}
+          title={darkHero ? "Passer en clair" : "Passer en sombre"}
+        >
+          {darkHero ? (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          )}
+        </button>
+
         <div className="home-mid" data-reveal style={{ "--rd": ".15s" }}>
-          <Carousel />
+          {wide === null ? null : wide ? <Ring /> : <Carousel />}
         </div>
 
         {/* Invitation à faire défiler, sous le carrousel (téléphone) */}
