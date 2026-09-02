@@ -69,6 +69,8 @@ export default function Everest() {
   const [touched, setTouched] = useState(false); // le visiteur a pris les commandes
   const [open, setOpen] = useState(-1);        // index du projet ouvert en modale
   const [mounted, setMounted] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);   // panneau des touches, une fois rangé
+  const helpRef = useRef(null);
   const [ratio, setRatio] = useState(1.6);     // proportions du visuel ouvert
   const animRef = useRef(null);                // logo animé de la carte Portfolio
   const boxRef = useRef(null), txtRef = useRef(null);
@@ -126,6 +128,30 @@ export default function Everest() {
   useEffect(() => {
     if (open >= 0 && apiRef.current) apiRef.current.jumpTo(open);
   }, [open]);
+
+  /* Le mode d'emploi est ancré en haut à droite ; tant qu'on n'a rien touché,
+     un décalage le place au centre de la scène. Quand il se range, ce décalage
+     tombe à zéro et la transition CSS fait le glissement. La mesure se fait
+     transition coupée, sinon on mesurerait la position déjà décalée. */
+  useEffect(() => {
+    const place = () => {
+      const el = helpRef.current, wrap = wrapRef.current;
+      if (!el || !wrap) return;
+      if (touched) { el.style.transform = ""; return; }
+      const keep = el.style.transition;
+      el.style.transition = "none";
+      el.style.transform = "";
+      const r = el.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+      el.style.transform = "translate("
+        + Math.round(w.left + w.width / 2 - (r.left + r.width / 2)) + "px,"
+        + Math.round(w.top + w.height / 2 - (r.top + r.height / 2)) + "px)";
+      void el.offsetWidth;                       // fige la position avant de rendre la transition
+      el.style.transition = keep;
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [touched, ready, lang]);
 
   /* Clic sur un drapeau : la scène emmène le grimpeur, puis ouvre la fiche. */
   const goTo = useCallback((i) => {
@@ -648,10 +674,12 @@ export default function Everest() {
         }
 
         /* les étiquettes et les fanions suivent la caméra ; un projet hors champ
-           obtient un indicateur au bord de l'écran, du côté où il se trouve */
+           obtient un indicateur sur le bord gauche, droit ou haut — jamais en
+           bas, un sommet derrière soi se retrouvant naturellement sur un côté.
+           Les marges tiennent les indicateurs à l'écart du relevé d'altitude,
+           du mode d'emploi, du nom et de la ligne du bas. */
         const w = wrap.clientWidth, h = wrap.clientHeight;
-        const fwdX = -Math.cos(yaw), fwdZ = -Math.sin(yaw);   // l'avant, dos à la caméra
-        const rgtX = -fwdZ, rgtZ = fwdX;                       // la droite de l'écran
+        const TOP_Y = 96, SIDE_T = 200, SIDE_B = 150, CORNER = 340;
         const edges = [];
         for (let i = 0; i < markPos.length; i++) {
           markGroups[i].rotation.y =
@@ -664,12 +692,23 @@ export default function Everest() {
           if (!onScreen) {
             el.style.opacity = "0"; el.style.pointerEvents = "none";
             if (revealed) {
-              /* côté : projection de la direction du projet sur la droite de
-                 l'écran ; hauteur : l'écart d'altitude avec le grimpeur */
-              const dx = markPos[i].x - pos.x, dz = markPos[i].z - pos.z;
-              const side = dx * rgtX + dz * rgtZ >= 0 ? 1 : -1;
-              const frac = 0.5 - ((markPos[i].y - pos.y) / HS) * 0.9;
-              edges.push({ i, side, y: Math.max(0.1, Math.min(0.9, frac)) * h });
+              /* On projette le sommet, on rabat le point derrière la caméra,
+                 puis on cherche où le rayon partant du centre coupe le bord de
+                 l'écran : c'est là que se pose l'indicateur. */
+              let nx = proj.x, ny = proj.y;
+              if (proj.z > 1) { nx = -nx; ny = -ny; }
+              if (nx === 0 && ny === 0) ny = 1;
+              const k = 1 / Math.max(Math.abs(nx), Math.abs(ny));
+              const bx = nx * k, by = ny * k;
+              const px = (bx * 0.5 + 0.5) * w;
+              if (by >= Math.abs(bx) && px > CORNER && px < w - CORNER) {
+                edges.push({ i, side: 0, x: px, y: TOP_Y });   // droit devant, plus haut que l'écran
+              } else {
+                const side = bx >= 0 ? 1 : -1;
+                const py = (-by * 0.5 + 0.5) * h;
+                edges.push({ i, side, x: side > 0 ? w : 0,
+                  y: Math.max(SIDE_T, Math.min(h - SIDE_B, py)) });
+              }
             }
             continue;
           }
@@ -692,8 +731,20 @@ export default function Everest() {
             seen.add(e.i);
             const cls = side > 0 ? "ev-edge ev-edge-r on" : "ev-edge ev-edge-l on";
             if (el.className !== cls) el.className = cls;
+            el.style.left = "";
             el.style.top = Math.round(e.y) + "px";
           });
+        });
+        const top = edges.filter((e) => e.side === 0).sort((a, b) => a.x - b.x);
+        for (let k = 1; k < top.length; k++) top[k].x = Math.max(top[k].x, top[k - 1].x + 108);
+        for (let k = top.length - 2; k >= 0; k--) top[k].x = Math.min(top[k].x, top[k + 1].x - 108);
+        top.forEach((e) => {
+          const el = edgeRefs.current[e.i];
+          if (!el) return;
+          seen.add(e.i);
+          if (el.className !== "ev-edge ev-edge-t on") el.className = "ev-edge ev-edge-t on";
+          el.style.left = Math.round(Math.max(CORNER, Math.min(w - CORNER, e.x))) + "px";
+          el.style.top = e.y + "px";
         });
         for (let i = 0; i < markPos.length; i++) {
           const el = edgeRefs.current[i];
@@ -831,8 +882,12 @@ export default function Everest() {
           </svg>
         </button>
         <div className="ev-modal-shot" style={{ aspectRatio: String(ratio) }}>
+          {/* key : sans elle, React réutilise le même élément d'un projet à
+              l'autre. Changer la source d'une vidéo ne la recharge pas, donc
+              l'ancienne continuait de jouer et ses proportions restaient
+              affichées. Une clé par projet force un élément neuf. */}
           {openProj.anim ? (
-            <>
+            <div key={openProj.id} className="ev-modal-media">
               <div className="rd-scroll">
                 <img
                   className="rd-img"
@@ -847,10 +902,11 @@ export default function Everest() {
                 <div className="rd-shimmer"></div>
               </div>
               <div className="pcard-anim logorev" data-anim={openProj.id} ref={animRef}></div>
-            </>
+            </div>
           ) : openProj.video ? (
             <video
-              autoPlay muted loop playsInline
+              key={openProj.id}
+              autoPlay muted loop playsInline preload="metadata"
               poster={"/images/" + openProj.video + "-poster.webp"}
               aria-label={openProj.ph}
               onLoadedMetadata={(e) => setRatio(e.target.videoWidth / e.target.videoHeight)}
@@ -860,6 +916,7 @@ export default function Everest() {
             </video>
           ) : (
             <img
+              key={openProj.id}
               src={shot(openProj)}
               alt={openProj.ph}
               draggable="false"
@@ -954,11 +1011,25 @@ export default function Everest() {
           cède la place à un rappel discret en haut à droite. Deux blocs plutôt
           qu'un seul : une position ne se transitionne pas proprement du centre
           vers un coin, un fondu croisé si. */}
-      <div className={"ev-help" + (ready && !touched ? " on" : "")} aria-hidden="true">
-        {HELP.map(helpLine)}
-      </div>
+      {/* Le bouton n'apparaît qu'une fois le panneau rangé : il montre où
+          retrouver les touches, et les rouvre à la demande. */}
+      <button
+        type="button"
+        className={"ev-help-btn" + (ready && touched ? " on" : "") + (helpOpen ? " open" : "")}
+        onClick={() => setHelpOpen((v) => !v)}
+        aria-label={t(helpOpen ? "ev.hHide" : "ev.hShow")}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
+          <path d="M5 12h14" /><path className="ev-help-bar" d="M12 5v14" />
+        </svg>
+      </button>
 
-      <div className={"ev-hud" + (touched ? " on" : "")} aria-hidden="true">
+      <div
+        ref={helpRef}
+        className={"ev-help" + (ready ? " on" : "") + (touched ? " docked" : "")
+          + (touched && !helpOpen ? " shut" : "")}
+        aria-hidden="true"
+      >
         {HELP.map(helpLine)}
       </div>
 
