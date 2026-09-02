@@ -62,6 +62,7 @@ export default function Everest() {
   const canvasRef = useRef(null);
   const altRef = useRef(null);
   const markRefs = useRef([]);          // les étiquettes HTML des drapeaux
+  const edgeRefs = useRef([]);          // les indicateurs de bord, quand un projet est hors champ
   const apiRef = useRef(null);          // pont vers la scène (vol vers un drapeau)
 
   const [ready, setReady] = useState(false);   // les courbes ont fini de se dessiner
@@ -73,6 +74,9 @@ export default function Everest() {
   const boxRef = useRef(null), txtRef = useRef(null);
 
   const MARKS = evJson.marks;
+  const SHORT = { anya: "Anya", deviantart: "DeviantArt", coin: "Team Coin",
+                  bcc: "BCC", preshot: "Preshot", redesign: "Portfolio" };
+  const NM = MARKS.length;
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -108,6 +112,20 @@ export default function Everest() {
       window.removeEventListener("load", measure);
     };
   }, [lang]);
+
+  /* Depuis la fiche, flèches ou boutons : on passe au projet voisin. Le
+     grimpeur est déposé au pied du nouveau drapeau, sans vol puisque la fiche
+     couvre tout : à la fermeture on est déjà sur place. */
+  const step = useCallback((dir) => {
+    setOpen((cur) => (cur < 0 ? cur : (cur + dir + NM) % NM));
+  }, [NM]);
+
+  /* Le grimpeur se retrouve toujours au pied du projet affiché : après un vol
+     c'est déjà le cas et rien ne bouge, après un changement à la flèche il est
+     déposé sur place, prêt pour la fermeture. */
+  useEffect(() => {
+    if (open >= 0 && apiRef.current) apiRef.current.jumpTo(open);
+  }, [open]);
 
   /* Clic sur un drapeau : la scène emmène le grimpeur, puis ouvre la fiche. */
   const goTo = useCallback((i) => {
@@ -483,6 +501,11 @@ export default function Everest() {
 
       /* ---- vol vers un drapeau ----------------------------------------------- */
       apiRef.current = {
+        jumpTo(i) {
+          const p = markPos[i];
+          fly = null;
+          pos.x = p.x; pos.z = p.z;
+        },
         flyTo(i, done) {
           const p = markPos[i];
           const far = Math.hypot(p.x - pos.x, p.z - pos.z);
@@ -624,20 +647,57 @@ export default function Everest() {
             .toLocaleString("fr-FR").replace(/\u202F|\u00A0/g, " ");
         }
 
-        /* les étiquettes et les fanions suivent la caméra */
+        /* les étiquettes et les fanions suivent la caméra ; un projet hors champ
+           obtient un indicateur au bord de l'écran, du côté où il se trouve */
         const w = wrap.clientWidth, h = wrap.clientHeight;
+        const fwdX = -Math.cos(yaw), fwdZ = -Math.sin(yaw);   // l'avant, dos à la caméra
+        const rgtX = -fwdZ, rgtZ = fwdX;                       // la droite de l'écran
+        const edges = [];
         for (let i = 0; i < markPos.length; i++) {
           markGroups[i].rotation.y =
             Math.atan2(camera.position.x - markPos[i].x, camera.position.z - markPos[i].z);
           const el = markRefs.current[i];
           if (!el) continue;
           proj.set(markPos[i].x, markPos[i].y + 5.8, markPos[i].z).project(camera);
-          if (!revealed || proj.z > 1) { el.style.opacity = "0"; el.style.pointerEvents = "none"; continue; }
+          const onScreen = revealed && proj.z < 1 &&
+            proj.x > -1.02 && proj.x < 1.02 && proj.y > -1.02 && proj.y < 1.02;
+          if (!onScreen) {
+            el.style.opacity = "0"; el.style.pointerEvents = "none";
+            if (revealed) {
+              /* côté : projection de la direction du projet sur la droite de
+                 l'écran ; hauteur : l'écart d'altitude avec le grimpeur */
+              const dx = markPos[i].x - pos.x, dz = markPos[i].z - pos.z;
+              const side = dx * rgtX + dz * rgtZ >= 0 ? 1 : -1;
+              const frac = 0.5 - ((markPos[i].y - pos.y) / HS) * 0.9;
+              edges.push({ i, side, y: Math.max(0.1, Math.min(0.9, frac)) * h });
+            }
+            continue;
+          }
           el.style.transform = "translate(-50%,-100%) translate("
             + Math.round((proj.x * 0.5 + 0.5) * w) + "px,"
             + Math.round((-proj.y * 0.5 + 0.5) * h) + "px)";
           el.style.opacity = "1";
           el.style.pointerEvents = "auto";
+        }
+
+        /* les indicateurs d'un même bord ne se chevauchent pas */
+        const seen = new Set();
+        [-1, 1].forEach((side) => {
+          const col = edges.filter((e) => e.side === side).sort((a, b) => a.y - b.y);
+          for (let k = 1; k < col.length; k++) col[k].y = Math.max(col[k].y, col[k - 1].y + 34);
+          for (let k = col.length - 2; k >= 0; k--) col[k].y = Math.min(col[k].y, col[k + 1].y - 34);
+          col.forEach((e) => {
+            const el = edgeRefs.current[e.i];
+            if (!el) return;
+            seen.add(e.i);
+            const cls = side > 0 ? "ev-edge ev-edge-r on" : "ev-edge ev-edge-l on";
+            if (el.className !== cls) el.className = cls;
+            el.style.top = Math.round(e.y) + "px";
+          });
+        });
+        for (let i = 0; i < markPos.length; i++) {
+          const el = edgeRefs.current[i];
+          if (el && !seen.has(i) && el.className !== "ev-edge") el.className = "ev-edge";
         }
 
         renderer.render(scene, camera);
@@ -693,16 +753,16 @@ export default function Everest() {
   useEffect(() => {
     if (open < 0) return;
     const box = boxRef.current;
-    if (box) box.style.width = "";
+    if (box && box.parentElement) box.parentElement.style.width = "";
     const SHARE = 1.35 / 2.35;                     // part de la colonne visuel dans la grille
     const fit = () => {
       const b = boxRef.current, txt = txtRef.current;
       if (!b || !txt) return;
-      const pad = parseFloat(getComputedStyle(b.parentElement).paddingLeft) || 0;
+      const pad = parseFloat(getComputedStyle(b.closest(".ev-modal")).paddingLeft) || 0;
       const maxW = window.innerWidth - pad * 2;
       const want = Math.ceil((txt.scrollHeight * ratio) / SHARE);
       const cur = b.getBoundingClientRect().width;
-      b.style.width = Math.min(maxW, Math.max(cur, want)) + "px";
+      b.parentElement.style.width = Math.min(maxW, Math.max(cur, want)) + "px";
     };
     fit();
     const r1 = requestAnimationFrame(() => { fit(); requestAnimationFrame(fit); });
@@ -713,7 +773,11 @@ export default function Everest() {
   /* La fiche ouverte fige la page et se ferme avec Échap */
   useEffect(() => {
     if (open < 0) return;
-    const onKey = (e) => { if (e.key === "Escape") setOpen(-1); };
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpen(-1);
+      else if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
+    };
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -721,7 +785,7 @@ export default function Everest() {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [open]);
+  }, [open, step]);
 
   /* Les trois lignes du mode d'emploi, partagées par l'encadré et le rappel :
      à gauche du « = », les mots-clés en gras (les touches, la caméra, le clic),
@@ -759,6 +823,7 @@ export default function Everest() {
   const modal = openProj && (
     <div className="ev-modal" role="dialog" aria-modal="true" aria-label={openProj.title}>
       <div className="ev-modal-veil" onClick={() => setOpen(-1)}></div>
+      <div className="ev-modal-wrap">
       <div className="ev-modal-box" ref={boxRef}>
         <button type="button" className="ev-modal-x" onClick={() => setOpen(-1)} aria-label={t("ev.close")}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
@@ -816,6 +881,25 @@ export default function Everest() {
           </a>
         </div></div>
       </div>
+
+      {/* Passer d'un projet à l'autre sans revenir dans la montagne : les deux
+          flèches, ou celles du clavier. */}
+      <div className="ev-modal-nav">
+        <button type="button" className="ev-modal-arrow" onClick={() => step(-1)} aria-label={t("ev.prev")}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M19 12H5M11 6l-6 6 6 6" />
+          </svg>
+        </button>
+        <span className="ev-modal-count" aria-hidden="true">
+          {"0" + (open + 1) + " / 0" + NM}
+        </span>
+        <button type="button" className="ev-modal-arrow" onClick={() => step(1)} aria-label={t("ev.next")}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+      </div>
     </div>
   );
 
@@ -848,6 +932,23 @@ export default function Everest() {
           );
         })}
       </div>
+
+      {/* Indicateurs de bord : quand un projet est hors champ, une pointe sur le
+          bord gauche ou droit dit où il est, à une hauteur qui suit l'altitude ;
+          on peut cliquer dessus pour s'y rendre. Position mise à jour à chaque
+          image par la scène. */}
+      {MARKS.map((m, i) => (
+        <button
+          key={"edge-" + m.k}
+          type="button"
+          className="ev-edge"
+          ref={(el) => { edgeRefs.current[i] = el; }}
+          onClick={() => goTo(i)}
+          aria-label={t("ev.goto") + " " + (SHORT[m.p] || m.p)}
+        >
+          <span>{SHORT[m.p] || m.p}</span>
+        </button>
+      ))}
 
       {/* Mode d'emploi : un encadré au centre tant qu'on n'a rien touché, qui
           cède la place à un rappel discret en haut à droite. Deux blocs plutôt
