@@ -36,13 +36,27 @@ export default function Manif2() {
         }
       });
     };
-    [bigRef.current, subRef.current].forEach((el) => el && wrap(el));
-    const chars = [...sec.querySelectorAll(".mch")];
-    if (!chars.length) return;
+    /* Le texte est posé par innerHTML puis découpé en spans : si React
+       réécrit ce texte (changement de langue, nouveau rendu), les spans que
+       l'on tenait sont détachés et plus rien ne s'anime. On vérifie donc à
+       chaque mise à jour qu'ils sont toujours dans la page, et on redécoupe
+       sinon. Un observateur relance la découpe dès qu'un tel remplacement a
+       lieu, sans attendre le prochain défilement. */
+    let chars = [];
+    const collect = () => {
+      [bigRef.current, subRef.current].forEach((el) => el && wrap(el));
+      chars = [...sec.querySelectorAll(".mch")];
+    };
+    collect();
+    const alive = () => chars.length && chars[0].isConnected;
+    const mo = new MutationObserver(() => { if (!alive()) { collect(); upd(); } });
+    mo.observe(sec, { childList: true, subtree: true });
 
     const FADE = 14;
     let raf = 0;
     const upd = () => {
+      if (!alive()) collect();
+      if (!chars.length) return;
       const vh = innerHeight || 800, start = vh - 120;
       const r = sec.getBoundingClientRect();
       if (r.bottom < -80 || r.top > vh + 80) return;
@@ -58,6 +72,7 @@ export default function Manif2() {
     addEventListener("resize", upd);
     upd();
     return () => {
+      mo.disconnect();
       cancelAnimationFrame(raf);
       removeEventListener("scroll", onScroll);
       removeEventListener("resize", upd);

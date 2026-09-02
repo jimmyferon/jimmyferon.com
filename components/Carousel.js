@@ -22,7 +22,9 @@ export default function Carousel() {
   const [mode, setMode] = useState(null); // null au 1er rendu (SSR), puis "3d" | "column"
 
   useEffect(() => {
-    const check = () => setMode(window.innerWidth >= 761 ? "3d" : "column");
+    /* Le cylindre 3D a laissé la place au massif sur grand écran (voir
+       Everest.js) ; ici, tablette et téléphone partagent la colonne. */
+    const check = () => setMode(window.innerWidth >= 1025 ? "3d" : "column");
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -335,7 +337,7 @@ export default function Carousel() {
                           className="rd-img"
                           src={`/images/${p.scrollbg}-1600.webp`}
                           srcSet={`/images/${p.scrollbg}-600.webp 600w, /images/${p.scrollbg}-1600.webp 1600w, /images/${p.scrollbg}-2000.webp 2000w, /images/${p.scrollbg}-2400.webp 2400w`}
-                          sizes="(max-width:760px) 95vw, 52vw"
+                          sizes="(max-width:1024px) 95vw, 52vw"
                           alt=""
                           draggable="false"
                         />
@@ -363,7 +365,7 @@ export default function Carousel() {
                     className="thumb-img"
                     src={`/images/${p.img}-1600.webp`}
                     srcSet={`/images/${p.img}-600.webp 600w, /images/${p.img}-1200.webp 1200w, /images/${p.img}-1600.webp 1600w, /images/${p.img}-2000.webp 2000w`}
-                    sizes="(max-width:760px) 95vw, 52vw"
+                    sizes="(max-width:1024px) 95vw, 52vw"
                     alt={p.ph || `${p.title} — ${cat}`}
                     draggable="false"
                   />
