@@ -860,15 +860,15 @@ header.menu-open .hx-bot{opacity:1;}
 
 
 /* ============================================================
-   9. Hero sur téléphone (<= 760px) : colonne de projets défilante
-   Au-dessus de 760px (desktop ET tablette, portrait comme paysage),
-   le cylindre 3D d'origine reste strictement inchangé.
-   Sur téléphone, la colonne prend la place du carrousel (en haut) et
-   le bloc texte reste en bas, comme sur desktop. .home-mid ayant
-   flex:1, la colonne s'adapte à la place disponible : toute la section
-   reste visible sans avoir à faire défiler.
+   9. Hero sur téléphone ET tablette (<= 1024px) : colonne de projets
+   Le cylindre 3D d'origine n'existe plus : au-dessus de 1024px le hero
+   est le massif de l'Everest (section 14), et en dessous la tablette
+   reprend exactement la version téléphone.
+   La colonne prend la place du carrousel (en haut) et le bloc texte
+   reste en bas. .home-mid ayant flex:1, la colonne s'adapte à la place
+   disponible : toute la section reste visible sans avoir à faire défiler.
    ============================================================ */
-@media(max-width:760px){
+@media(max-width:1024px){
   /* svh (et non vh) : sur iOS, 100vh ignore la barre du navigateur et le bas
      de la section passerait sous la ligne de flottaison. */
   .hero{height:calc(100svh - var(--hh));}
@@ -993,8 +993,7 @@ header.menu-open .hx-bot{opacity:1;}
 
 /* Barre d'identification des cartes (téléphone) : DA maison — fond papier,
    radius 5px, titre en display, catégorie en muted, bouton carré encre
-   poussé tout à droite. Masquée au-dessus de 760px, où le badge au curseur
-   prend le relais. */
+   poussé tout à droite. Masquée au-dessus de 1024px. */
 .pcard-bar{
   position:absolute; left:10px; right:10px; bottom:10px; z-index:3;
   display:none; align-items:center; gap:12px;
@@ -1025,10 +1024,10 @@ header.menu-open .hx-bot{opacity:1;}
   font-size:15px; line-height:1;
 }
 /* Déclaré APRÈS le bloc de base pour gagner la cascade (même spécificité) */
-@media(max-width:760px){ .pcard-bar{display:flex;} }
+@media(max-width:1024px){ .pcard-bar{display:flex;} }
 
-/* Le bloc haut du hero est propre au téléphone */
-@media(min-width:761px){
+/* Le bloc haut du hero est propre au téléphone et à la tablette */
+@media(min-width:1025px){
   .hero-meyebrow,.hero-mtitle,.hero-mcta{display:none;}
 }
 
@@ -1184,7 +1183,7 @@ header.menu-open .hx-bot{opacity:1;}
   0%,100%{transform:translateY(0); opacity:.55;}
   50%{transform:translateY(5px); opacity:1;}
 }
-@media(max-width:760px){
+@media(max-width:1024px){
   .hero-mscroll{display:flex; margin-top:auto; padding:14px 0 max(10px,2vh);}
   /* min-height plutôt que height : si le navigateur annonce une hauteur de
      viewport plus grande que la zone réellement visible, la section s'étire
@@ -1494,3 +1493,186 @@ body.pre-done [data-rv-group].rv [data-reveal]{opacity:1; transform:none;}
 /* Voile de la modale cal.com : un peu plus léger que celui par défaut,
    pour rester dans la teinte du site. */
 cal-modal-box{background:rgba(17,17,17,.65)!important}
+
+/* ============================================================
+   14. Hero — Massif de l'Everest (grand écran uniquement)
+   ------------------------------------------------------------
+   La scène n'existe qu'au-dessus de 1024px, avec souris et clavier (le
+   composant vérifie aussi le pointeur) : tablette et téléphone gardent le
+   carrousel, et aucune de ces règles ne les touche. Elle occupe toute la
+   largeur, du bas du header jusqu'au filet de .hb-grid ; sa hauteur exacte
+   est mesurée par le composant.
+   La fiche projet, elle, est posée sur le corps de page (portail React) et
+   n'est donc pas enfermée dans cette requête média : c'est ce qui lui permet
+   de couvrir le header.
+   ============================================================ */
+@media(min-width:1025px){
+  /* L'invitation à faire défiler quitte la ligne du nom pour la grille du
+     dessous, en quatrième colonne, calée sur la marge droite du site. */
+  .hb-grid{grid-template-columns:repeat(4,1fr)}
+  .hb-top .hero-scroll{display:none}
+  .hb-grid .hero-scroll{justify-self:end;align-self:center;margin:0}
+
+  .ev{position:absolute;left:0;right:0;top:0;z-index:1;pointer-events:none}
+  .ev-gl{position:absolute;inset:0;width:100%;height:100%;display:block;
+    pointer-events:auto;cursor:grab;touch-action:pan-y}
+  .ev-gl.turning{cursor:grabbing}
+
+  /* Sur desktop .home-mid est vide (le carrousel n'est monté que sur
+     téléphone) : sans ceci, ce bloc transparent avalerait le glisser destiné
+     à la scène, qui est en dessous. */
+  .ev ~ .home-mid{pointer-events:none}
+
+  /* Le halo bleu du hero reste, en retrait derrière les courbes — seulement
+     quand la scène est là, pas sur une tablette large qui garde le carrousel */
+  .hero:has(.ev) .home-glow{opacity:.28}
+
+  /* Relevé de position, calqué sur celui de la section Benefits */
+  .ev-meta{position:absolute;left:var(--pad);top:clamp(18px,3vh,34px);
+    font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted-2);line-height:2}
+  .ev-route{color:var(--muted)}
+  .ev-altnum{color:var(--ink)}
+
+  /* ---------- étiquettes des sommets ---------- */
+  .ev-marks{position:absolute;inset:0;pointer-events:none}
+  .ev-mark{position:absolute;left:0;top:0;opacity:0;pointer-events:none;
+    display:flex;flex-direction:column;align-items:flex-start;gap:1px;
+    padding:7px 10px 8px;text-align:left;
+    background:rgba(245,245,245,.88);backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);border:0;border-radius:5px;cursor:pointer;
+    box-shadow:0 6px 18px -14px rgba(17,17,17,.55);
+    transition:opacity .25s var(--e),background .2s,box-shadow .2s;
+    will-change:transform}
+  .ev-mark:hover,.ev-mark:focus-visible{background:var(--blue);
+    box-shadow:0 10px 26px -16px rgba(30,41,255,.8)}
+  .ev-mark:hover .ev-mark-alt,.ev-mark:focus-visible .ev-mark-alt,
+  .ev-mark:hover .ev-mark-name,.ev-mark:focus-visible .ev-mark-name,
+  .ev-mark:hover .ev-mark-proj,.ev-mark:focus-visible .ev-mark-proj{color:#fff}
+  .ev-mark:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  .ev-mark-alt{font-family:var(--mono);font-size:9px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted-2);line-height:1;transition:color .2s}
+  .ev-mark-name{font-family:var(--display);font-weight:600;font-size:.86rem;
+    letter-spacing:-.01em;color:var(--ink);line-height:1.25;transition:color .2s}
+  .ev-mark-proj{font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--blue);line-height:1.3;transition:color .2s}
+
+  /* ---------- mode d'emploi ---------- */
+  /* L'encadré central se montre une fois le massif dessiné, et s'efface à la
+     première touche, au premier glissé ou au premier défilement. Fond noir
+     grainé, comme le bloc Client work. */
+  .ev-help{position:absolute;left:50%;top:50%;z-index:2;
+    transform:translate(-50%,-50%);overflow:hidden;
+    display:flex;flex-direction:column;gap:11px;padding:24px 30px;
+    border-radius:5px;background:var(--ink);
+    box-shadow:0 26px 64px -38px rgba(17,17,17,.7);
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:rgba(245,245,245,.62);white-space:nowrap;
+    opacity:0;pointer-events:none;
+    transition:opacity .45s var(--e),transform .45s var(--e)}
+  /* Pas de grain local ici : le grain général du site (body::after) passe
+     déjà au-dessus de la scène, exactement comme sur le bloc Client work.
+     La fiche projet, elle, est plus haut que ce grain et porte donc le sien. */
+  .ev-help.on{opacity:1}
+  .ev-help:not(.on){transform:translate(-50%,-50%) scale(.97)}
+  .ev-help b{color:var(--paper);font-weight:700}
+  .ev-help .ev-lo,.ev-help .ev-eq{color:rgba(245,245,245,.42)}
+  .ev-help .ev-eq{margin:0 7px}
+
+  /* Le rappel prend le relais en haut à droite : le même encadré que celui de
+     l'accueil, mais son fond n'est teinté qu'à 20 % et tout est écrit en 8 px.
+     Sur un fond aussi léger, le blanc ne se lirait pas : les mots-clés sont
+     à l'encre, en gras, le reste en encre atténuée. */
+  .ev-hud{position:absolute;right:var(--pad);top:clamp(18px,3vh,34px);z-index:2;
+    display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+    padding:12px 14px;border-radius:5px;background:rgba(17,17,17,.2);
+    font-family:var(--mono);font-size:8px;letter-spacing:.14em;
+    text-transform:uppercase;color:rgba(17,17,17,.62);line-height:1.4;
+    white-space:nowrap;text-align:right;opacity:0;pointer-events:none;
+    transition:opacity .6s var(--e) .18s}
+  .ev-hud.on{opacity:1}
+  .ev-hud b{color:var(--ink);font-weight:700}
+  .ev-hud .ev-lo,.ev-hud .ev-eq{color:rgba(17,17,17,.5)}
+  .ev-hud .ev-eq{margin:0 5px}
+
+  /* ---------- fiche projet : hors de la requête média, voir plus bas ---------- */
+
+  @media (prefers-reduced-motion:reduce){
+    .ev-mark,.ev-help,.ev-hud{transition:opacity .2s linear}
+  }
+}
+
+/* ------------------------------------------------------------
+   14b. Fiche projet — posée sur le corps de page par un portail,
+   donc au-dessus du header. Fond noir grainé, aucun contour.
+   ------------------------------------------------------------ */
+.ev-modal{position:fixed;inset:0;z-index:5900;display:grid;place-items:center;
+  padding:clamp(16px,4vw,56px)}
+.ev-modal-veil{position:absolute;inset:0;background:rgba(10,10,10,.86);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  animation:evFade .3s var(--e) both}
+.ev-modal-box{position:relative;display:grid;grid-template-columns:1.35fr 1fr;
+  width:min(1120px,100%);max-width:100%;overflow:hidden;border:0;
+  border-radius:5px;background:var(--ink);color:var(--paper);
+  box-shadow:0 50px 110px -60px rgba(0,0,0,.9);
+  animation:evPop .38s var(--e) both}
+/* Le même grain que le bloc sombre du site. Il se déplace en boucle, donc il
+   doit déborder largement : à inset:0, son décalage découvrait un bord qui
+   passait d'un côté à l'autre du cadre. */
+.ev-modal-box::after{content:"";position:absolute;inset:-40%;z-index:3;
+  pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity:.21;mix-blend-mode:difference;animation:grainMove 7s steps(8) infinite}
+/* Le visuel impose ses proportions au cadre (aspect-ratio posé par le
+   composant à partir de l'image ou de la vidéo) : il le remplit entièrement
+   sans être recadré, et sans bande. La colonne de texte, elle, ne dicte pas
+   la hauteur : elle défile dans l'espace que lui laisse le visuel. */
+.ev-modal-shot{position:relative;min-height:0;max-height:84vh;
+  aspect-ratio:1.6;background:#0e0e0e;overflow:hidden}
+.ev-modal-shot>img,.ev-modal-shot>video{position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;display:block;
+  -webkit-user-drag:none;user-select:none}
+/* Carte Portfolio : même montage que dans le carrousel (fond qui défile,
+   nuages, neige, logo animé) ; le centrage du logo est rétabli comme pour
+   .pcard, .logorev{position:relative} l'écrasant sinon. */
+.ev-modal-shot .pcard-anim{position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);width:19.5%;max-width:110px;min-width:64px}
+.ev-modal-side{position:relative;min-height:0}
+/* Le composant élargit la fiche jusqu'à ce que le texte tienne : en pratique
+   ce bloc ne défile pas. S'il devait le faire sur un écran vraiment étroit,
+   aucune barre n'apparaît. */
+.ev-modal-txt{position:absolute;inset:0;z-index:2;overflow-y:auto;
+  padding:clamp(20px,2.2vw,30px);scrollbar-width:none}
+.ev-modal-txt::-webkit-scrollbar{display:none}
+.ev-modal-camp{display:block;font-family:var(--mono);font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;color:#7d86ff}
+.ev-modal-txt h3{font-family:var(--display);font-weight:700;
+  font-size:clamp(1.5rem,2.4vw,2.1rem);letter-spacing:-.02em;
+  margin-top:10px;color:var(--paper)}
+.ev-modal-cat{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(245,245,245,.5);margin-top:7px}
+.ev-modal-over{color:rgba(245,245,245,.74);font-size:.92rem;line-height:1.65;
+  margin-top:14px;max-width:48ch}
+.ev-modal-meta{display:flex;gap:36px;margin-top:20px}
+.ev-modal-meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(245,245,245,.42);margin-bottom:4px}
+.ev-modal-meta dd{font-family:var(--mono);font-size:12px;color:var(--paper)}
+.ev-modal-txt .btnf{margin-top:24px}
+.ev-modal-x{position:absolute;right:12px;top:12px;z-index:4;
+  width:36px;height:36px;display:grid;place-items:center;border:0;
+  border-radius:5px;background:rgba(245,245,245,.1);color:var(--paper);
+  cursor:pointer;transition:background .25s var(--e)}
+.ev-modal-x svg{width:16px;height:16px}
+.ev-modal-x:hover{background:rgba(245,245,245,.22)}
+@keyframes evFade{from{opacity:0}to{opacity:1}}
+@keyframes evPop{from{opacity:0;transform:translateY(14px) scale(.985)}
+                 to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .ev-modal-veil,.ev-modal-box{animation:none}
+  .ev-modal-box::after{animation:none}
+}
+
+/* Sous 1025px l'invitation à faire défiler reste à sa place d'origine, sur la
+   ligne du nom : la copie destinée à la grille n'existe pas. */
+@media(max-width:1024px){
+  .hero-scroll-grid{display:none}
+}

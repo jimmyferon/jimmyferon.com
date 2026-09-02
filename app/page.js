@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Footer from "@/components/Footer";
 import Carousel from "@/components/Carousel";
+import Everest from "@/components/Everest";
 import Manif from "@/components/Manif";
 import Services from "@/components/Services";
 import ClientWork from "@/components/ClientWork";
@@ -22,6 +24,23 @@ const grain = (txt) =>
 // Page d'accueil — hero repris à l'identique de index.html.
 export default function Home() {
   const { lang } = useLang();
+
+  // Le hero desktop montre le massif de l'Everest, tablette et téléphone
+  // gardent le carrousel. Le choix n'est fait qu'une fois dans le navigateur :
+  // les deux ne sont jamais montés en même temps, et le rendu serveur reste
+  // identique dans les deux cas.
+  const [wide, setWide] = useState(null);
+  useEffect(() => {
+    /* Au-dessus de 1024 px : le massif. En dessous, tablette et téléphone
+       partagent la colonne de projets. Le critère est la largeur seule :
+       tester le pointeur excluait l'aperçu « responsive » des outils de
+       développement, qui simule un écran tactile. */
+    const mq = window.matchMedia("(min-width:1025px)");
+    const upd = () => setWide(mq.matches);
+    upd();
+    mq.addEventListener("change", upd);
+    return () => mq.removeEventListener("change", upd);
+  }, []);
   const t = (k) => (I18N[lang] && I18N[lang][k]) || k;
 
   return (
@@ -79,8 +98,13 @@ export default function Home() {
           </a>
         </div>
 
+        {/* Scène de l'ascension : pleine largeur, du bas du header jusqu'au
+            filet de .hb-grid. Elle passe sous les textes du hero, qui restent
+            au-dessus. */}
+        {wide === true && <Everest />}
+
         <div className="home-mid" data-reveal style={{ "--rd": ".15s" }}>
-          <Carousel />
+          {wide === false && <Carousel />}
         </div>
 
         {/* Invitation à faire défiler, sous le carrousel (téléphone) */}
@@ -100,6 +124,8 @@ export default function Home() {
                 dangerouslySetInnerHTML={{ __html: t("home.blurb") }}
               />
             </div>
+            {/* Version d'origine, conservée pour la tablette (masquée sur grand
+                écran, où elle rejoint la grille du dessous). */}
             <div className="hero-scroll" data-reveal style={{ "--rd": ".5s" }}>
               <span>{t("hero.scroll")}</span>
             </div>
@@ -117,6 +143,12 @@ export default function Home() {
             <div className="hb-cell">
               <span className="hb-lbl">{t("hero.lblStatus")}</span>
               <span className="hb-val"><i className="dot"></i><span>{t("home.status")}</span></span>
+            </div>
+            {/* Sur grand écran, l'invitation à faire défiler rejoint cette ligne
+                en quatrième colonne, calée à droite sur la marge du site :
+                même élément, même trait qui bat qu'à l'origine. */}
+            <div className="hero-scroll hero-scroll-grid" aria-hidden="true">
+              <span>{t("hero.scroll")}</span>
             </div>
           </div>
         </div>
