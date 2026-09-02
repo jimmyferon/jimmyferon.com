@@ -1515,9 +1515,10 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
 
   .ev{position:absolute;left:0;right:0;top:0;z-index:1;pointer-events:none;
     --eio:cubic-bezier(.65,0,.35,1)}
+  /* Le regard suit la souris sans clic : plus de curseur « main », un simple
+     réticule discret qui dit que la zone est pilotable. */
   .ev-gl{position:absolute;inset:0;width:100%;height:100%;display:block;
-    pointer-events:auto;cursor:grab;touch-action:pan-y}
-  .ev-gl.turning{cursor:grabbing}
+    pointer-events:auto;cursor:crosshair;touch-action:pan-y}
 
   /* Sur desktop .home-mid est vide (le carrousel n'est monté que sur
      téléphone) : sans ceci, ce bloc transparent avalerait le glisser destiné
@@ -1581,6 +1582,21 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
   .ev-edge-t{transform:translate(-50%,0);padding:14px 12px 7px;
     transition:opacity .3s var(--e),left .18s linear,top .18s linear,background .2s;
     clip-path:polygon(50% 0,100% 10px,100% 100%,0 100%,0 10px)}
+
+  /* ---------- plein écran ---------- */
+  /* L'icône seule, sans cadre : encre, bleu au survol. Les indicateurs de bord
+     gardent leurs distances avec ce coin (SIDE_B_R dans le composant). */
+  .ev-full-btn{position:absolute;right:var(--pad);bottom:clamp(14px,2.4vh,26px);
+    z-index:3;width:26px;height:26px;display:grid;place-items:center;
+    padding:0;border:0;background:none;color:var(--ink);cursor:pointer;
+    opacity:0;pointer-events:none;
+    transition:opacity .4s var(--e) .2s,color .25s var(--e),transform .25s var(--e)}
+  .ev-full-btn.on{opacity:1;pointer-events:auto}
+  .ev-full-btn svg{width:100%;height:100%;display:block}
+  .ev-full-btn:hover{color:var(--blue);transform:scale(1.08)}
+  .ev-full-btn:focus{outline:none}
+  .ev-full-btn:focus-visible{outline:2px solid var(--blue);outline-offset:4px;
+    border-radius:3px}
 
   /* ---------- mode d'emploi ---------- */
   /* Une seule boîte, du début à la fin. À l'arrivée elle s'affiche au centre
@@ -1741,3 +1757,18 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
 @media(max-width:1024px){
   .hero-scroll-grid{display:none}
 }
+
+/* ============================================================
+   14c. Hero en plein écran
+   ------------------------------------------------------------
+   Une classe posée sur le corps de page par le composant. Le header, le nom
+   et la ligne du bas disparaissent, le hero prend toute la fenêtre et la page
+   ne défile plus : il ne reste que le massif. Échap ou l'icône en ressortent.
+   ============================================================ */
+body.ev-full{overflow:hidden}
+body.ev-full header{opacity:0;pointer-events:none;
+  transform:translateX(-50%) translateY(-100%)}
+body.ev-full main{padding-top:0}
+body.ev-full .hero{height:100svh}
+body.ev-full .home-bottom{opacity:0;pointer-events:none}
+body.ev-full .ev{bottom:0}
