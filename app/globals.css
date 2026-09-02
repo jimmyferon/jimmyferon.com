@@ -1557,6 +1557,25 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
   .ev-mark-proj{font-family:var(--mono);font-size:9px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--blue);line-height:1.3;transition:color .2s}
 
+  /* ---------- indicateurs de bord ---------- */
+  /* Un projet hors champ est signalé par une pointe sur le bord de l'écran,
+     du côté où il se trouve, à une hauteur qui suit l'altitude. La scène
+     pose la classe .on et la position à chaque image. */
+  .ev-edge{position:absolute;top:50%;z-index:3;transform:translateY(-50%);
+    padding:7px 10px;border:0;cursor:pointer;
+    background:rgba(17,17,17,.7);color:var(--paper);
+    font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;line-height:1;white-space:nowrap;
+    opacity:0;pointer-events:none;
+    transition:opacity .3s var(--e),top .18s linear,background .2s}
+  .ev-edge.on{opacity:1;pointer-events:auto}
+  .ev-edge:hover,.ev-edge:focus-visible{background:var(--blue)}
+  .ev-edge:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .ev-edge-l{left:0;padding-left:16px;
+    clip-path:polygon(0 50%,10px 0,100% 0,100% 100%,10px 100%)}
+  .ev-edge-r{right:0;padding-right:16px;
+    clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%)}
+
   /* ---------- mode d'emploi ---------- */
   /* L'encadré central se montre une fois le massif dessiné, et s'efface à la
      première touche, au premier glissé ou au premier défilement. Fond noir
@@ -1612,7 +1631,7 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
   backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
   animation:evFade .3s var(--e) both}
 .ev-modal-box{position:relative;display:grid;grid-template-columns:1.35fr 1fr;
-  width:min(1120px,100%);max-width:100%;overflow:hidden;border:0;
+  width:100%;max-width:100%;overflow:hidden;border:0;
   border-radius:5px;background:var(--ink);color:var(--paper);
   box-shadow:0 50px 110px -60px rgba(0,0,0,.9);
   animation:evPop .38s var(--e) both}
@@ -1626,7 +1645,7 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
    composant à partir de l'image ou de la vidéo) : il le remplit entièrement
    sans être recadré, et sans bande. La colonne de texte, elle, ne dicte pas
    la hauteur : elle défile dans l'espace que lui laisse le visuel. */
-.ev-modal-shot{position:relative;min-height:0;max-height:84vh;
+.ev-modal-shot{position:relative;min-height:0;max-height:72vh;
   aspect-ratio:1.6;background:#0e0e0e;overflow:hidden}
 .ev-modal-shot>img,.ev-modal-shot>video{position:absolute;inset:0;
   width:100%;height:100%;object-fit:cover;display:block;
@@ -1663,6 +1682,19 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
   cursor:pointer;transition:background .25s var(--e)}
 .ev-modal-x svg{width:16px;height:16px}
 .ev-modal-x:hover{background:rgba(245,245,245,.22)}
+/* Fiche + flèches, centrées ensemble ; la largeur suit celle de la fiche */
+.ev-modal-wrap{position:relative;display:flex;flex-direction:column;
+  align-items:center;gap:18px;width:min(1120px,100%);max-width:100%}
+.ev-modal-nav{display:flex;align-items:center;gap:14px;
+  animation:evPop .38s var(--e) both}
+.ev-modal-arrow{width:40px;height:40px;display:grid;place-items:center;border:0;
+  border-radius:5px;background:rgba(245,245,245,.12);color:var(--paper);
+  cursor:pointer;transition:background .25s var(--e),color .25s var(--e)}
+.ev-modal-arrow svg{width:18px;height:18px}
+.ev-modal-arrow:hover,.ev-modal-arrow:focus-visible{background:var(--paper);color:var(--ink)}
+.ev-modal-arrow:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.ev-modal-count{font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  color:rgba(245,245,245,.55);min-width:52px;text-align:center}
 @keyframes evFade{from{opacity:0}to{opacity:1}}
 @keyframes evPop{from{opacity:0;transform:translateY(14px) scale(.985)}
                  to{opacity:1;transform:none}}
