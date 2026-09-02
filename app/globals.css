@@ -1774,3 +1774,6 @@ body.ev-full main{padding-top:0}
 body.ev-full .hero{height:100svh}
 body.ev-full .home-bottom{opacity:0;pointer-events:none}
 body.ev-full .ev{bottom:0}
+/* L'icône rejoint le coin, à la même distance des bords que le bouton du mode
+   d'emploi en haut à droite. */
+body.ev-full .ev-full-btn{top:auto;bottom:clamp(18px,3vh,34px)}
