@@ -1002,7 +1002,7 @@ export default function Everest() {
           }}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
-            <path d="M5 12h14" /><path className="ev-help-bar" d="M12 5v14" />
+            <path d="M6.4 12h11.2" /><path className="ev-help-bar" d="M12 6.4v11.2" />
           </svg>
         </button>
         <div className="ev-help-body" aria-hidden={touched && !helpOpen}>
