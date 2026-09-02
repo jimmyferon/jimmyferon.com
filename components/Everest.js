@@ -96,8 +96,13 @@ export default function Everest() {
     if (!hero) return;
     const place = () => {
       const btn = fullBtnRef.current;
+      if (!btn) return;
+      /* En plein écran il n'y a plus de ligne du nom sur laquelle s'aligner :
+         on rend la main au CSS, qui pose l'icône dans le coin avec la même
+         marge que le bouton du mode d'emploi. */
+      if (full) { btn.style.top = ""; return; }
       const msg = hero.querySelector(".home-msg");
-      if (!btn || !msg) return;
+      if (!msg) return;
       const r = msg.getBoundingClientRect(), hr = hero.getBoundingClientRect();
       btn.style.top = Math.round(r.top - hr.top + r.height / 2 - btn.offsetHeight / 2) + "px";
     };
