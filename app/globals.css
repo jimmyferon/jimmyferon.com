@@ -1597,8 +1597,11 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
     font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;
     color:rgba(245,245,245,.72);white-space:nowrap;
     opacity:0;pointer-events:none;
-    transition:transform 1.05s var(--e),opacity .5s var(--e),
-      max-width .55s var(--eio),max-height .55s var(--eio)}
+    /* Une seule durée et une seule courbe pour tout le déplacement : avec
+       deux durées différentes, le rétrécissement finissait bien avant le vol
+       et l'ensemble semblait marquer un temps d'arrêt à mi-parcours. */
+    transition:transform .85s var(--eio),max-width .85s var(--eio),
+      max-height .85s var(--eio),opacity .4s var(--e)}
   .ev-help.on{opacity:1}
 
   /* bouton : masqué tant que la boîte est au centre */
@@ -1617,8 +1620,8 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
   /* contenu */
   .ev-help-body{padding:24px 30px;display:flex;flex-direction:column;gap:11px;
     font-size:11px;line-height:1.4;
-    transition:padding .55s var(--eio),font-size .55s var(--eio),
-      gap .55s var(--eio),opacity .3s var(--e)}
+    transition:padding .85s var(--eio),font-size .85s var(--eio),
+      gap .85s var(--eio),opacity .3s var(--e)}
   .ev-help b{color:var(--paper);font-weight:700}
   .ev-help .ev-lo,.ev-help .ev-eq{color:rgba(245,245,245,.5)}
   .ev-help .ev-eq{margin:0 6px}
@@ -1627,14 +1630,14 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
   .ev-help.docked{max-width:30px;max-height:30px;pointer-events:auto}
   .ev-help.docked .ev-help-btn{opacity:1;pointer-events:auto}
   .ev-help.docked .ev-help-body{padding:38px 14px 12px;gap:6px;font-size:8px;
-    opacity:0;transition:padding .55s var(--eio),font-size .55s var(--eio),
-      gap .55s var(--eio),opacity .2s var(--e)}
+    opacity:0;transition:padding .85s var(--eio),font-size .85s var(--eio),
+      gap .85s var(--eio),opacity .25s var(--e)}
 
   /* dépliée : la même boîte, agrandie */
   .ev-help.docked.open{max-width:330px;max-height:150px}
   .ev-help.docked.open .ev-help-body{opacity:1;
-    transition:padding .55s var(--eio),font-size .55s var(--eio),
-      gap .55s var(--eio),opacity .35s var(--e) .15s}
+    transition:padding .85s var(--eio),font-size .85s var(--eio),
+      gap .85s var(--eio),opacity .35s var(--e) .15s}
   .ev-help.docked.open .ev-help-bar{transform:scaleY(0);opacity:0}
 
   /* ---------- fiche projet : hors de la requête média, voir plus bas ---------- */
