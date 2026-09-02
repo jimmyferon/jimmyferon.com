@@ -71,9 +71,7 @@ export default function Everest() {
   const [mounted, setMounted] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);   // panneau des touches, une fois rangé
   const helpRef = useRef(null);
-  const [ratio, setRatio] = useState(1.6);     // proportions du visuel ouvert
   const animRef = useRef(null);                // logo animé de la carte Portfolio
-  const boxRef = useRef(null), txtRef = useRef(null);
 
   const MARKS = evJson.marks;
   const SHORT = { anya: "Anya", deviantart: "DeviantArt", coin: "Team Coin",
@@ -679,7 +677,7 @@ export default function Everest() {
            Les marges tiennent les indicateurs à l'écart du relevé d'altitude,
            du mode d'emploi, du nom et de la ligne du bas. */
         const w = wrap.clientWidth, h = wrap.clientHeight;
-        const TOP_Y = 96, SIDE_T = 200, SIDE_B = 150, CORNER = 340;
+        const TOP_Y = 0, SIDE_T = 200, SIDE_B = 150, CORNER = 340;
         const edges = [];
         for (let i = 0; i < markPos.length; i++) {
           markGroups[i].rotation.y =
@@ -691,7 +689,7 @@ export default function Everest() {
             proj.x > -1.02 && proj.x < 1.02 && proj.y > -1.02 && proj.y < 1.02;
           if (!onScreen) {
             el.style.opacity = "0"; el.style.pointerEvents = "none";
-            if (revealed) {
+            if (revealed && engaged) {
               /* On projette le sommet, on rabat le point derrière la caméra,
                  puis on cherche où le rayon partant du centre coupe le bord de
                  l'écran : c'est là que se pose l'indicateur. */
@@ -774,10 +772,9 @@ export default function Everest() {
     return () => { stopped = true; cleanup(); };
   }, []);
 
-  /* Fiche : le visuel impose ses proportions au cadre, et la carte Portfolio
-     rejoue exactement l'animation du carrousel (logo, nuages, neige). */
+  /* La carte Portfolio rejoue exactement l'animation du carrousel : le fond
+     qui défile, les nuages, la neige et le logo qui se compose. */
   useEffect(() => {
-    setRatio(1.6);
     const el = animRef.current;
     if (open < 0 || !el) return;
     const scroll = el.parentElement.querySelector(".rd-scroll");
@@ -795,31 +792,6 @@ export default function Everest() {
     r.play();
     return () => r.stop();
   }, [open]);
-
-  /* La fiche ne défile jamais : si le texte est plus haut que le visuel, on
-     élargit la fiche jusqu'à ce que la colonne du visuel — qui garde ses
-     proportions — soit assez haute pour lui. Le visuel reste entier, sans
-     bande ni bordure. Deux passes : la seconde mesure le texte à sa nouvelle
-     largeur. */
-  useEffect(() => {
-    if (open < 0) return;
-    const box = boxRef.current;
-    if (box && box.parentElement) box.parentElement.style.width = "";
-    const SHARE = 1.35 / 2.35;                     // part de la colonne visuel dans la grille
-    const fit = () => {
-      const b = boxRef.current, txt = txtRef.current;
-      if (!b || !txt) return;
-      const pad = parseFloat(getComputedStyle(b.closest(".ev-modal")).paddingLeft) || 0;
-      const maxW = window.innerWidth - pad * 2;
-      const want = Math.ceil((txt.scrollHeight * ratio) / SHARE);
-      const cur = b.getBoundingClientRect().width;
-      b.parentElement.style.width = Math.min(maxW, Math.max(cur, want)) + "px";
-    };
-    fit();
-    const r1 = requestAnimationFrame(() => { fit(); requestAnimationFrame(fit); });
-    window.addEventListener("resize", fit);
-    return () => { cancelAnimationFrame(r1); window.removeEventListener("resize", fit); };
-  }, [open, ratio, lang]);
 
   /* La fiche ouverte fige la page et se ferme avec Échap */
   useEffect(() => {
@@ -875,13 +847,13 @@ export default function Everest() {
     <div className="ev-modal" role="dialog" aria-modal="true" aria-label={openProj.title}>
       <div className="ev-modal-veil" onClick={() => setOpen(-1)}></div>
       <div className="ev-modal-wrap">
-      <div className="ev-modal-box" ref={boxRef}>
+      <div className="ev-modal-box">
         <button type="button" className="ev-modal-x" onClick={() => setOpen(-1)} aria-label={t("ev.close")}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" />
           </svg>
         </button>
-        <div className="ev-modal-shot" style={{ aspectRatio: String(ratio) }}>
+        <div className="ev-modal-shot">
           {/* key : sans elle, React réutilise le même élément d'un projet à
               l'autre. Changer la source d'une vidéo ne la recharge pas, donc
               l'ancienne continuait de jouer et ses proportions restaient
@@ -896,7 +868,6 @@ export default function Everest() {
                   sizes="60vw"
                   alt=""
                   draggable="false"
-                  onLoad={(e) => setRatio(e.target.naturalWidth / e.target.naturalHeight)}
                 />
                 <div className="rd-clouds"></div>
                 <div className="rd-shimmer"></div>
@@ -909,7 +880,6 @@ export default function Everest() {
               autoPlay muted loop playsInline preload="metadata"
               poster={"/images/" + openProj.video + "-poster.webp"}
               aria-label={openProj.ph}
-              onLoadedMetadata={(e) => setRatio(e.target.videoWidth / e.target.videoHeight)}
             >
               <source src={"/images/" + openProj.video + ".webm"} type="video/webm" />
               <source src={"/images/" + openProj.video + ".mp4"} type="video/mp4" />
@@ -920,11 +890,10 @@ export default function Everest() {
               src={shot(openProj)}
               alt={openProj.ph}
               draggable="false"
-              onLoad={(e) => setRatio(e.target.naturalWidth / e.target.naturalHeight)}
             />
           )}
         </div>
-        <div className="ev-modal-side"><div className="ev-modal-txt" ref={txtRef}>
+        <div className="ev-modal-side"><div className="ev-modal-txt">
           <span className="ev-modal-camp">{t(openMark.k)} — {fmt(openMark.alt)} m</span>
           <h3>{openProj.title}</h3>
           <p className="ev-modal-cat">{openProj.cat[lang]}</p>
@@ -1011,26 +980,34 @@ export default function Everest() {
           cède la place à un rappel discret en haut à droite. Deux blocs plutôt
           qu'un seul : une position ne se transitionne pas proprement du centre
           vers un coin, un fondu croisé si. */}
-      {/* Le bouton n'apparaît qu'une fois le panneau rangé : il montre où
-          retrouver les touches, et les rouvre à la demande. */}
-      <button
-        type="button"
-        className={"ev-help-btn" + (ready && touched ? " on" : "") + (helpOpen ? " open" : "")}
-        onClick={() => setHelpOpen((v) => !v)}
-        aria-label={t(helpOpen ? "ev.hHide" : "ev.hShow")}
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
-          <path d="M5 12h14" /><path className="ev-help-bar" d="M12 5v14" />
-        </svg>
-      </button>
-
+      {/* Un seul encadré : au centre à l'arrivée, il glisse ensuite dans le coin
+          et se referme sur son bouton. Le bouton vit à l'intérieur, ce qui fait
+          du replié et du déplié une seule et même boîte. */}
       <div
         ref={helpRef}
         className={"ev-help" + (ready ? " on" : "") + (touched ? " docked" : "")
-          + (touched && !helpOpen ? " shut" : "")}
-        aria-hidden="true"
+          + (touched && helpOpen ? " open" : "")}
       >
-        {HELP.map(helpLine)}
+        <button
+          type="button"
+          className="ev-help-btn"
+          aria-expanded={helpOpen}
+          aria-label={t(helpOpen ? "ev.hHide" : "ev.hShow")}
+          tabIndex={touched ? 0 : -1}
+          onClick={(e) => {
+            /* Un clic à la souris ne doit pas laisser le contour de mise au
+               point derrière lui ; au clavier (detail 0) on le garde. */
+            if (e.detail > 0) e.currentTarget.blur();
+            setHelpOpen((v) => !v);
+          }}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
+            <path d="M5 12h14" /><path className="ev-help-bar" d="M12 5v14" />
+          </svg>
+        </button>
+        <div className="ev-help-body" aria-hidden={touched && !helpOpen}>
+          {HELP.map(helpLine)}
+        </div>
       </div>
 
       {mounted && open >= 0 ? createPortal(modal, document.body) : null}
