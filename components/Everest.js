@@ -36,8 +36,8 @@ const EXAG     = 1.30;    // exagération verticale du relief
 const INTERVAL = 90;      // équidistance des courbes de niveau, en mètres
 const MOVE     = 12;      // vitesse de déplacement, en unités par seconde
 const ACCEL    = 5.5;     // souplesse des départs et des arrêts (plus bas = plus mou)
-const DRAG_X   = 0.0019;  // sensibilité du regard à l'horizontale
-const DRAG_Y   = 0.0015;  // sensibilité du regard à la verticale
+const DRAG_X   = 0.0026;  // sensibilité de la souris à l'horizontale
+const DRAG_Y   = 0.0020;  // sensibilité de la souris à la verticale
 const TURN_SM  = 6.2;     // amortissement de la rotation (plus bas = plus doux)
 const CAM_SM   = 4.0;     // amortissement du suivi de caméra
 const CAM_D    = 17;      // recul de la caméra derrière le grimpeur
@@ -71,6 +71,8 @@ export default function Everest() {
   const [mounted, setMounted] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);   // panneau des touches, une fois rangé
   const [full, setFull] = useState(false);          // hero en plein écran
+  const [heroEl, setHeroEl] = useState(null);      // le hero, hôte du bouton plein écran
+  const fullBtnRef = useRef(null);
   const helpRef = useRef(null);
   const animRef = useRef(null);                // logo animé de la carte Portfolio
 
@@ -80,6 +82,36 @@ export default function Everest() {
   const NM = MARKS.length;
 
   useEffect(() => { setMounted(true); }, []);
+
+  /* Le bouton de plein écran est posé directement dans le hero, et non dans la
+     couche de la scène : celle-ci vit sous le bloc du bas, qui recouvrait le
+     bouton et avalait le clic. Depuis le hero, il passe au-dessus de tout.
+     Sa hauteur est alignée sur le bloc du nom, à droite. */
+  useEffect(() => {
+    setHeroEl(wrapRef.current ? wrapRef.current.parentElement : null);
+  }, []);
+
+  useEffect(() => {
+    const hero = heroEl;
+    if (!hero) return;
+    const place = () => {
+      const btn = fullBtnRef.current;
+      const msg = hero.querySelector(".home-msg");
+      if (!btn || !msg) return;
+      const r = msg.getBoundingClientRect(), hr = hero.getBoundingClientRect();
+      btn.style.top = Math.round(r.top - hr.top + r.height / 2 - btn.offsetHeight / 2) + "px";
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(hero);
+    window.addEventListener("resize", place);
+    const later = setTimeout(place, 1400);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", place);
+      clearTimeout(later);
+    };
+  }, [heroEl, lang, full, ready]);
 
   /* Les CTA du site suivent la souris puis reviennent : la fiche étant montée
      et démontée à la volée, on relie le sien à chaque ouverture. */
@@ -493,30 +525,27 @@ export default function Everest() {
       const onBlur = () => { Object.keys(keys).forEach((k) => { keys[k] = false; }); };
       const onScroll = () => { if (window.scrollY > 40) engage(); };
 
-      /* ---- souris : le regard suit le mouvement, sans avoir à cliquer -------
-         Comme dans un jeu : dès que la souris se déplace au-dessus de la scène,
-         la caméra pivote. Le curseur reste visible et seuls les mouvements sur
-         la toile comptent : survoler une étiquette ou un indicateur suspend
-         donc la rotation, et ces boutons restent faciles à viser. */
-      let lastX = 0, lastY = 0, tracking = false, downAt = null;
-      const look = (e) => {
-        if (!tracking) { lastX = e.clientX; lastY = e.clientY; tracking = true; return; }
-        const dx = e.clientX - lastX, dy = e.clientY - lastY;
-        lastX = e.clientX; lastY = e.clientY;
-        if (!dx && !dy) return;
-        if (document.querySelector(".ev-modal")) return;   // fiche ouverte : on ne tourne pas
+      /* ---- souris : pivoter la caméra sur deux axes -------------------------- */
+      let drag = false, dragX = 0, dragY = 0, moved = 0;
+      const onDown = (e) => {
+        drag = true; moved = 0;
+        dragX = e.clientX; dragY = e.clientY;
+        if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+        cv.classList.add("turning");
+      };
+      const onMove = (e) => {
+        if (!drag) return;
+        const dx = e.clientX - dragX, dy = e.clientY - dragY;
+        moved += Math.abs(dx) + Math.abs(dy);
         yawT -= dx * DRAG_X;
         pitchT = Math.max(PITCH_MIN, Math.min(PITCH_MAX, pitchT + dy * DRAG_Y));
-        if (Math.abs(dx) + Math.abs(dy) > 3) engage();
+        dragX = e.clientX; dragY = e.clientY;
+        if (moved > 6) engage();
       };
-      const onEnter = (e) => { lastX = e.clientX; lastY = e.clientY; tracking = true; };
-      const onLeave = () => { tracking = false; };
-      const onDown = (e) => { downAt = { x: e.clientX, y: e.clientY }; };
       const onUp = (e) => {
-        /* Un clic franc désigne un drapeau ; bouger en gardant le bouton
-           enfoncé reste une rotation comme une autre. */
-        if (downAt && Math.abs(e.clientX - downAt.x) + Math.abs(e.clientY - downAt.y) < 6) pick(e);
-        downAt = null;
+        if (drag && moved < 6) pick(e);               // un clic net, pas un glissé
+        drag = false;
+        cv.classList.remove("turning");
       };
 
       /* ---- clic sur un drapeau dans la scène --------------------------------- */
@@ -541,10 +570,8 @@ export default function Everest() {
       window.addEventListener("blur", onBlur);
       window.addEventListener("scroll", onScroll, { passive: true });
       cv.addEventListener("pointerdown", onDown);
-      cv.addEventListener("pointermove", look);
-      cv.addEventListener("pointerenter", onEnter);
-      cv.addEventListener("pointerleave", onLeave);
-      cv.addEventListener("pointerup", onUp);
+      cv.addEventListener("pointermove", onMove);
+      ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => cv.addEventListener(ev, onUp));
 
       /* ---- vol vers un drapeau ----------------------------------------------- */
       apiRef.current = {
@@ -799,10 +826,8 @@ export default function Everest() {
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("resize", resize);
         cv.removeEventListener("pointerdown", onDown);
-        cv.removeEventListener("pointermove", look);
-        cv.removeEventListener("pointerenter", onEnter);
-        cv.removeEventListener("pointerleave", onLeave);
-        cv.removeEventListener("pointerup", onUp);
+        cv.removeEventListener("pointermove", onMove);
+        ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => cv.removeEventListener(ev, onUp));
         cGeo.dispose(); figGeo.dispose(); trail.forEach((g) => g.dispose());
         renderer.dispose();
         apiRef.current = null;
@@ -880,6 +905,33 @@ export default function Everest() {
     if (window.__doVeil) window.__doVeil(() => router.push("/work"));
     else router.push("/work");
   };
+
+  /* Plein écran : l'icône seule, sans cadre, alignée à droite sur la ligne du
+     nom. Les deux pictogrammes les plus reconnus — quatre coins qui s'écartent
+     pour agrandir, quatre coins qui rentrent pour revenir. */
+  const fullBtn = (
+    <button
+      type="button"
+      ref={fullBtnRef}
+      className={"ev-full-btn" + (ready && touched ? " on" : "")}
+      aria-label={t(full ? "ev.exitFull" : "ev.full")}
+      aria-pressed={full}
+      onClick={(e) => {
+        if (e.detail > 0) e.currentTarget.blur();
+        setFull((v) => !v);
+      }}
+    >
+      {full ? (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M9 3v6H3M15 3v6h6M9 21v-6H3M15 21v-6h6" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M9 3H3v6M21 9V3h-6M9 21H3v-6M15 21h6v-6" />
+        </svg>
+      )}
+    </button>
+  );
 
   /* La fiche est posée sur le corps de page, pas dans le hero : c'est ce qui
      lui permet de couvrir le header, qui vit dans un autre plan. */
@@ -1020,30 +1072,6 @@ export default function Everest() {
           cède la place à un rappel discret en haut à droite. Deux blocs plutôt
           qu'un seul : une position ne se transitionne pas proprement du centre
           vers un coin, un fondu croisé si. */}
-      {/* Plein écran : l'icône seule, sans cadre, en bas à droite. Les deux
-          pictogrammes les plus reconnus — quatre coins qui s'écartent pour
-          agrandir, quatre coins qui rentrent pour revenir. */}
-      <button
-        type="button"
-        className={"ev-full-btn" + (ready && touched ? " on" : "")}
-        aria-label={t(full ? "ev.exitFull" : "ev.full")}
-        aria-pressed={full}
-        onClick={(e) => {
-          if (e.detail > 0) e.currentTarget.blur();
-          setFull((v) => !v);
-        }}
-      >
-        {full ? (
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M9 3v6H3M15 3v6h6M9 21v-6H3M15 21v-6h6" />
-          </svg>
-        ) : (
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M9 3H3v6M21 9V3h-6M9 21H3v-6M15 21h6v-6" />
-          </svg>
-        )}
-      </button>
-
       {/* Un seul encadré : au centre à l'arrivée, il glisse ensuite dans le coin
           et se referme sur son bouton. Le bouton vit à l'intérieur, ce qui fait
           du replié et du déplié une seule et même boîte. */}
@@ -1074,6 +1102,7 @@ export default function Everest() {
         </div>
       </div>
 
+      {heroEl ? createPortal(fullBtn, heroEl) : null}
       {mounted && open >= 0 ? createPortal(modal, document.body) : null}
     </div>
   );
