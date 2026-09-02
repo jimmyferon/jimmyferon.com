@@ -1513,7 +1513,8 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
   .hb-top .hero-scroll{display:none}
   .hb-grid .hero-scroll{justify-self:end;align-self:center;margin:0}
 
-  .ev{position:absolute;left:0;right:0;top:0;z-index:1;pointer-events:none}
+  .ev{position:absolute;left:0;right:0;top:0;z-index:1;pointer-events:none;
+    --eio:cubic-bezier(.65,0,.35,1)}
   .ev-gl{position:absolute;inset:0;width:100%;height:100%;display:block;
     pointer-events:auto;cursor:grab;touch-action:pan-y}
   .ev-gl.turning{cursor:grabbing}
@@ -1577,54 +1578,69 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
     clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%)}
   /* Bord haut : le projet est droit devant mais plus haut que l'écran. La
      pointe vise vers le haut, et l'indicateur est centré sur sa colonne. */
-  .ev-edge-t{transform:translate(-50%,0);padding:12px 12px 7px;
+  .ev-edge-t{transform:translate(-50%,0);padding:14px 12px 7px;
     transition:opacity .3s var(--e),left .18s linear,top .18s linear,background .2s;
     clip-path:polygon(50% 0,100% 10px,100% 100%,0 100%,0 10px)}
 
   /* ---------- mode d'emploi ---------- */
-  /* Un seul panneau, toujours ancré en haut à droite. Tant que le visiteur n'a
-     rien touché, la scène lui applique un décalage qui le pose au centre ; à la
-     première commande le décalage tombe à zéro et il glisse jusqu'au coin, où
-     il se replie derrière un bouton. Fond encre plein : le grain général du
-     site (body::after) passe par-dessus, comme sur le bloc Client work. */
-  .ev-help-btn{position:absolute;right:var(--pad);top:clamp(18px,3vh,34px);z-index:3;
-    width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:4px;
-    background:var(--ink);color:var(--paper);cursor:pointer;
-    opacity:0;pointer-events:none;transform:scale(.85);
-    transition:opacity .4s var(--e) .35s,transform .4s var(--e) .35s,background .2s}
-  .ev-help-btn.on{opacity:1;pointer-events:auto;transform:none}
-  .ev-help-btn:hover{background:var(--blue)}
-  .ev-help-btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
-  .ev-help-btn svg{width:15px;height:15px}
-  /* le trait vertical disparaît quand le panneau est ouvert : le + devient un − */
-  .ev-help-bar{transform-origin:50% 50%;transition:transform .3s var(--e),opacity .3s}
-  .ev-help-btn.open .ev-help-bar{transform:scaleY(0);opacity:0}
-
-  .ev-help{position:absolute;right:var(--pad);top:calc(clamp(18px,3vh,34px) + 40px);
-    z-index:2;transform-origin:100% 0;
-    display:flex;flex-direction:column;align-items:flex-end;gap:6px;
-    padding:12px 14px;border-radius:4px;background:var(--ink);
-    font-family:var(--mono);font-size:8px;letter-spacing:.14em;
-    text-transform:uppercase;color:rgba(245,245,245,.78);line-height:1.4;
-    white-space:nowrap;text-align:right;opacity:0;pointer-events:none;
-    transition:transform .75s var(--e),opacity .45s var(--e),
-      padding .6s var(--e),font-size .6s var(--e),gap .6s var(--e),
-      letter-spacing .6s var(--e)}
+  /* Une seule boîte, du début à la fin. À l'arrivée elle s'affiche au centre
+     (la scène lui applique un décalage) ; à la première commande le décalage
+     tombe à zéro et elle glisse dans le coin haut droit, où elle se referme
+     sur son bouton. Le bouton vit à l'intérieur, en haut à droite : replié,
+     la boîte fait exactement sa taille et lui seul reste visible. Fond encre
+     plein — le grain général du site passe par-dessus, comme sur Client work.
+     L'ouverture et la fermeture se font sur des tailles maximales, ce qui
+     permet une vraie courbe d'accélération puis de décélération. */
+  .ev-help{position:absolute;right:var(--pad);top:clamp(18px,3vh,34px);z-index:3;
+    overflow:hidden;border-radius:4px;background:var(--ink);
+    transform-origin:100% 0;max-width:560px;max-height:300px;
+    font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;
+    color:rgba(245,245,245,.72);white-space:nowrap;
+    opacity:0;pointer-events:none;
+    transition:transform 1.05s var(--e),opacity .5s var(--e),
+      max-width .55s var(--eio),max-height .55s var(--eio)}
   .ev-help.on{opacity:1}
-  /* état d'accueil : plus grand, plus aéré, posé au centre par la scène */
-  .ev-help:not(.docked){padding:24px 30px;gap:11px;font-size:11px;
-    align-items:flex-start;text-align:left;
-    box-shadow:0 26px 64px -38px rgba(17,17,17,.7)}
-  /* rangé et replié : il s'efface derrière le bouton */
-  .ev-help.shut{opacity:0;transform:scale(.94)}
+
+  /* bouton : masqué tant que la boîte est au centre */
+  .ev-help-btn{position:absolute;right:0;top:0;z-index:2;
+    width:30px;height:30px;display:grid;place-items:center;border:0;
+    background:transparent;color:var(--paper);cursor:pointer;
+    opacity:0;pointer-events:none;transition:opacity .35s var(--e) .3s,color .2s}
+  .ev-help-btn svg{width:15px;height:15px}
+  .ev-help-btn:hover{color:var(--blue)}
+  .ev-help-btn:focus{outline:none}
+  .ev-help-btn:focus-visible{outline:2px solid var(--blue);outline-offset:-3px;
+    border-radius:4px}
+  /* le trait vertical se rétracte : le + devient un − */
+  .ev-help-bar{transform-origin:50% 50%;transition:transform .35s var(--eio),opacity .3s}
+
+  /* contenu */
+  .ev-help-body{padding:24px 30px;display:flex;flex-direction:column;gap:11px;
+    font-size:11px;line-height:1.4;
+    transition:padding .55s var(--eio),font-size .55s var(--eio),
+      gap .55s var(--eio),opacity .3s var(--e)}
   .ev-help b{color:var(--paper);font-weight:700}
-  .ev-help .ev-lo,.ev-help .ev-eq{color:rgba(245,245,245,.55)}
+  .ev-help .ev-lo,.ev-help .ev-eq{color:rgba(245,245,245,.5)}
   .ev-help .ev-eq{margin:0 6px}
+
+  /* rangée dans le coin : le bouton apparaît, le texte se resserre */
+  .ev-help.docked{max-width:30px;max-height:30px;pointer-events:auto}
+  .ev-help.docked .ev-help-btn{opacity:1;pointer-events:auto}
+  .ev-help.docked .ev-help-body{padding:38px 14px 12px;gap:6px;font-size:8px;
+    opacity:0;transition:padding .55s var(--eio),font-size .55s var(--eio),
+      gap .55s var(--eio),opacity .2s var(--e)}
+
+  /* dépliée : la même boîte, agrandie */
+  .ev-help.docked.open{max-width:330px;max-height:150px}
+  .ev-help.docked.open .ev-help-body{opacity:1;
+    transition:padding .55s var(--eio),font-size .55s var(--eio),
+      gap .55s var(--eio),opacity .35s var(--e) .15s}
+  .ev-help.docked.open .ev-help-bar{transform:scaleY(0);opacity:0}
 
   /* ---------- fiche projet : hors de la requête média, voir plus bas ---------- */
 
   @media (prefers-reduced-motion:reduce){
-    .ev-mark,.ev-help,.ev-help-btn,.ev-edge{transition:opacity .2s linear}
+    .ev-mark,.ev-help,.ev-help-btn,.ev-help-body,.ev-edge{transition:opacity .2s linear}
   }
 }
 
@@ -1652,8 +1668,8 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
    composant à partir de l'image ou de la vidéo) : il le remplit entièrement
    sans être recadré, et sans bande. La colonne de texte, elle, ne dicte pas
    la hauteur : elle défile dans l'espace que lui laisse le visuel. */
-.ev-modal-shot{position:relative;min-height:0;max-height:72vh;
-  aspect-ratio:1.6;background:#0e0e0e;overflow:hidden}
+.ev-modal-shot{position:relative;aspect-ratio:1.6;background:#0e0e0e;
+  overflow:hidden}
 .ev-modal-media{position:absolute;inset:0}
 .ev-modal-shot>img,.ev-modal-shot>video{position:absolute;inset:0;
   width:100%;height:100%;object-fit:cover;display:block;
@@ -1667,9 +1683,11 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
 /* Le composant élargit la fiche jusqu'à ce que le texte tienne : en pratique
    ce bloc ne défile pas. S'il devait le faire sur un écran vraiment étroit,
    aucune barre n'apparaît. */
-.ev-modal-txt{position:absolute;inset:0;z-index:2;overflow-y:auto;
-  padding:clamp(20px,2.2vw,30px);scrollbar-width:none}
-.ev-modal-txt::-webkit-scrollbar{display:none}
+/* Colonne de droite : le bouton est poussé en bas par la marge automatique,
+   donc il tombe toujours au même endroit, projet après projet. */
+.ev-modal-txt{position:absolute;inset:0;z-index:2;overflow:hidden;
+  display:flex;flex-direction:column;
+  padding:clamp(20px,2.2vw,30px)}
 .ev-modal-camp{display:block;font-family:var(--mono);font-size:10px;
   letter-spacing:.18em;text-transform:uppercase;color:#7d86ff}
 .ev-modal-txt h3{font-family:var(--display);font-weight:700;
@@ -1683,7 +1701,7 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
 .ev-modal-meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.18em;
   text-transform:uppercase;color:rgba(245,245,245,.42);margin-bottom:4px}
 .ev-modal-meta dd{font-family:var(--mono);font-size:12px;color:var(--paper)}
-.ev-modal-txt .btnf{margin-top:24px}
+.ev-modal-txt .btnf{margin-top:auto;align-self:flex-start}
 .ev-modal-x{position:absolute;right:12px;top:12px;z-index:4;
   width:36px;height:36px;display:grid;place-items:center;border:0;
   border-radius:5px;background:rgba(245,245,245,.1);color:var(--paper);
@@ -1691,8 +1709,12 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
 .ev-modal-x svg{width:16px;height:16px}
 .ev-modal-x:hover{background:rgba(245,245,245,.22)}
 /* Fiche + flèches, centrées ensemble ; la largeur suit celle de la fiche */
+/* Taille unique, quel que soit le projet : la largeur est plafonnée par la
+   place disponible en hauteur, de sorte que le cadre garde toujours les mêmes
+   proportions. Aucune mesure, donc aucune variation d'un projet à l'autre. */
 .ev-modal-wrap{position:relative;display:flex;flex-direction:column;
-  align-items:center;gap:18px;width:min(1120px,100%);max-width:100%}
+  align-items:center;gap:18px;max-width:100%;
+  width:min(1180px,100%,calc((100vh - 210px) * 2.78))}
 .ev-modal-nav{display:flex;align-items:center;gap:14px;
   animation:evPop .38s var(--e) both}
 .ev-modal-arrow{width:40px;height:40px;display:grid;place-items:center;border:0;
