@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Footer from "@/components/Footer";
 import Carousel from "@/components/Carousel";
+import Everest from "@/components/Everest";
 import Manif from "@/components/Manif";
 import Services from "@/components/Services";
 import ClientWork from "@/components/ClientWork";
@@ -22,6 +24,19 @@ const grain = (txt) =>
 // Page d'accueil — hero repris à l'identique de index.html.
 export default function Home() {
   const { lang } = useLang();
+
+  // Le hero desktop montre l'ascension de l'Everest, le téléphone garde le
+  // carrousel en colonne. Le choix n'est fait qu'une fois dans le navigateur :
+  // les deux ne sont jamais montés en même temps, et le rendu serveur reste
+  // identique dans les deux cas.
+  const [wide, setWide] = useState(null);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width:761px)");
+    const upd = () => setWide(mq.matches);
+    upd();
+    mq.addEventListener("change", upd);
+    return () => mq.removeEventListener("change", upd);
+  }, []);
   const t = (k) => (I18N[lang] && I18N[lang][k]) || k;
 
   return (
@@ -79,8 +94,13 @@ export default function Home() {
           </a>
         </div>
 
+        {/* Scène de l'ascension : pleine largeur, du bas du header jusqu'au
+            filet de .hb-grid. Elle passe sous les textes du hero, qui restent
+            au-dessus. */}
+        {wide === true && <Everest />}
+
         <div className="home-mid" data-reveal style={{ "--rd": ".15s" }}>
-          <Carousel />
+          {wide === false && <Carousel />}
         </div>
 
         {/* Invitation à faire défiler, sous le carrousel (téléphone) */}

@@ -1494,3 +1494,119 @@ body.pre-done [data-rv-group].rv [data-reveal]{opacity:1; transform:none;}
 /* Voile de la modale cal.com : un peu plus léger que celui par défaut,
    pour rester dans la teinte du site. */
 cal-modal-box{background:rgba(17,17,17,.65)!important}
+
+/* ============================================================
+   14. Hero — ascension de l'Everest (desktop et tablette)
+   ------------------------------------------------------------
+   Tout est enfermé au-dessus de 760px : sur téléphone le carrousel en
+   colonne reste seul, et aucune de ces règles ne s'applique.
+   La scène occupe toute la largeur, du bas du header jusqu'au filet de
+   .hb-grid ; sa hauteur exacte est mesurée par le composant.
+   ============================================================ */
+@media(min-width:761px){
+  .ev{position:absolute;left:0;right:0;top:0;z-index:1;pointer-events:none}
+  .ev-gl{position:absolute;inset:0;width:100%;height:100%;display:block;
+    pointer-events:auto;cursor:grab;touch-action:pan-y}
+  .ev-gl.turning{cursor:grabbing}
+
+  /* Sur desktop .home-mid est vide (le carrousel n'est monté que sur
+     téléphone) : sans ceci, ce bloc transparent avalerait le glisser destiné
+     à la scène, qui est en dessous. */
+  .ev ~ .home-mid{pointer-events:none}
+
+  /* Le halo bleu du hero reste, en retrait derrière les courbes */
+  .home-glow{opacity:.28}
+
+  /* Relevé de position, calqué sur celui de la section Benefits */
+  .ev-meta{position:absolute;left:var(--pad);top:clamp(18px,3vh,34px);
+    font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted-2);line-height:2}
+  .ev-route{color:var(--muted)}
+  .ev-altnum{color:var(--ink)}
+
+  /* ---------- étiquettes des sommets ---------- */
+  .ev-marks{position:absolute;inset:0;pointer-events:none}
+  .ev-mark{position:absolute;left:0;top:0;opacity:0;pointer-events:none;
+    display:flex;flex-direction:column;align-items:flex-start;gap:1px;
+    padding:7px 10px 8px;text-align:left;
+    background:rgba(245,245,245,.86);backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border:1px solid var(--line-2);border-radius:5px;cursor:pointer;
+    transition:opacity .25s var(--e),border-color .2s,background .2s,box-shadow .2s;
+    will-change:transform}
+  .ev-mark::after{content:"";position:absolute;left:50%;bottom:-9px;width:1px;
+    height:9px;background:var(--line-2)}
+  .ev-mark:hover,.ev-mark:focus-visible{border-color:var(--blue);
+    background:rgba(245,245,245,.96);
+    box-shadow:0 8px 22px -18px rgba(17,17,17,.5)}
+  .ev-mark:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  .ev-mark-alt{font-family:var(--mono);font-size:9px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted-2);line-height:1}
+  .ev-mark-name{font-family:var(--display);font-weight:600;font-size:.86rem;
+    letter-spacing:-.01em;color:var(--ink);line-height:1.25}
+  .ev-mark-proj{font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--blue);line-height:1.3}
+
+  /* ---------- aide clavier ---------- */
+  .ev-keys{position:absolute;left:50%;bottom:clamp(10px,2vh,22px);
+    transform:translateX(-50%);display:flex;align-items:center;gap:8px;
+    white-space:nowrap;font-family:var(--mono);font-size:10px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
+    opacity:0;transition:opacity .8s var(--e)}
+  .ev-keys.on{opacity:1}
+  .ev-kgroup{display:inline-flex;gap:3px;margin-right:4px}
+  .ev-keys kbd{display:inline-grid;place-items:center;min-width:19px;height:19px;
+    padding:0 5px;border:1px solid var(--line-2);border-radius:5px;
+    font-family:var(--mono);font-size:10px;color:var(--ink)}
+  .ev-sep{width:22px;height:1px;background:var(--line-2);margin:0 2px}
+
+  /* ---------- fiche du projet ---------- */
+  .ev-modal{position:fixed;inset:0;z-index:3200;display:grid;place-items:center;
+    padding:var(--pad);pointer-events:auto}
+  .ev-modal-veil{position:absolute;inset:0;background:rgba(17,17,17,.55);
+    backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+    animation:evFade .28s var(--e) both}
+  .ev-modal-box{position:relative;display:grid;grid-template-columns:1.1fr .9fr;
+    width:min(880px,100%);max-height:82vh;overflow:hidden;
+    background:var(--paper);border:1px solid var(--line-2);border-radius:5px;
+    box-shadow:0 40px 90px -50px rgba(17,17,17,.6);
+    animation:evPop .34s var(--e) both}
+  .ev-modal-shot{position:relative;background:#ededed;min-height:280px}
+  .ev-modal-shot img{position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;display:block;-webkit-user-drag:none;user-select:none}
+  .ev-modal-txt{padding:clamp(20px,2.6vw,32px);overflow-y:auto}
+  .ev-modal-camp{display:block;font-family:var(--mono);font-size:10px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+  .ev-modal-txt h3{font-family:var(--display);font-weight:700;
+    font-size:clamp(1.4rem,2.2vw,1.9rem);letter-spacing:-.02em;margin-top:8px}
+  .ev-modal-cat{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .ev-modal-over{color:var(--muted);font-size:.92rem;line-height:1.7;
+    margin-top:14px;max-width:44ch}
+  .ev-modal-meta{display:flex;gap:32px;margin-top:18px;padding-top:14px;
+    border-top:1px solid var(--line)}
+  .ev-modal-meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted-2);margin-bottom:3px}
+  .ev-modal-meta dd{font-family:var(--mono);font-size:12px;color:var(--ink)}
+  .ev-modal-txt .btnf{margin-top:20px}
+  .ev-modal-x{position:absolute;right:10px;top:10px;z-index:2;
+    width:34px;height:34px;display:grid;place-items:center;
+    background:rgba(245,245,245,.9);border:1px solid var(--line-2);
+    border-radius:5px;color:var(--ink);cursor:pointer;
+    transition:background .2s,color .2s,border-color .2s}
+  .ev-modal-x svg{width:16px;height:16px}
+  .ev-modal-x:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  @keyframes evFade{from{opacity:0}to{opacity:1}}
+  @keyframes evPop{from{opacity:0;transform:translateY(12px) scale(.985)}
+                   to{opacity:1;transform:none}}
+
+  @media(max-width:900px){
+    .ev-modal-box{grid-template-columns:1fr;max-height:86vh}
+    .ev-modal-shot{min-height:200px;height:200px}
+    .ev-keys{font-size:9px;gap:6px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ev-mark,.ev-keys{transition:none}
+    .ev-modal-veil,.ev-modal-box{animation:none}
+  }
+}
