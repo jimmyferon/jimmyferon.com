@@ -1575,49 +1575,56 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
     clip-path:polygon(0 50%,10px 0,100% 0,100% 100%,10px 100%)}
   .ev-edge-r{right:0;padding-right:16px;
     clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%)}
+  /* Bord haut : le projet est droit devant mais plus haut que l'écran. La
+     pointe vise vers le haut, et l'indicateur est centré sur sa colonne. */
+  .ev-edge-t{transform:translate(-50%,0);padding:12px 12px 7px;
+    transition:opacity .3s var(--e),left .18s linear,top .18s linear,background .2s;
+    clip-path:polygon(50% 0,100% 10px,100% 100%,0 100%,0 10px)}
 
   /* ---------- mode d'emploi ---------- */
-  /* L'encadré central se montre une fois le massif dessiné, et s'efface à la
-     première touche, au premier glissé ou au premier défilement. Fond noir
-     grainé, comme le bloc Client work. */
-  .ev-help{position:absolute;left:50%;top:50%;z-index:2;
-    transform:translate(-50%,-50%);overflow:hidden;
-    display:flex;flex-direction:column;gap:11px;padding:24px 30px;
-    border-radius:5px;background:var(--ink);
-    box-shadow:0 26px 64px -38px rgba(17,17,17,.7);
-    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;color:rgba(245,245,245,.62);white-space:nowrap;
-    opacity:0;pointer-events:none;
-    transition:opacity .45s var(--e),transform .45s var(--e)}
-  /* Pas de grain local ici : le grain général du site (body::after) passe
-     déjà au-dessus de la scène, exactement comme sur le bloc Client work.
-     La fiche projet, elle, est plus haut que ce grain et porte donc le sien. */
-  .ev-help.on{opacity:1}
-  .ev-help:not(.on){transform:translate(-50%,-50%) scale(.97)}
-  .ev-help b{color:var(--paper);font-weight:700}
-  .ev-help .ev-lo,.ev-help .ev-eq{color:rgba(245,245,245,.42)}
-  .ev-help .ev-eq{margin:0 7px}
+  /* Un seul panneau, toujours ancré en haut à droite. Tant que le visiteur n'a
+     rien touché, la scène lui applique un décalage qui le pose au centre ; à la
+     première commande le décalage tombe à zéro et il glisse jusqu'au coin, où
+     il se replie derrière un bouton. Fond encre plein : le grain général du
+     site (body::after) passe par-dessus, comme sur le bloc Client work. */
+  .ev-help-btn{position:absolute;right:var(--pad);top:clamp(18px,3vh,34px);z-index:3;
+    width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:4px;
+    background:var(--ink);color:var(--paper);cursor:pointer;
+    opacity:0;pointer-events:none;transform:scale(.85);
+    transition:opacity .4s var(--e) .35s,transform .4s var(--e) .35s,background .2s}
+  .ev-help-btn.on{opacity:1;pointer-events:auto;transform:none}
+  .ev-help-btn:hover{background:var(--blue)}
+  .ev-help-btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  .ev-help-btn svg{width:15px;height:15px}
+  /* le trait vertical disparaît quand le panneau est ouvert : le + devient un − */
+  .ev-help-bar{transform-origin:50% 50%;transition:transform .3s var(--e),opacity .3s}
+  .ev-help-btn.open .ev-help-bar{transform:scaleY(0);opacity:0}
 
-  /* Le rappel prend le relais en haut à droite : le même encadré que celui de
-     l'accueil, mais son fond n'est teinté qu'à 20 % et tout est écrit en 8 px.
-     Sur un fond aussi léger, le blanc ne se lirait pas : les mots-clés sont
-     à l'encre, en gras, le reste en encre atténuée. */
-  .ev-hud{position:absolute;right:var(--pad);top:clamp(18px,3vh,34px);z-index:2;
+  .ev-help{position:absolute;right:var(--pad);top:calc(clamp(18px,3vh,34px) + 40px);
+    z-index:2;transform-origin:100% 0;
     display:flex;flex-direction:column;align-items:flex-end;gap:6px;
-    padding:12px 14px;border-radius:4px;background:rgba(17,17,17,.7);
+    padding:12px 14px;border-radius:4px;background:var(--ink);
     font-family:var(--mono);font-size:8px;letter-spacing:.14em;
     text-transform:uppercase;color:rgba(245,245,245,.78);line-height:1.4;
     white-space:nowrap;text-align:right;opacity:0;pointer-events:none;
-    transition:opacity .6s var(--e) .18s}
-  .ev-hud.on{opacity:1}
-  .ev-hud b{color:var(--paper);font-weight:700}
-  .ev-hud .ev-lo,.ev-hud .ev-eq{color:rgba(245,245,245,.6)}
-  .ev-hud .ev-eq{margin:0 5px}
+    transition:transform .75s var(--e),opacity .45s var(--e),
+      padding .6s var(--e),font-size .6s var(--e),gap .6s var(--e),
+      letter-spacing .6s var(--e)}
+  .ev-help.on{opacity:1}
+  /* état d'accueil : plus grand, plus aéré, posé au centre par la scène */
+  .ev-help:not(.docked){padding:24px 30px;gap:11px;font-size:11px;
+    align-items:flex-start;text-align:left;
+    box-shadow:0 26px 64px -38px rgba(17,17,17,.7)}
+  /* rangé et replié : il s'efface derrière le bouton */
+  .ev-help.shut{opacity:0;transform:scale(.94)}
+  .ev-help b{color:var(--paper);font-weight:700}
+  .ev-help .ev-lo,.ev-help .ev-eq{color:rgba(245,245,245,.55)}
+  .ev-help .ev-eq{margin:0 6px}
 
   /* ---------- fiche projet : hors de la requête média, voir plus bas ---------- */
 
   @media (prefers-reduced-motion:reduce){
-    .ev-mark,.ev-help,.ev-hud{transition:opacity .2s linear}
+    .ev-mark,.ev-help,.ev-help-btn,.ev-edge{transition:opacity .2s linear}
   }
 }
 
@@ -1647,6 +1654,7 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
    la hauteur : elle défile dans l'espace que lui laisse le visuel. */
 .ev-modal-shot{position:relative;min-height:0;max-height:72vh;
   aspect-ratio:1.6;background:#0e0e0e;overflow:hidden}
+.ev-modal-media{position:absolute;inset:0}
 .ev-modal-shot>img,.ev-modal-shot>video{position:absolute;inset:0;
   width:100%;height:100%;object-fit:cover;display:block;
   -webkit-user-drag:none;user-select:none}
