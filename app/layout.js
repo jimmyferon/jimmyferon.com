@@ -69,8 +69,6 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Roboto:wght@100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
           rel="stylesheet"
         />
-      </head>
-      <head>
         {/* Données structurées : permet à Google d'afficher une fiche
             enrichie (nom, métier, réseaux) plutôt qu'un simple lien. */}
         <script
