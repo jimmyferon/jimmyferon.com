@@ -57,7 +57,7 @@
   .roll:hover .rl-in,a:hover .rl-in,button:hover .rl-in{transform:translateY(-100%)}
 
   /* ---------- header ---------- */
-  header{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;height:var(--hh);z-index:3000;background:rgba(245,245,245,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid transparent;border-bottom:1px solid #E5E5E5;transition:background .5s var(--e),border-color .5s var(--e),width .6s var(--e),top .6s var(--e),border-radius .6s var(--e),box-shadow .6s var(--e)}
+  header{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;height:var(--hh);z-index:3000;background:rgba(245,245,245,.78);backdrop-filter:blur(14px);border:1px solid transparent;border-bottom:1px solid #E5E5E5;transition:background .5s var(--e),border-color .5s var(--e),width .6s var(--e),top .6s var(--e),border-radius .6s var(--e),box-shadow .6s var(--e)}
   header::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:#E5E5E5;z-index:40;pointer-events:none;transition:background .5s var(--e),opacity .4s}
   header.compact{top:10px;width:min(980px,calc(100% - 32px));border:1px solid #E5E5E5;border-radius:5px;background:rgba(245,245,245,.92);box-shadow:0 24px 50px -30px rgba(17,17,17,.35)}
   header.compact::before{opacity:0}
@@ -1540,8 +1540,7 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
   .ev-mark{position:absolute;left:0;top:0;opacity:0;pointer-events:none;
     display:flex;flex-direction:column;align-items:flex-start;gap:1px;
     padding:7px 10px 8px;text-align:left;
-    background:rgba(245,245,245,.88);backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);border:0;border-radius:5px;cursor:pointer;
+    background:rgba(245,245,245,.88);backdrop-filter:blur(8px);border:0;border-radius:5px;cursor:pointer;
     box-shadow:0 6px 18px -14px rgba(17,17,17,.55);
     transition:opacity .25s var(--e),background .2s,box-shadow .2s;
     will-change:transform}
@@ -1654,7 +1653,7 @@ cal-modal-box{background:rgba(17,17,17,.65)!important}
 .ev-modal{position:fixed;inset:0;z-index:5900;display:grid;place-items:center;
   padding:clamp(16px,4vw,56px)}
 .ev-modal-veil{position:absolute;inset:0;background:rgba(10,10,10,.86);
-  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  backdrop-filter:blur(4px);
   animation:evFade .3s var(--e) both}
 .ev-modal-box{position:relative;display:grid;grid-template-columns:1.35fr 1fr;
   width:100%;max-width:100%;overflow:hidden;border:0;

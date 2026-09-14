@@ -59,9 +59,14 @@ export const viewport = {
   themeColor: "#111111",
 };
 
+// data-scroll-behavior : Next 16 ne neutralise plus le scroll fluide au
+// changement de route sans cet opt-in explicite (voir, dans Next,
+// disableSmoothScrollDuringRouteTransition). Sans lui, le scroll-behavior
+// smooth posé sur html dans globals.css s'applique au retour en haut, et la
+// nouvelle page remonte en s'animant depuis la position de la précédente.
 export default function RootLayout({ children }) {
   return (
-    <html lang="fr">
+    <html lang="fr" data-scroll-behavior="smooth">
       <head>
         {/* Chopin ne sert qu'au mot du preloader, donc dès la première image.
             Sortie du CSS elle devient une requête : on la précharge pour que le
