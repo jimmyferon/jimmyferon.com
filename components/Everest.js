@@ -9,7 +9,7 @@ import { PROJECTS } from "@/lib/projects";
 import Roll from "@/components/Roll";
 import { createLogoReveal } from "@/components/LogoReveal";
 import useMagnetic from "@/lib/useMagnetic";
-import evJson from "@/data/evdata.json";
+import MARKS from "@/data/evmarks.json";
 
 /* ---------------------------------------------------------------------------
    L'Himalaya — scène du hero (desktop et tablette).
@@ -76,7 +76,6 @@ export default function Everest() {
   const helpRef = useRef(null);
   const animRef = useRef(null);                // logo animé de la carte Portfolio
 
-  const MARKS = evJson.marks;
   const SHORT = { anya: "Anya", deviantart: "DeviantArt", coin: "Team Coin",
                   bcc: "BCC", preshot: "Preshot", redesign: "Portfolio" };
   const NM = MARKS.length;
@@ -236,10 +235,25 @@ export default function Everest() {
       document.head.appendChild(sc);
     };
 
-    withThree(() => {
+    /* Le relief (131 ko) n'est plus embarqué dans le bundle : il est chargé
+       à la demande depuis public/, comme le lac le fait déjà. Il n'est lu
+       qu'ici, après le montage, donc rien de ce qui est rendu n'en dépend.
+       Les six sommets restent séparés (evmarks.json, 581 o) et importés :
+       MARKS sert pendant le rendu, où un fetch obligerait à passer par un
+       état et un second rendu pour 581 o de métadonnées.
+       Si le fichier ne se charge pas, la scène ne se construit pas et le
+       hero reste tel quel, sans erreur visible. */
+    let EV = null;
+    const withData = (cb) => {
+      fetch("/evdata.json")
+        .then((r) => r.json())
+        .then((d) => { if (!stopped) { EV = d; cb(); } })
+        .catch(() => {});
+    };
+
+    withData(() => withThree(() => {
       if (stopped || !window.THREE) return;
       const THREE = window.THREE;
-      const EV = evJson;
 
       /* ---- décodage du relief -------------------------------------------
          Chaque valeur est l'écart avec la case de gauche (première colonne :
@@ -328,7 +342,7 @@ export default function Everest() {
       })));
 
       /* ---- drapeaux : mât et fanion pleins, tournés vers la caméra --------- */
-      const markPos = EV.marks.map((m) => new THREE.Vector3(xOf(m.x), hOf(m.e), zOf(m.y)));
+      const markPos = MARKS.map((m) => new THREE.Vector3(xOf(m.x), hOf(m.e), zOf(m.y)));
       /* Les drapeaux repèrent les projets : on les voit même quand une crête
          passe devant, comme leurs étiquettes. */
       const flagMat = new THREE.MeshBasicMaterial({
@@ -837,7 +851,7 @@ export default function Everest() {
         renderer.dispose();
         apiRef.current = null;
       };
-    });
+    }));
 
     return () => { stopped = true; cleanup(); };
   }, []);
