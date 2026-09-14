@@ -63,6 +63,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <head>
+        {/* Chopin ne sert qu'au mot du preloader, donc dès la première image.
+            Sortie du CSS elle devient une requête : on la précharge pour que le
+            swap ait lieu avant que le mot ne s'affiche, et non pendant. */}
+        <link
+          rel="preload"
+          href="/fonts/chopin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
