@@ -3,13 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/lib/LangContext";
 import { I18N } from "@/lib/i18n";
-import mbJson from "@/data/mbdata.json";
 
 // Section Benefits — portée à l'identique de index.html.
 // L'ascension du Mont Blanc est pilotée par le défilement : le relief se
 // dessine courbe après courbe, la caméra s'élève, les camps s'allument au
-// passage et l'altitude défile. Les données de relief (SRTM) sont importées
-// depuis ./mbdata.json, extraites telles quelles de index.html.
+// passage et l'altitude défile. Les données de relief (SRTM), extraites telles
+// quelles de index.html, sont chargées à la demande depuis public/mbdata.json.
 //
 // Sur téléphone (<= 760px), le rendu 3D n'est pas monté du tout : la section
 // devient une liste verticale des cinq étapes. Voir la note dans le CSS.
@@ -292,15 +291,24 @@ export default function Benefits() {
       document.head.appendChild(sc);
     }
 
-    // Les données du relief sont importées dans le bundle (comme index.html
-    // les embarque dans la page) : aucun fetch, donc aucun risque qu'un dossier
-    // public non réuploadé fasse disparaître la montagne en silence.
-    mbData = mbJson;
-    withThree(() => {
-      if(stopped) return;
-      buildGL(); upd(); resize();
-      rafId = requestAnimationFrame(loop);
-    });
+    // Le relief (82 ko) est chargé à la demande depuis public/ au lieu d'être
+    // embarqué dans le bundle : il n'est lu que par buildGL(), après le
+    // montage. Contrepartie assumée, qui inverse le choix précédent : la
+    // montagne dépend désormais d'un fichier public présent au déploiement.
+    // S'il manque, la section garde sa mise en page et perd seulement son
+    // rendu 3D, sans erreur visible.
+    fetch("/mbdata.json")
+      .then((r) => r.json())
+      .then((d) => {
+        if(stopped) return;
+        mbData = d;
+        withThree(() => {
+          if(stopped) return;
+          buildGL(); upd(); resize();
+          rafId = requestAnimationFrame(loop);
+        });
+      })
+      .catch(() => {});
 
     addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onResize);
