@@ -92,7 +92,7 @@ Turbopack est le bundler par défaut depuis la v16 et remplace webpack. Le CSS
 passe donc par **Lightning CSS** et non plus Autoprefixer — voir le piège des
 préfixes plus bas.
 
-Quatre chantiers fusionnés le 14/09/2026 :
+Trois chantiers fusionnés le 14/09/2026 :
 
 - **PR #11** — mise sous git, `package-lock.json`, fins de ligne LF, fusion des
   deux `<head>` de `RootLayout`, `.nvmrc` aligné sur Node 24.
