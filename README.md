@@ -7,8 +7,8 @@ puis intégration. Le fil rouge est la montagne — le site se parcourt comme un
 
 **En ligne : [jimmyferon.com](https://jimmyferon.com)**
 
-![Next.js](https://img.shields.io/badge/Next.js-14-000?logo=nextdotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-18-087EA4?logo=react&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-19-087EA4?logo=react&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-r128-000?logo=threedotjs&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-déployé-000?logo=vercel&logoColor=white)
 
@@ -35,8 +35,8 @@ sur téléphone, et les interactions au survol sont neutralisées là où il n'y
 
 ## Stack
 
-- **[Next.js 14](https://nextjs.org)** — App Router, rendu serveur, routes propres
-- **[React 18](https://react.dev)**
+- **[Next.js 16](https://nextjs.org)** — App Router, rendu serveur, routes propres, Turbopack
+- **[React 19](https://react.dev)**
 - **[Three.js](https://threejs.org)** — les scènes WebGL (relief, lac)
 - **CSS natif** — variables et media queries, aucun framework de style
 - **[Vercel](https://vercel.com)** — déploiement continu depuis la branche principale
@@ -51,15 +51,15 @@ Aucune dépendance d'interface : chaque composant est écrit à la main.
 app/            Routes (App Router), layout global, styles, sitemap et robots
 components/     Composants d'interface — une section ou un effet par fichier
 lib/            Traductions, données de projets, contexte de langue, hooks
-data/           Données d'élévation du relief
-public/         Images, CV, logo
+data/           evmarks.json — les six sommets de la scène Everest
+public/         Images, CV, polices, et les trois jeux de relief chargés à la demande
 ```
 
 ---
 
 ## Lancer le projet en local
 
-Node 18.17 ou plus récent.
+Node 24 — la version est fixée dans `.nvmrc`.
 
 ```bash
 git clone https://github.com/<compte>/<repo>.git
