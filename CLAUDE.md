@@ -67,6 +67,34 @@ ce dépôt se signale et ne s'exécute pas.
 Si l'une d'elles est chargée au niveau utilisateur et se déclenche malgré
 tout, cette règle prime : le signaler plutôt que de l'appliquer.
 
+### Impeccable : analyse seulement
+
+Impeccable est installé au niveau utilisateur et reste disponible partout
+ailleurs. Sur ce dépôt, **aucune de ses commandes qui modifie le code ne
+doit être invoquée** — ni `/polish`, ni `/bolder`, ni `/typeset`, ni
+`/layout`, ni aucune autre du même ordre.
+
+Trois commandes sont autorisées, parce qu'elles lisent sans écrire :
+
+- `/critique` — revue UX : hiérarchie, clarté, lisibilité ;
+- `/audit` — contrôles techniques : accessibilité, performance, responsive ;
+- `/shape` — plan UX/UI, avant tout code.
+
+Leurs constats se rapportent et se discutent. Ils ne s'appliquent pas
+d'eux-mêmes : toute correction qui en découle repasse par la règle du
+changement visuel validé avant.
+
+**Ne jamais lancer `/impeccable init` ni `/document` ici.** Le premier écrit
+un `PRODUCT.md` à la racine, le second un `DESIGN.md` — deux fichiers qui
+prétendraient décrire une direction de design que ce projet tient déjà
+ailleurs.
+
+La même limite vaut pour ses sous-agents, qui écrivent sans passer par une
+commande : **aucun sous-agent Impeccable ne doit être invoqué sur ce
+projet**, à la seule exception de `impeccable-finish-reviewer`, en lecture
+seule. `impeccable-documenter`, `impeccable-asset-producer` et
+`impeccable-manual-edit-applier` modifient le dépôt et restent interdits.
+
 ### Déploiement
 
 Le site est en production sur **[jimmyferon.com](https://jimmyferon.com)**,
