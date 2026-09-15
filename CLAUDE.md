@@ -52,6 +52,21 @@ Ce qui rend un diagnostic recevable ici : des mesures, pas des suppositions.
 Comparer les CSS produits avant et après, lire le style calculé dans le
 navigateur, capturer une référence visuelle avant de toucher au code.
 
+### Aucune skill de design sur ce projet
+
+Aucune skill de design, de « taste » front-end ou de refonte visuelle ne
+s'applique ici — ni installée, ni invoquée, ni suivie si elle se déclenche
+toute seule. **Le design de ce site vient de Jimmy et de son Figma**, pas
+d'un jeu de règles esthétiques génériques.
+
+Cela couvre aussi bien les refontes que les retouches : palette, typographie,
+espacements, ombres, animations, structure de section. Une skill qui propose
+d'« auditer », de « moderniser » ou de « corriger des motifs génériques » sur
+ce dépôt se signale et ne s'exécute pas.
+
+Si l'une d'elles est chargée au niveau utilisateur et se déclenche malgré
+tout, cette règle prime : le signaler plutôt que de l'appliquer.
+
 ### Déploiement
 
 Le site est en production sur **[jimmyferon.com](https://jimmyferon.com)**,
