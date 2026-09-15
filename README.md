@@ -21,7 +21,8 @@ intéressantes :
 
 | Ce que vous voyez | Comment c'est fait |
 | --- | --- |
-| **Carrousel de projets** | Cartes disposées sur un cylindre en perspective 3D, défilement continu au pointeur. Sur téléphone il bascule en colonne verticale : la version 3D coûtait trop cher en rendu. |
+| **Massif de l'Everest** | Exploration libre au clavier, où chaque sommet porte le drapeau d'un projet. |
+| **Carrousel de projets** | Un rail horizontal de cartes, qui défile en boucle tout seul et se laisse faire glisser au doigt. Il n'apparaît qu'en dessous de 1025 px : au-dessus, c'est le massif de l'Everest qui présente les projets. |
 | **Ascension du Mont Blanc** | Relief réel reconstruit à partir de données d'élévation SRTM, dessiné courbe de niveau par courbe de niveau en WebGL. La caméra grimpe au rythme du défilement, les camps s'allument au passage. |
 | **Crêtes de transition** | Le passage d'un fond clair à un fond sombre se fait par une découpe en ligne de crête, dont l'amplitude se déploie au défilement (`clip-path` recalculé à chaque image). |
 | **Lac d'Allos** | Courbes de niveau du lac en WebGL, orientables à la souris. |
@@ -37,9 +38,10 @@ sur téléphone, et les interactions au survol sont neutralisées là où il n'y
 
 - **[Next.js 16](https://nextjs.org)** — App Router, rendu serveur, routes propres, Turbopack
 - **[React 19](https://react.dev)**
-- **[Three.js](https://threejs.org)** — les scènes WebGL (relief, lac)
+- **[Three.js](https://threejs.org)** — les scènes WebGL (massif, relief, lac)
 - **CSS natif** — variables et media queries, aucun framework de style
 - **[Vercel](https://vercel.com)** — déploiement continu depuis la branche principale
+- **[@vercel/analytics](https://vercel.com/docs/analytics)** — mesure d'audience
 
 Aucune dépendance d'interface : chaque composant est écrit à la main.
 
