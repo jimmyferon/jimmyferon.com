@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "homepage": "https://jimmyferon.com",
   "engines": {
-    "node": ">=18.17"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "next dev",
