@@ -1776,3 +1776,157 @@ body.ev-full .ev{bottom:0}
 /* L'icône rejoint le coin, à la même distance des bords que le bouton du mode
    d'emploi en haut à droite. */
 body.ev-full .ev-full-btn{top:auto;bottom:clamp(18px,3vh,34px)}
+
+/* ============================================================
+   15. Page Projets — index des six projets
+   ------------------------------------------------------------
+   Structure reprise du wireframe Figma « Index Page » : grille 2 colonnes,
+   visuels 16:9, titre et catégorie posés SUR le visuel en bas à gauche,
+   badge « à venir » sur les projets dont la page n'existe pas encore.
+   Aucune valeur de rendu ne vient du wireframe : chaque nombre ci-dessous
+   est repris d'une règle existante, et sa source est indiquée.
+
+   Exceptions assumées, demandées explicitement : le retrait de page et les
+   deux gouttières sont à 8px (page/pad et gap/base du Figma). La grille
+   colle donc aux bords de l'écran et reste serrée dans les deux sens ;
+   elle n'emprunte pas les marges .wrap du reste du site.
+   ============================================================ */
+
+/* 8px : page/pad du Figma. Vertical : le clamp de .sec. */
+.px{padding:clamp(56px,8vh,110px) 8px}
+
+/* Le bloc de tête du wireframe est un label court et centré. Il porte le h1
+   de la page : .sv2-eyebrow est inline-flex, un text-align suffit à le
+   centrer sans toucher à la règle d'origine. */
+.px-intro{text-align:center;margin-bottom:clamp(30px,5vh,56px)}  /* = .sec-head{margin-bottom} */
+.px-h1{font-weight:700}                                          /* .sv2-eyebrow porte déjà mono/11px/.08em/uppercase */
+
+/* Grille serrée dans les deux sens : même gouttière en colonnes et en
+   rangées, gap/base du Figma. */
+.px-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+
+/* isolation:isolate — le mix-blend-mode du libellé « View » ne doit composer
+   qu'avec le contenu de sa propre tuile, pas avec ce qu'il y a derrière.
+   Le contexte d'empilement créé reste en z-index auto, donc sous le grain
+   de body::after (z 2500) : les tuiles et le badge restent grainés. */
+.px-tile{position:relative;display:block;isolation:isolate;
+  aspect-ratio:16/9;                    /* « MEDIA 16:9 » du wireframe */
+  border-radius:5px;overflow:hidden;    /* = .pcard .thumb */
+  background:#0e0e0e}                   /* = .ev-modal-shot */
+
+.px-media{position:absolute;inset:0;z-index:0}
+.px-media img,.px-media video{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;
+  transition:transform 1.1s var(--e)}   /* = .ab-fig img */
+
+/* Le seul assombrissement de la tuile : un dégradé qui part du bas et
+   remonte sur une fraction de la hauteur. Le visuel reste intact au-dessus.
+   Son unique rôle est de porter le titre et le type de projet.
+   Mêmes alphas que .bn3-camp::before, en linéaire. Le palier plein est tenu
+   jusqu'à 45 % de la hauteur du dégradé : mesuré sur le rendu, un pic
+   ponctuel en pied ne donnait que .38 en haut de la légende. */
+.px-scrim{position:absolute;left:0;right:0;bottom:0;height:42%;z-index:1;
+  pointer-events:none;
+  background:linear-gradient(to top,rgba(17,17,17,.86) 0,rgba(17,17,17,.86) 30%,rgba(17,17,17,.38) 68%,rgba(17,17,17,0))}
+
+/* « View » : il suit la souris à l'intérieur de la tuile, avec du retard
+   (le lissage est fait image par image dans WorkIndex.js, qui pose la
+   transformation). Sa couleur s'adapte au pixel qu'il survole par
+   mix-blend-mode:difference — source blanche, donc le résultat vaut
+   255 - fond : blanc sur un fond sombre, noir sur un fond clair.
+   Avec une source blanche, difference et exclusion donnent le même
+   résultat ; elles ne divergent qu'en demi-teinte, où exclusion s'effondre
+   sur un aplat gris constant. D'où difference, comme partout sur le site. */
+.px-view{position:absolute;left:0;top:0;z-index:3;
+  font-family:var(--mono);font-weight:700;font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;   /* = .sv2-eyebrow */
+  color:#fff;mix-blend-mode:difference;
+  opacity:0;pointer-events:none;will-change:transform;
+  transition:opacity .35s var(--e)}                /* = .cursor-badge */
+
+/* Badge « à venir ». Fond encre, texte papier : le grain de body::after
+   passe déjà au-dessus (z 2500 contre z 4 ici), il n'a donc pas besoin du
+   sien — vérifié au navigateur. Position 8/8 : le gap/base du Figma. */
+.px-soon{position:absolute;left:8px;top:8px;z-index:4;
+  font-family:var(--mono);font-weight:400;font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;   /* = .foot-figma */
+  background:var(--ink);color:var(--paper);
+  padding:4px 8px;border-radius:4px}                /* = .ph-tag */
+
+/* Titre et catégorie, bas à gauche du visuel. Insets 16/12 et écart 6 :
+   la disposition de Index/Tile dans le wireframe. */
+.px-cap{position:absolute;left:16px;right:16px;bottom:12px;z-index:4;
+  pointer-events:none}
+.px-name{font-family:var(--display);font-weight:700;
+  font-size:clamp(1.2rem,1.7vw,1.6rem);letter-spacing:-.01em;   /* = .wcard .meta h3 */
+  color:var(--paper);
+  text-shadow:0 1px 10px rgba(0,0,0,.6)}                        /* = .bn3-camp h3 */
+.px-cat{font-size:.85rem;                                       /* = .wcard .cat */
+  color:rgba(245,245,245,.74);                                  /* = .ev-modal-over */
+  margin-top:6px;
+  text-shadow:0 1px 10px rgba(0,0,0,.6)}
+
+/* ---- Entrée des tuiles au défilement ---------------------------------
+   Deux couches, dans cet ordre.
+
+   1. Le repli, qui vaut partout : la tuile est masquée et décalée, un
+   IntersectionObserver local (WorkIndex.js) pose .px-in quand elle entre.
+   C'est un déclenchement : une fois parti, le mouvement se joue tout seul.
+   Mêmes tokens que les autres apparitions du site.
+
+   2. L'amélioration, là où le navigateur sait lier une animation à la
+   position de défilement : ce n'est plus un déclenchement mais un suivi.
+   La tuile avance exactement au rythme du défilement et recule si on
+   remonte. Le décalage entre tuiles n'a plus à être écrit — il vient de
+   leur position dans la page. Aucune dépendance. */
+.px-tile{opacity:0;transform:translateY(var(--rv-y));
+  transition:opacity var(--rv-d) var(--rv-e),transform var(--rv-d) var(--rv-e);
+  transition-delay:var(--rvd,0ms)}
+.px-tile.px-in{opacity:1;transform:none}
+
+@supports (animation-timeline: view()){
+  .px-tile{opacity:1;transform:none;transition:none;transition-delay:0s;
+    animation:pxEnter var(--rv-e) both;
+    animation-timeline:view();
+    animation-range:entry 0% entry 55%}
+  @keyframes pxEnter{
+    from{opacity:0;transform:translateY(var(--rv-y))}
+    to{opacity:1;transform:none}
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .px-tile{opacity:1;transform:none;transition:none;animation:none}
+}
+
+/* ---- Survol : écrans à curseur seulement, au-dessus de 1024px ---------
+   Une tuile « à venir » n'a ni zoom, ni « View », ni curseur main : le
+   sélecteur ne vise que .px-tile--link. */
+@media(min-width:1025px) and (hover:hover){
+  .px-tile--link{cursor:pointer}
+  .px-tile--link:hover .px-media img,
+  .px-tile--link:hover .px-media video{transform:scale(1.05)}   /* = .ab-fig:hover img */
+  .px-tile--link:hover .px-view{opacity:1}
+}
+.px-tile--link:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
+
+/* ---- 1024 : le survol n'existe plus --------------------------------- */
+@media(max-width:1024px){
+  .px-view{display:none}
+}
+
+/* ---- 900 : une colonne ------------------------------------------------
+   Une demi-tuile tombe alors sous 425px de large pour 240 de haut, et le
+   bloc titre + catégorie s'y comprime. Même palier que .about-top. */
+@media(max-width:900px){
+  .px-grid{grid-template-columns:1fr}
+}
+
+/* ---- 760 : téléphone -------------------------------------------------- */
+@media(max-width:760px){
+  .px{padding-top:clamp(90px,15vh,130px)}   /* = le .sec de la page uc */
+  .px-name{font-size:1.15rem}               /* = .cw-row .cw-name sur téléphone */
+  .px-cat{font-size:.8rem}
+  .px-cap{left:12px;right:12px;bottom:10px}
+  .px-soon{font-size:9px}                   /* = .svx-head */
+}
