@@ -1,19 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/LangContext";
 import { I18N } from "@/lib/i18n";
 import { PROJECTS } from "@/lib/projects";
 
 // Index des projets — structure reprise de la frame Figma « Index Page »
-// (grille 2 colonnes, visuels 16:9, titre et catégorie posés en bas à gauche
-// du visuel, badge « à venir » sur les projets dont la page n'existe pas).
+// (grille 2 colonnes, visuels 16:9, titre et catégorie posés sur le visuel en
+// bas à gauche, badge « à venir » sur les projets dont la page n'existe pas).
 // Les valeurs de rendu, elles, viennent toutes de globals.css.
 //
 // Source unique du contenu : lib/projects.js pour les six projets, lib/i18n.js
-// pour les textes affichés — la description bilingue est evo.<id>, et non
-// PROJECTS[].over qui n'existe qu'en français.
+// pour les textes affichés.
+
+// Ordre d'affichage propre à cette page. Il ne touche pas à lib/projects.js :
+// l'ordre du tableau y pilote aussi le carrousel et les sommets de la scène
+// Everest, qu'un réarrangement global déplacerait.
+const ORDER = ["redesign", "anya", "preshot", "bcc", "coin", "deviantart"];
+const TILES = ORDER.map((id) => PROJECTS.find((p) => p.id === id)).filter(Boolean);
 
 // Largeurs disponibles dans public/images, par projet. Elles ne sont pas
 // uniformes (redesign-bg n'a pas de 1200, les posters vidéo n'ont que deux
@@ -40,14 +45,18 @@ function stillOf(p) {
   return { base: p.scrollbg, widths: WIDTHS[p.scrollbg] };
 }
 
+// Lissage du suivi de souris : part de la position visée à chaque image.
+// Même ordre de grandeur que l'aperçu de Client work (0.18).
+const FOLLOW = 0.16;
+
 export default function WorkIndex() {
   const { lang } = useLang();
   const t = (k) => (I18N[lang] && I18N[lang][k]) || k;
   const router = useRouter();
 
-  // Lecture des vidéos au survol : réservée aux écrans à curseur, au-dessus
-  // de 1024px. L'état part à null et n'est résolu qu'après le montage, pour
-  // que le rendu serveur soit identique dans tous les cas.
+  // Le survol n'existe qu'au-dessus de 1024px sur un écran à curseur.
+  // L'état part à null et n'est résolu qu'après le montage, pour que le rendu
+  // serveur soit identique dans tous les cas.
   const [canHover, setCanHover] = useState(null);
   useEffect(() => {
     const mq = window.matchMedia("(min-width:1025px) and (hover:hover)");
@@ -58,6 +67,9 @@ export default function WorkIndex() {
   }, []);
 
   const vids = useRef({});
+  const views = useRef({});
+  // Un état de suivi par tuile : position visée, position courante, boucle.
+  const follow = useRef({});
 
   const play = (id) => {
     if (!canHover) return;
@@ -66,10 +78,59 @@ export default function WorkIndex() {
     // promesse qui se rejette si le curseur repart avant le premier octet.
     if (v) { const r = v.play(); if (r && r.catch) r.catch(() => {}); }
   };
-  const stop = (id) => {
+  const stopVid = (id) => {
     const v = vids.current[id];
     if (v) { v.pause(); v.currentTime = 0; }
   };
+
+  // ---- « View » qui suit la souris, avec retard ----
+  // Le libellé est en mix-blend-mode:difference (CSS) : sa couleur s'inverse
+  // par rapport au pixel qu'il recouvre. Ici on ne gère que le déplacement,
+  // lissé image par image plutôt que transitionné, pour que le retard reste
+  // constant quelle que soit la vitesse du curseur.
+  const step = useCallback((id) => {
+    const st = follow.current[id];
+    const el = views.current[id];
+    if (!st || !el) return;
+    st.x += (st.tx - st.x) * FOLLOW;
+    st.y += (st.ty - st.y) * FOLLOW;
+    el.style.transform = `translate3d(${st.x.toFixed(1)}px,${st.y.toFixed(1)}px,0) translate(-50%,-50%)`;
+    const near = Math.abs(st.tx - st.x) < 0.4 && Math.abs(st.ty - st.y) < 0.4;
+    if (st.on || !near) st.raf = requestAnimationFrame(() => step(id));
+    else st.raf = 0;
+  }, []);
+
+  const onEnter = (id) => (e) => {
+    if (!canHover) return;
+    const tile = e.currentTarget;
+    const r = tile.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    // On place le libellé sous le curseur sans transition à l'entrée : sinon
+    // il traverse la tuile depuis sa dernière position.
+    follow.current[id] = { tx: x, ty: y, x, y, on: true, raf: 0 };
+    const el = views.current[id];
+    if (el) el.style.transform = `translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
+    follow.current[id].raf = requestAnimationFrame(() => step(id));
+  };
+
+  const onMove = (id) => (e) => {
+    const st = follow.current[id];
+    if (!st || !canHover) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    st.tx = e.clientX - r.left;
+    st.ty = e.clientY - r.top;
+    if (!st.raf) st.raf = requestAnimationFrame(() => step(id));
+  };
+
+  const onLeave = (id) => () => {
+    const st = follow.current[id];
+    if (st) st.on = false;   // la boucle s'arrête d'elle-même une fois rattrapée
+  };
+
+  // Aucune boucle ne doit survivre au démontage ni à un changement de langue.
+  useEffect(() => () => {
+    Object.values(follow.current).forEach((st) => { if (st && st.raf) cancelAnimationFrame(st.raf); });
+  }, []);
 
   // Même rideau que partout ailleurs sur le site.
   const go = (e, href) => {
@@ -80,7 +141,7 @@ export default function WorkIndex() {
 
   return (
     <div className="px-grid">
-      {PROJECTS.map((p, i) => {
+      {TILES.map((p, i) => {
         const still = stillOf(p);
         const cat = p.cat[lang];
         // Délais en cascade pour l'apparition au scroll sous 1024px.
@@ -135,12 +196,17 @@ export default function WorkIndex() {
         const inner = (
           <>
             {media}
-            <span className="px-veil" aria-hidden="true"></span>
             <span className="px-scrim" aria-hidden="true"></span>
             {p.soon ? (
               <span className="px-soon">{t("wk.soon")}</span>
             ) : (
-              <span className="px-view" aria-hidden="true">{t("wk.view")}</span>
+              <span
+                className="px-view"
+                aria-hidden="true"
+                ref={(el) => { views.current[p.id] = el; }}
+              >
+                {t("wk.view")}
+              </span>
             )}
             <div className="px-cap">
               <h2 className="px-name">{p.title}</h2>
@@ -168,8 +234,9 @@ export default function WorkIndex() {
             data-rv
             style={style}
             onClick={(e) => go(e, `/work/${p.id}`)}
-            onMouseEnter={p.video ? () => play(p.id) : undefined}
-            onMouseLeave={p.video ? () => stop(p.id) : undefined}
+            onMouseEnter={(e) => { onEnter(p.id)(e); if (p.video) play(p.id); }}
+            onMouseMove={onMove(p.id)}
+            onMouseLeave={() => { onLeave(p.id)(); if (p.video) stopVid(p.id); }}
           >
             {inner}
           </a>

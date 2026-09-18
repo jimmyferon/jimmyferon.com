@@ -11,12 +11,6 @@ export default function WorkPage() {
 
   return (
     <section className="page active" data-page="work">
-      {/* Bandes de verre : le contenu qui entre et sort du cadre passe
-          derrière elles et s'y trouble. Purement décoratives, masquées
-          sous 1025px (voir section 15 du CSS). */}
-      <div className="px-glass px-glass--top" aria-hidden="true"></div>
-      <div className="px-glass px-glass--bot" aria-hidden="true"></div>
-
       <div className="px">
         {/* Le bloc de tête du wireframe est un label court et centré : il
             porte le h1 de la page plutôt que d'en ajouter un second. */}
