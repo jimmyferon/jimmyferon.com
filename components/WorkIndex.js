@@ -132,6 +132,35 @@ export default function WorkIndex() {
     Object.values(follow.current).forEach((st) => { if (st && st.raf) cancelAnimationFrame(st.raf); });
   }, []);
 
+  // ---- Entrée des tuiles : repli pour les navigateurs sans view() ----
+  // Là où animation-timeline: view() existe, le CSS pilote tout et cet
+  // observateur ne sert à rien : on ne le monte même pas. Ailleurs, il pose
+  // .px-in quand la tuile entre dans le champ, comme le reste du site.
+  const gridRef = useRef(null);
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const supported =
+      typeof CSS !== "undefined" && CSS.supports && CSS.supports("animation-timeline", "view()");
+    const tiles = Array.from(grid.querySelectorAll(".px-tile"));
+    if (supported || typeof IntersectionObserver === "undefined") {
+      tiles.forEach((el) => el.classList.add("px-in"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) { en.target.classList.add("px-in"); io.unobserve(en.target); }
+        });
+      },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0.05 }
+    );
+    tiles.forEach((el) => io.observe(el));
+    // Filet de sécurité, comme Reveal.js : rien ne reste invisible.
+    const failsafe = setTimeout(() => tiles.forEach((el) => el.classList.add("px-in")), 1800);
+    return () => { io.disconnect(); clearTimeout(failsafe); };
+  }, []);
+
   // Même rideau que partout ailleurs sur le site.
   const go = (e, href) => {
     e.preventDefault();
@@ -140,11 +169,12 @@ export default function WorkIndex() {
   };
 
   return (
-    <div className="px-grid">
+    <div className="px-grid" ref={gridRef}>
       {TILES.map((p, i) => {
         const still = stillOf(p);
         const cat = p.cat[lang];
-        // Délais en cascade pour l'apparition au scroll sous 1024px.
+        // Décalage en cascade : il ne sert qu'au repli. Avec view(), le
+        // décalage vient de la position des tuiles dans la page.
         const style = { "--rvd": `${i * 80}ms` };
 
         const media = (
@@ -220,7 +250,6 @@ export default function WorkIndex() {
           <article
             className="px-tile px-tile--soon"
             key={p.id}
-            data-rv
             style={style}
             aria-label={`${p.title} — ${cat} — ${t("wk.soonA11y")}`}
           >
@@ -231,7 +260,6 @@ export default function WorkIndex() {
             className="px-tile px-tile--link"
             key={p.id}
             href={`/work/${p.id}`}
-            data-rv
             style={style}
             onClick={(e) => go(e, `/work/${p.id}`)}
             onMouseEnter={(e) => { onEnter(p.id)(e); if (p.video) play(p.id); }}

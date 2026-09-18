@@ -1866,6 +1866,39 @@ body.ev-full .ev-full-btn{top:auto;bottom:clamp(18px,3vh,34px)}
   margin-top:6px;
   text-shadow:0 1px 10px rgba(0,0,0,.6)}
 
+/* ---- Entrée des tuiles au défilement ---------------------------------
+   Deux couches, dans cet ordre.
+
+   1. Le repli, qui vaut partout : la tuile est masquée et décalée, un
+   IntersectionObserver local (WorkIndex.js) pose .px-in quand elle entre.
+   C'est un déclenchement : une fois parti, le mouvement se joue tout seul.
+   Mêmes tokens que les autres apparitions du site.
+
+   2. L'amélioration, là où le navigateur sait lier une animation à la
+   position de défilement : ce n'est plus un déclenchement mais un suivi.
+   La tuile avance exactement au rythme du défilement et recule si on
+   remonte. Le décalage entre tuiles n'a plus à être écrit — il vient de
+   leur position dans la page. Aucune dépendance. */
+.px-tile{opacity:0;transform:translateY(var(--rv-y));
+  transition:opacity var(--rv-d) var(--rv-e),transform var(--rv-d) var(--rv-e);
+  transition-delay:var(--rvd,0ms)}
+.px-tile.px-in{opacity:1;transform:none}
+
+@supports (animation-timeline: view()){
+  .px-tile{opacity:1;transform:none;transition:none;transition-delay:0s;
+    animation:pxEnter var(--rv-e) both;
+    animation-timeline:view();
+    animation-range:entry 0% entry 55%}
+  @keyframes pxEnter{
+    from{opacity:0;transform:translateY(var(--rv-y))}
+    to{opacity:1;transform:none}
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .px-tile{opacity:1;transform:none;transition:none;animation:none}
+}
+
 /* ---- Survol : écrans à curseur seulement, au-dessus de 1024px ---------
    Une tuile « à venir » n'a ni zoom, ni « View », ni curseur main : le
    sélecteur ne vise que .px-tile--link. */
