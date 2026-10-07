@@ -82,6 +82,48 @@ Aucun point ne reste ouvert.
 - Favicon : une application à part entière, le logo en papier sur un fond bleu #1E29FF, lisible sur les onglets clairs comme sombres. Prévu sur la page Marque à l'étape 4 ; il remplacera app/icon.svg sur le site (corrections à faire).
 - public/Fram_25.svg : à supprimer, rien ne l'utilise (corrections à faire).
 
-## Pour reprendre à l'étape 2
+## Étape 2 : fondations (7 octobre 2026)
 
-Dans une nouvelle session : rien n'a encore été créé dans Figma. Lire dans l'audit le §1 (toutes les décisions), le §2.5 (structure des couleurs), les §3.1 et §3.4 (polices et styles), le §4 (espacements et grilles) et l'annexe C (état du fichier Figma).
+Construites dans Figma, vérifiées et validées. Les arbitrages ci-dessous y sont
+appliqués. Le détail est dans `docs/design-system/fondations.md` : inventaire,
+échelle d'espacement, mesures, corrections à faire sur le site.
+
+## Arbitrages de l'étape 2 (7 octobre 2026)
+
+- **Grain (D11) : motif image.** Style de remplissage `effect/grain` : motif du
+  code en mosaïque de 240, opacité .21, fusion `difference`. Il mesure comme le
+  site.
+- **Bouton mobile : un seul style, 11 px et .06em.** Le double CTA du hero
+  tient en 390 px (123 et 132 px de contenu pour 170 disponibles, jusqu'à
+  314 px de large). Pas de variante `button-compact`. Le passage à 11 px est
+  noté dans les corrections à faire sur le site.
+- **Code syntax** : posée seulement quand une expression CSS vaut dans tous les
+  modes. Validé.
+- **Rôles sémantiques ajoutés** : validés. Les voiles dont l'opacité diffère de
+  5 % ou moins sont fusionnés :
+  - `header-mobile` (.94) et `menu` (.97) → `overlay/header-mobile` à .97 ;
+  - `cal` (.65) et `edge` (.7) → `overlay/dim` à .7.
+
+  Corrections à faire sur le site : le header compact mobile passe à .97, le
+  voile cal.com à .7.
+- **Papier .26** (`.foot-topbtn`) : rattaché au rôle le plus proche à l'étape 3.
+- **Espacements : une échelle, pas l'inventaire.** 14 pas sur une base de 4 :
+  4, 8, 12, 16, 20, 24, 32, 40, 48, 56, 64, 80, 96, 112.
+  - Les marges et les rythmes de section restent dans la collection
+    `responsive`.
+  - Chaque valeur du code est rattachée au pas le plus proche (à égale
+    distance, au pas supérieur).
+  - Les 115 règles en écart sont listées dans les corrections à faire sur le
+    site, comme pour les rayons.
+
+## Pour reprendre à l'étape 3
+
+Dans une nouvelle session :
+
+- lire `docs/design-system/fondations.md` : état du fichier Figma, noms et
+  identifiants, arbitrages, et le §7 (ce qui attend l'étape 3) ;
+- lire dans l'audit le §1 (toutes les décisions), le §9 (liste des composants)
+  et le §10 (incohérences par composant) ;
+- relire le fichier Figma lui-même : les corrections faites à la main priment.
+
+L'annexe C de l'audit décrit le fichier avant l'étape 2.
