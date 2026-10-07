@@ -78,7 +78,9 @@ Aucun point ne reste ouvert.
 ## Précisions (7 octobre 2026)
 
 - Couleurs d'interface : validées, sauf les noirs voisins de l'encre #111111. Ils sont fondus dans l'encre quand ils n'ont pas de rôle distinct : #161616, #0E0E0E, #141414. Le voile de la modale et les ombres noires gardent leur valeur. Les écarts sont notés dans les corrections à faire sur le site.
-- Logo : la version claire est en papier #F5F5F5, comme sur le site. app/icon.svg, rempli en blanc pur, est ajouté aux corrections à faire.
+- Logo : la version claire est en papier #F5F5F5, comme sur le site.
+- Favicon : une application à part entière, le logo en papier sur un fond bleu #1E29FF, lisible sur les onglets clairs comme sombres. Prévu sur la page Marque à l'étape 4 ; il remplacera app/icon.svg sur le site (corrections à faire).
+- public/Fram_25.svg : à supprimer, rien ne l'utilise (corrections à faire).
 
 ## Pour reprendre à l'étape 2
 

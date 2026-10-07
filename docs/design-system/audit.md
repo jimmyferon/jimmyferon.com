@@ -70,9 +70,9 @@ en % pour Figma (−.02em = −2 %). « CAPS » signale `text-transform:uppercas
 
 Audit validé par Jimmy le 7 octobre 2026. Le même jour, une seconde série
 d'arbitrages a validé les précisions de D1, D7 et D8 et tranché les derniers
-points (blanc d'interface, rayons, valeurs par défaut). Deux précisions ont
-suivi : les noirs voisins de l'encre et la version claire du logo. Le détail de
-chaque point est en §10. Quand l'arbitrage diffère de ma recommandation,
+points (blanc d'interface, rayons, valeurs par défaut). Trois précisions ont
+suivi : les noirs voisins de l'encre, la version claire du logo et le favicon.
+Le détail de chaque point est en §10. Quand l'arbitrage diffère de ma recommandation,
 celle-ci est rappelée en italique.
 
 | # | Question | Décision |
@@ -112,9 +112,17 @@ celle-ci est rappelée en italique.
   Les écarts sont notés dans les corrections à faire sur le site.
 - **Logo, version claire** : papier `#F5F5F5`, comme sur le site (header sur
   fond sombre, footer, rideau). C'est la version « blanc » du brief pour la
-  page Marque. Le fichier `app/icon.svg`, rempli en blanc pur, est à corriger
-  (§10). La version sombre est déjà en encre `#111111` sur le site (header
-  clair, logo animé de la page About).
+  page Marque. La version sombre est déjà en encre `#111111` sur le site
+  (header clair, logo animé de la page About).
+- **Favicon** : une application à part entière. C'est le logo en papier
+  `#F5F5F5` sur un fond bleu `#1E29FF`, lisible sur les onglets clairs comme
+  sombres.
+  - Il est prévu sur la page Marque, à l'étape 4. La forme du fond et la marge
+    autour du logo y seront définies avec les fondations existantes.
+  - Sur le site, il remplacera `app/icon.svg`, aujourd'hui le logo en blanc pur
+    sans fond.
+  - `public/Fram_25.svg`, copie du même fichier que rien n'utilise, sera
+    supprimé (§10).
 
 ### D5 — périmètre et construction
 
@@ -839,7 +847,7 @@ Composants vivants, trouvés dans le code. En gras : ceux que cite le brief.
 | **Tags** | `.svx-pill` (filtres Services) | — | défaut, survol (bordure et texte bleus), actif (fond bleu) |
 | Bascule à chevron | `.svx-toggle`, `.lang-trigger` | — | défaut, survol, ouvert (chevron à 180°) |
 | Sélecteur de langue | `.lang`, `.lang-menu` | clair, sombre | fermé, ouvert ; option courante en gras |
-| Logo | SVG à 5 tracés dans un cercle (`Header.js`, `Footer.js`, `Veil.js`, `app/icon.svg`) | 34 (header), 44 (footer), 54 (menu du footer, opacité .12), 84 (rideau) ; encre sur fond clair, papier sur fond sombre (favicon `icon.svg` en blanc : à corriger) | survol : rotation de 72° ; rotation continue (rideau, footer) |
+| Logo | SVG à 5 tracés dans un cercle (`Header.js`, `Footer.js`, `Veil.js`, `app/icon.svg`) | 34 (header), 44 (footer), 54 (menu du footer, opacité .12), 84 (rideau) ; encre sur fond clair, papier sur fond sombre ; favicon `icon.svg` en blanc, qui deviendra le logo papier sur fond bleu (§1) | survol : rotation de 72° ; rotation continue (rideau, footer) |
 | **Header flottant** | `header`, `nav`, `Header.js` | desktop, mobile ≤ 900 | haut de page, compact, sur fond sombre, compact sombre ; mobile : barre, compact noir, menu ouvert |
 | Menu mobile | `.hx` (extension du header) | — | fermé, ouvert (liens en cascade .10 / .16 / .22 s) |
 | **Footer** | `Footer.js` : `.lt` (Let's talk), `.foot-body` | avec lac (≥ 1400), sans lac | survols des liens, de l'e-mail, des boutons |
@@ -1004,7 +1012,8 @@ selon les règles du projet.
 | Flèches en SVG à la place des glyphes | D8, TYP-13 |
 | États focus et désactivé | D5, CMP-04 |
 | Noirs voisins fondus dans l'encre : `#161616` (`header.on-dark .lang-menu`), `#0e0e0e` (`.ev-modal-shot`), `#141414` (particules, `LogoReveal.js`). Les deux `#111111` écrits en dur (`.lang-menu button.on`, `.hb-val`) passent à `var(--ink)` | COL-10 |
-| Logo clair en papier : `app/icon.svg` (favicon) rempli en `white`, à passer en `#F5F5F5`. Même remplissage dans `public/Fram_25.svg`, copie identique que rien ne référence dans le dépôt | logo (§1) |
+| Favicon : remplacer `app/icon.svg` (logo blanc sans fond) par le favicon défini à l'étape 4, logo papier sur fond bleu `#1E29FF` | favicon (§1) |
+| Supprimer `public/Fram_25.svg`, copie du logo que rien n'utilise | favicon (§1), annexe B |
 | Variables manquantes : `--blue-hover`, grain unique, courbe du roll | COL-05, EFF-02, MOT-01 |
 | Alignements tablette : filet de Let's talk, footer en `--pad` | ESP-02, ESP-03 |
 | Nettoyage : CSS mort, blocs sans effet, règles en double, seuils hors règle | annexe B, ESP-04, ESP-07, MOT-03, BRK-01, BRK-02, CMP-03, CMP-05 |
@@ -1077,7 +1086,9 @@ S'y ajoutent :
 - des règles vivantes mais sans effet : `.home-msg .rl`, le bloc
   `globals.css:3-22`, l'essentiel du bloc 680 ;
 - les règles du carrousel 3D et du badge curseur (CMP-05) ;
-- l'entrée `havas` de `CARD_BG`.
+- l'entrée `havas` de `CARD_BG` ;
+- le fichier `public/Fram_25.svg`, copie du logo que rien n'utilise, à
+  supprimer.
 
 ## Annexe C — État du fichier Figma
 
