@@ -1,11 +1,12 @@
 # Outils de l'audit
 
-Les scripts qui ont produit les mesures de [`../audit.md`](../audit.md).
+Les scripts qui ont produit les mesures de [`../audit.md`](../audit.md) et
+celles de l'étape 2, dans [`../fondations.md`](../fondations.md).
 
 Ils ne font que lire : ni le code du site ni le fichier Figma ne sont modifiés.
 Aucune dépendance à installer. Il faut Node 24 (voir `.nvmrc`), et un
-navigateur Chromium installé (Chrome, Edge ou Brave) pour les deux scripts de
-mesure.
+navigateur Chromium installé (Chrome, Edge ou Brave) pour les scripts qui
+pilotent un navigateur : mesure des styles, polices rendues, grain, CTA mobile.
 
 ## Les scripts
 
@@ -19,6 +20,10 @@ Toutes les commandes se lancent depuis la racine du dépôt.
 | `tableau-typo.mjs` | Tableau typographique desktop / mobile, construit à partir de `mesures.json`. |
 | `polices-rendues.mjs` | Police qui dessine réellement chaque texte témoin. C'est lui qui révèle les glyphes tombés sur une police système. |
 | `nom-police.mjs` | Table `name` d'un fichier WOFF2 : famille, style, version, licence. |
+| `grain-rendu.mjs` | Étape 2, test D11 : rend seul le motif de grain de `body::after` (PNG transparent 240 × 240) et capture `/work` en 1440 × 900. |
+| `grain-mesure.mjs` | Étape 2, test D11 : luminance, écart-type, écart entre voisins et chroma de PNG (captures d'échantillons de grain). |
+| `cta-mobile.mjs` | Étape 2 : le double CTA du hero tient-il en 11 px / .06em à 390 px ? Place attribuée et largeur naturelle de chaque bouton, en FR et en EN, et plus petite largeur d'écran qui tient. |
+| `ecarts-espacement.mjs` | Étape 2 : rattache chaque padding, margin et gap en px fixe au pas le plus proche de l'échelle Figma (base 4) et liste les écarts, règle par règle, en tableau Markdown. Sans réseau ni navigateur. |
 
 Commandes :
 
@@ -39,7 +44,20 @@ node docs/design-system/outils/polices-rendues.mjs <chemin du navigateur> <dossi
 
 # Nom interne d'une police
 node docs/design-system/outils/nom-police.mjs public/fonts/chopin.woff2
+
+# Grain (étape 2) : motif rendu et capture du site, puis mesures
+node docs/design-system/outils/grain-rendu.mjs <chemin du navigateur> <dossier de sortie>
+node docs/design-system/outils/grain-mesure.mjs <chemin du navigateur> <dossier de profil> <png> [<png>…]
+
+# CTA du hero mobile en 11 px (étape 2)
+node docs/design-system/outils/cta-mobile.mjs <chemin du navigateur> <dossier de profil>
+
+# Écarts entre les espacements du code et l'échelle base 4 (étape 2)
+node docs/design-system/outils/ecarts-espacement.mjs app/globals.css .
 ```
+
+`grain-rendu.mjs` utilise le port 9336, `grain-mesure.mjs` le 9337,
+`cta-mobile.mjs` le 9338.
 
 ## Mesurer une preview plutôt que la prod
 
