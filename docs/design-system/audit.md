@@ -8,7 +8,8 @@ Rien n'a encore été créé dans Figma, rien n'a été modifié dans le code.
 - **Branche** : `design-system`, partie de `origin/main` (7e88e63), c'est-à-dire la
   version en production
 - **Source** : le code uniquement
-- **Statut** : validé le 7 octobre 2026, arbitrages inscrits en §1
+- **Statut** : validé le 7 octobre 2026 ; tous les arbitrages sont inscrits en
+  §1, aucun point ne reste ouvert
 
 ## Sommaire
 
@@ -67,30 +68,41 @@ en % pour Figma (−.02em = −2 %). « CAPS » signale `text-transform:uppercas
 
 ## 1. Décisions arbitrées
 
-Audit validé par Jimmy le 7 octobre 2026. Le détail de chaque point est en
-§10. Quand l'arbitrage diffère de ma recommandation, celle-ci est rappelée en
-italique.
+Audit validé par Jimmy le 7 octobre 2026. Une seconde série d'arbitrages,
+le même jour, a validé les précisions de D1, D7 et D8 et tranché les derniers
+points (blanc d'interface, rayons, valeurs par défaut). Le détail de chaque
+point est en §10. Quand l'arbitrage diffère de ma recommandation, celle-ci est
+rappelée en italique.
 
 | # | Question | Décision |
 |---|---|---|
 | **D0** | Figma doit-il copier le code à l'identique, ou un système rationalisé ? | **Système rationalisé.** Couleurs et typo par rôle, chaque rôle reprenant une valeur qui existe dans le code. Espacements et rayons fidèles : toutes les valeurs vivantes deviennent des primitives. Chaque écart avec le site est listé en §10. |
-| **D1** | Texte posé sur un aplat bleu ou encre (COL-04) | **Papier `#F5F5F5`**, pour rester sur les trois couleurs de marque : papier, encre, bleu. Par cohérence, les opacités du blanc posé sur un aplat (.5, .75) deviennent papier .5 et .75. *Recommandation : `#FFFFFF`.* |
+| **D1** | Texte posé sur un aplat bleu ou encre (COL-04) | **Papier `#F5F5F5`**, pour rester sur les trois couleurs de marque : papier, encre, bleu. Prolongement validé : les opacités du blanc posé sur un aplat (.5, .75) deviennent papier .5 et .75. *Recommandation : `#FFFFFF`.* |
 | **D2** | Opacités du mode sombre (COL-09) | Cinq rôles (§2.5) : texte secondaire .6, libellé .55, discret .45, filet .14, filet appuyé .28. |
 | **D3** | Marges de page desktop (ESP-01) | 60 pour nav et footer (= `--pad`, le logo s'aligne sur le nom du hero) ; 112 pour les sections. |
 | **D4** | Boutons (CMP-01) | Un seul composant `button` : primaire, encre, contour sur fond sombre ; tailles `md` (46 px) et `sm` (36 px) ; survols de `.btn-blue` et `.btn-ink`. |
 | **D5** | États désactivé et focus (CMP-04) | **Exception à la règle 1 du brief, pour Figma uniquement.** Un état désactivé et un état focus clavier visible sur les boutons, les CTA et tous les autres éléments cliquables. Construits **uniquement avec les fondations existantes**, sans nouvelle valeur. Chaque état ajouté porte l'annotation « pas encore dans le code ». *Recommandation : ne pas les créer.* |
 | **D6** | Typographie (§3.4) | 33 styles, en deux jeux `text/desktop/…` et `text/mobile/…`. |
-| **D7** | Titres sans interlignage propre (TYP-01) | **Ils prennent l'interlignage des autres titres du code** (valeurs ci-dessous). L'écart avec le site est une correction à faire (§10). *Recommandation : reproduire le 160 % rendu.* |
-| **D8** | Flèches `→ ↗ ↔` (TYP-13) | **Icônes vectorielles, en composants**, annotées « pas encore dans le code ». *Recommandation : tester d'abord le rendu Figma des glyphes.* |
+| **D7** | Titres sans interlignage propre (TYP-01) | **Ils prennent l'interlignage des autres titres du code** (valeurs ci-dessous, validées). L'écart avec le site est une correction à faire (§10). *Recommandation : reproduire le 160 % rendu.* |
+| **D8** | Flèches `→ ↗ ↔` (TYP-13) | **Icônes vectorielles, en composants**, annotées « pas encore dans le code » (tracés ci-dessous, validés). *Recommandation : tester d'abord le rendu Figma des glyphes.* |
 | **D9** | Taille optique de Bricolage (TYP-14) | Axe `opsz` réglé sur la taille du texte, borné à 12–96, dans chaque style. |
 | **D10** | Nommage | Noms sémantiques en minuscules (`color/text/muted`, `text/heading-2`). Le nom CSS va en *code syntax* (variables) ou en description (styles). |
 | **D11** | Grain (EFF-02) | À tester à l'étape 2 : effet « Bruit » natif contre motif image, comparés à une capture du site. |
 | **D12** | Page Projets (PR #19) | Intégrée après sa fusion : rebaser `design-system` sur `main`, puis ajouter tuile projet et badge « À venir ». |
 
-Avec D1, le blanc `#FFFFFF` ne sert plus qu'aux fonds de surface (questions
-FAQ, visuels About). Il reste, avec les teintes du §2.2 (survol, gris, noirs
-voisins), en dehors des trois couleurs de marque : à revoir dans le même esprit
-si tu le souhaites.
+### Couleurs de marque et couleurs d'interface
+
+- **Couleurs de marque** : papier `#F5F5F5`, encre `#111111`, bleu `#1E29FF`.
+  Rien d'autre.
+- **Couleur d'interface, décidée** : le blanc `#FFFFFF` est gardé comme
+  **surface**, en fond des questions FAQ et des visuels About. Ce n'est pas une
+  couleur de marque. Avec D1, c'est son seul usage.
+- **Couleurs d'interface par défaut** : les autres teintes du §2.2 (bleu de
+  survol, bleu clair, gris, noirs voisins, gris du grain) sont rangées dans la
+  même catégorie.
+- **À noter pour la page Marque (étape 4)** : le fichier du logo `app/icon.svg`
+  (identique à `public/Fram_25.svg`) est rempli en blanc pur. Sur le site, le
+  logo clair est en papier : header sur fond sombre, footer, rideau.
 
 ### D5 — périmètre et construction
 
@@ -109,7 +121,7 @@ si tu le souhaites.
 - **Annotation** : propriété `annotations` du nœud Figma (annotation Dev Mode),
   libellé « pas encore dans le code ».
 
-### D7 — interlignages retenus
+### D7 — interlignages retenus (validés)
 
 Règle : un titre rattaché à un style prend l'interlignage de ce style. Sinon, il
 prend celui du titre du code le plus proche en taille, parmi les titres dont
@@ -124,7 +136,7 @@ l'interlignage est déclaré. Les quatre valeurs existent déjà dans le code.
 | `.bn3-camp h3` | 160 % (hérité) | 108 % | `.f-mail` en mobile : 24,96 px, le plus proche de 24 |
 | `.cw-name`, `.home-msg .nm` | 160 % (hérité) | 120 % | `.pcard-bar-txt b` : 15,2 px, le plus proche de 17,6 |
 
-### D8 — dessin des flèches
+### D8 — dessin des flèches (validé)
 
 Même grille et même trait que les icônes SVG du code : 24 × 24, trait de 1,6,
 extrémités et angles arrondis, comme les flèches de navigation de la modale
@@ -142,17 +154,20 @@ extrémités et angles arrondis, comme les flèches de navigation de la modale
   « → Démarrer un projet »), l'icône se place entre deux textes, en auto layout.
 - Chaque instance porte l'annotation « pas encore dans le code ».
 
-### Points encore ouverts
+### Derniers points tranchés
 
-Valeur appliquée par défaut si rien n'est tranché d'ici là :
-
-- **TYP-05** — `.lt-big` en mobile : fusionné dans `display` (28,8 · 102 %),
-  comme le prévoient les 33 styles de D6.
-- **RAY-01** — rayons 4 (mode d'emploi) et 8 (menu langue) : gardés tels
-  quels ; `radius/5` pour tout le reste.
-- **COL-07** — bordure opaque `#E5E5E5` du header : gardée.
-- **ESP-04** — marge de 16 px sous 480 : question de code seulement. Figma
-  prend 20, la valeur réelle.
+- **RAY-01** — Le 4 px passe à 5 px, le rayon de la marque : encadré mode
+  d'emploi `.ev-help` et contour de focus de son bouton. Le 8 px ne vit plus
+  que sur le menu de langue, un petit menu déroulant d'environ 66 × 70 px :
+  ce n'est pas un grand conteneur, il passe donc aussi à 5 px. Les grands
+  conteneurs qui l'utilisaient (`.wcard`, `.portrait`, `.proj-cover`, `.gimg`)
+  sont du CSS mort. L'écart est noté dans les corrections à faire sur le site.
+- **TYP-05** — `.lt-big` en mobile est fusionné dans `display` (28,8 · 102 %),
+  comme le prévoient les 33 styles de D6. Correction à faire sur le site.
+- **COL-07** — La bordure opaque `#E5E5E5` du header est gardée, comme couleur
+  d'interface.
+- **ESP-04** — 20 px en mobile, la valeur réelle. Côté site : supprimer le bloc
+  mort plutôt que d'activer les 16 px, pour rester aligné sur Figma (nettoyage).
 
 ---
 
@@ -169,6 +184,9 @@ Valeur appliquée par défaut si rien n'est tranché d'ici là :
 | `--line-2` | `rgba(17,17,17,.26)` | filet appuyé (bordures de puces, contours) |
 | `--muted` | `rgba(17,17,17,.55)` | texte secondaire sur clair |
 | `--muted-2` | `rgba(17,17,17,.38)` | texte discret sur clair |
+
+Les trois couleurs de marque sont `--paper`, `--ink` et `--blue`. Toutes les
+autres couleurs du site, alphas compris, sont des couleurs d'interface (§1).
 
 ### 2.2 Couleurs pleines écrites en dur (code vivant)
 
@@ -283,8 +301,8 @@ propose comme sémantiques dédiées (`color/overlay/…`), pas comme rôles gé
 
 **Structure Figma retenue** (D0, D1, D10) :
 
-- **`primitives`**, un seul mode : `paper`, `ink`, `blue`, `white` (fonds de
-  surface seulement, D1),
+- **`primitives`**, un seul mode : `paper`, `ink`, `blue`, `white` (couleur
+  d'interface, fonds de surface seulement),
   `blue-hover` (#0F17C2), `blue-light` (#7D86FF), `grey-card` (#E0E2E8),
   `grey-line` (#E5E5E5), `ink-raised` (#161616), `ink-media` (#0E0E0E),
   `grain-accent` (#63636A), `grain-accent-dark` (#4A4A52), plus les paliers
@@ -450,7 +468,7 @@ code (§1). Les autres classes rattachées sont indiquées avec leur écart.
 
 | Style proposé | Figma | D : taille · interl. · approche | M | Classes rattachées (écart) |
 |---|---|---|---|---|
-| `display` | Bricolage SemiBold | 56 · 102 % · −2,5 % | 28,8 · 102 % | `.manif-big`, `.lt-big` (M 33,15 · 112 %, TYP-05) |
+| `display` | Bricolage SemiBold | 56 · 102 % · −2,5 % | 28,8 · 102 % | `.manif-big`, `.lt-big` (fusionné en mobile, au lieu de 33,15 · 112 % : TYP-05) |
 | `heading-1` | Bricolage Bold | 54,4 · 100 % · −3 % | 33,15 · 100 % | `.bn3-title`, `.uc-title` (TYP-04) |
 | `heading-2` | Bricolage SemiBold | 44 · 105 % · −2 % | 29,6 · 105 % | `.sv2-title`, `.cw-title` (107 %), `.fq-title` (TYP-03) |
 | `heading-3` | Bricolage Bold | 36,8 · 108 % (D7) · −2 % | 20,8 · 108 % | `.bn3-summit h3`, `.ev-modal-txt h3` (33,6, D seul) |
@@ -602,9 +620,9 @@ code n'en a pas.
 
 | Valeur | Où | Statut |
 |---|---|---|
-| **5 px** | header compact et menu ouvert, boutons, `.cta`, `.menu-btn`, cartes carrousel et barres, cartes Services, lignes et puces Services, aperçu Client work, visuels About, questions FAQ, étiquettes de sommet, modale et ses boutons, boutons carrés 38 | **standard** (23 règles) |
-| 4 px | encadré mode d'emploi `.ev-help`, contour de focus de son bouton | écart (RAY-01) |
-| 8 px | menu langue `.lang-menu` | écart (RAY-01) |
+| **5 px** | header compact et menu ouvert, boutons, `.cta`, `.menu-btn`, cartes carrousel et barres, cartes Services, lignes et puces Services, aperçu Client work, visuels About, questions FAQ, étiquettes de sommet, modale et ses boutons, boutons carrés 38 | **rayon de la marque** (23 règles) |
+| 4 px | encadré mode d'emploi `.ev-help`, contour de focus de son bouton | **passe à 5 px** (RAY-01) |
+| 8 px | menu langue `.lang-menu`, petit menu déroulant | **passe à 5 px** : ce n'est pas un grand conteneur (RAY-01) |
 | 2 px | soulignement de l'e-mail du footer, poignée de la barre de défilement | détail |
 | 3 px | contour de focus du bouton plein écran | détail |
 | 38 → 20 px | coins hauts du footer, `clamp(20px,3vw,38px)` : 38 en D, 30,7 à 1024, 20 en M | fluide (RAY-02) |
@@ -872,7 +890,7 @@ consolidée de ces corrections clôt la section.
 | COL-04 | Texte sur aplat : `#FFF` (≈ 18 usages : boutons bleus et encre, puce active, survols bleus) ou papier (3 : `.cta .roll`, `.menu-btn`, `.pcard-bar-btn`). Le CTA du header mélange les deux : libellé papier, flèche blanche. | **D1 (décidé)** : papier `#F5F5F5`. **À corriger sur le site** : `var(--paper)` à la place de `#fff` sur ces textes. |
 | COL-05 | Bleu de survol `#0F17C2` ×4, sans variable. | Primitive `blue-hover` ; sémantique `color/accent/hover`. Code : `--blue-hover`. |
 | COL-06 | Bleu clair `#7D86FF`, un seul usage (modale). | Primitive `blue-light`, sémantique `color/accent/on-dark`. |
-| COL-07 | Bordure du header en gris opaque `#E5E5E5`, alors que les filets du site sont en `--line` (encre .13, soit environ `#D7D7D7` sur papier). | Garder `#E5E5E5` (`color/border/header`) : le header est translucide, une bordure opaque y est cohérente. Ouvert, gardée par défaut (§1). |
+| COL-07 | Bordure du header en gris opaque `#E5E5E5`, alors que les filets du site sont en `--line` (encre .13, soit environ `#D7D7D7` sur papier). | Garder `#E5E5E5` (`color/border/header`) : le header est translucide, une bordure opaque y est cohérente. **Décidé** : gardée, comme couleur d'interface (§1). |
 | COL-08 | Bordures sur fond sombre : papier .14 en desktop, **blanc .1** pour le header mobile (`globals.css:677,686`). | Papier .14. |
 | COL-09 | 25 paliers d'alpha sur le papier, 17 sur l'encre. | D2 : rôles du §2.5. Écarts à aligner dans le code : .5 → .55, .65 / .72 / .74 → .6, .42 → .45, .16 → .14 (sauf la barre du préchargement). |
 | COL-10 | Noirs voisins : `#161616` (menu langue sombre), `#0E0E0E` (visuel de la modale), voile `rgba(10,10,10,.86)` à côté de l'encre `#111`. | Primitives `ink-raised`, `ink-media` ; sémantique `color/overlay/modal`. |
@@ -887,7 +905,7 @@ consolidée de ces corrections clôt la section.
 | TYP-02 | `.sv2-title` (1,05) et `.cw-title` (1,07) : même style à 0,02 près. | `heading-2` à 105 %. |
 | TYP-03 | `.fq-title` (41,6, interlignage hérité 1,6) est un `heading-2` à 2,4 px près. | Rattaché à `heading-2` (D6) : 44 en desktop et 29,6 en mobile, au lieu de 41,6 et 25,6. |
 | TYP-04 | `.uc-title` (57,6, −.025em) et `.bn3-title` (54,4, −.03em) : deux grands titres voisins. | Un `heading-1` calé sur `.bn3-title` (D6). |
-| TYP-05 | `.lt-big` = `.manif-big` en desktop, mais diverge en mobile (33,15 / 1,12 contre 28,8 / 1,02 : règle ajoutée en section 6). | Ouvert. Par défaut, D6 fusionne `.lt-big` dans `display` (mobile 28,8 · 102 %) ; une variante `display-lt` reste possible si l'écart est voulu (§1). |
+| TYP-05 | `.lt-big` = `.manif-big` en desktop, mais diverge en mobile (33,15 / 1,12 contre 28,8 / 1,02 : règle ajoutée en section 6). | **Décidé** : `.lt-big` fusionné dans `display` (mobile 28,8 · 102 %). **À corriger sur le site** : aligner `.lt-big` mobile sur `.manif-big`. |
 | TYP-06 | Neuf approches en mono capitales : .05, .06, .08, .1 (fixe), .12, .14, .16, .18, .22em. | Quatre : .06 bouton, .08 nav et surtitre, .14 petit libellé, .18 libellé. .22 reste au préchargement. |
 | TYP-07 | Tailles mono mêlant px et rem : 10,88 (`.68rem`), 11,2 (`.7rem`), 11,52 (`.72rem`) à côté de 10 / 11 / 12 px. | Entiers 10 / 11 / 12 ; 8 et 9 restent pour la scène Everest. |
 | TYP-08 | Corps Roboto : 14 combinaisons taille / interlignage (22 → 10,88 ; 1,3 → 1,65). | Sept styles (§3.4). |
@@ -907,7 +925,7 @@ consolidée de ces corrections clôt la section.
 | ESP-01 | Trois marges desktop : 56 (nav, footer : `globals.css:69,541`), 60 (`--pad` : hero, `.wrap`, scène), 112 (sections). Le logo est à x = 56, le nom du hero à x = 60. | D3 : `layout/page-pad` = 60 / 20, `layout/section-inset` = 112 / 20. |
 | ESP-02 | Sous 1400, le contenu de Let's talk passe à `--pad`, mais son filet `.lt::after` reste à 112, puis à 40 sous 760 (`globals.css:486,507,837-846`). À 390, contenu à 20 et filet à 40. | Code : filet à `--pad` sous 1400. |
 | ESP-03 | Footer ≤ 760 en 20 px fixes (`globals.css:588`), le reste du site en `--pad` (38 à 760). | Code : `--pad`. |
-| ESP-04 | Le bloc « correctifs mobile » (`globals.css:3-22`) précède les règles de base et perd la cascade. `--pad:16px` sous 480 ne s'applique jamais, ni la plupart des autres lignes. | Figma : 20 en mobile, la valeur réelle. Code : supprimer le bloc, ou le déplacer si 16 était voulu. Ouvert, côté code seulement (§1). |
+| ESP-04 | Le bloc « correctifs mobile » (`globals.css:3-22`) précède les règles de base et perd la cascade. `--pad:16px` sous 480 ne s'applique jamais, ni la plupart des autres lignes. | **Décidé** : 20 en mobile, la valeur réelle. **À corriger sur le site** : supprimer le bloc mort plutôt que d'activer les 16 px (nettoyage). |
 | ESP-05 | Pas d'échelle : 26 valeurs fixes, dont des irrégulières (7, 9, 13, 22, 26, 34, 36…). | D0 : toutes les valeurs vivantes en primitives `space/…`. Les irrégulières sont signalées pour un alignement du code ; aucune n'est arrondie dans Figma. |
 | ESP-06 | Rythme vertical en `vh` : il change avec la hauteur d'écran. | Figma : valeurs à 900 et 844 de haut, formule `clamp` en description. |
 | ESP-07 | Marges mobiles de 40 px (`globals.css:377,502-512,520-523`) presque toutes écrasées plus loin par `--pad`. Seul le filet de Let's talk les garde (ESP-02). | Code mort à nettoyer. |
@@ -916,7 +934,7 @@ consolidée de ces corrections clôt la section.
 
 | ID | Constat | Recommandation |
 |---|---|---|
-| RAY-01 | 5 px partout, sauf l'encadré mode d'emploi (4 px) et le menu langue (8 px). | Figma : `radius/5` comme rayon des composants. Ouvert pour 4 et 8 : gardés tels quels par défaut (§1). |
+| RAY-01 | 5 px partout, sauf l'encadré mode d'emploi (4 px) et le menu langue (8 px). | **Décidé** : 5 px, le rayon de la marque, partout. Le 4 px passe à 5 ; le 8 px aussi, car il ne sert qu'au menu de langue, qui n'est pas un grand conteneur (§1). **À corriger sur le site.** |
 | RAY-02 | Coins du footer fluides (38 → 20). | `radius/footer` avec modes desktop et mobile. |
 
 ### Ombres et effets
@@ -970,7 +988,8 @@ selon les règles du projet.
 | Nav et footer à `--pad` (60) au lieu de 56 | D3, ESP-01 |
 | Opacités ramenées aux rôles : `--muted` au lieu de `#1111118C`, papier au lieu de `#F4F6F5`, cinq rôles en mode sombre | D2, COL-01 à COL-03, COL-08, COL-09 |
 | Une seule famille de boutons, survols alignés, `.menu-btn` à .06em | D4, CMP-01, CMP-02 |
-| Styles fusionnés (`heading-1`, `heading-2`, surtitre, altimètre), approches mono à quatre valeurs, tailles mono entières | D6, TYP-02 à TYP-10 |
+| Styles fusionnés (`display` pour `.lt-big` en mobile, `heading-1`, `heading-2`, surtitre, altimètre), approches mono à quatre valeurs, tailles mono entières | D6, TYP-02 à TYP-10 |
+| Rayons de 4 et 8 px passés à 5 px : `.ev-help`, focus de `.ev-help-btn`, `.lang-menu` | RAY-01 |
 | Flèches en SVG à la place des glyphes | D8, TYP-13 |
 | États focus et désactivé | D5, CMP-04 |
 | Variables manquantes : `--blue-hover`, grain unique, courbe du roll | COL-05, EFF-02, MOT-01 |
@@ -1016,12 +1035,13 @@ i18n et un drapeau `soon` dans `lib/projects.js`. Si elle est fusionnée,
 | Tuile `.px-tile` (carte projet de l'index) | 16:9, rayon 5, fond `#0E0E0E` ; zoom du média ×1,05 en 1,1 s `--e` au survol (> 1024, souris) ; focus : contour bleu 2 px décalé de 4 |
 | Voile `.px-scrim` | dégradé vers le haut : encre .86 jusqu'à 30 %, .38 à 68 %, 0 en haut ; 42 % de la hauteur |
 | Libellé « View » `.px-view` | Space Mono Bold 11, .08em, CAPS, blanc en *difference*, suit la souris ; fondu .35 s `--e` |
-| Badge « À venir » `.px-soon` | Space Mono 10 (M 9), .12em, CAPS, papier sur encre, retrait 4 / 8, rayon 4 |
+| Badge « À venir » `.px-soon` | Space Mono 10 (M 9), .12em, CAPS, papier sur encre, retrait 4 / 8, rayon 4 (5 à l'intégration : RAY-01) |
 | Titre et catégorie | `.px-name` : Bricolage Bold `clamp(1.2rem,1.7vw,1.6rem)`, −.01em, papier, ombre de texte ; `.px-cat` : `.85rem`, papier .74 ; M 1,15 rem / .8 rem |
 | Apparition | `animation-timeline: view()`, de 0 à 55 % de l'entrée ; repli `IntersectionObserver` avec les tokens `--rv-*` |
 
 À l'intégration, elle apporterait deux composants (tuile projet, badge
-« À venir ») et des valeurs déjà connues : 8 px, rayon 4, papier .74.
+« À venir ») et des valeurs déjà connues : 8 px, papier .74, rayon 4 ramené à
+5 (RAY-01).
 
 ---
 

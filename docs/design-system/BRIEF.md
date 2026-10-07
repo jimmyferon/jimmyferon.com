@@ -66,4 +66,13 @@ D5 et D8 ajoutent dans Figma des éléments absents du code ; chacun porte l'ann
 
 Scripts de mesure de l'audit : `docs/design-system/outils/`.
 
-Pour reprendre à l'étape 2, dans une nouvelle session : rien n'a encore été créé dans Figma. Lire dans l'audit le §1 (décisions et points encore ouverts), le §2.5 (structure des couleurs), les §3.1 et §3.4 (polices et styles), le §4 (espacements et grilles) et l'annexe C (état du fichier Figma).
+## Arbitrages complémentaires (7 octobre 2026)
+
+- D7, D8 et le prolongement de D1 : validés tels que précisés au §1 de l'audit.
+- Le blanc #FFFFFF des questions FAQ et des visuels About est gardé comme couleur d'interface (surface), pas comme couleur de marque. La marque tient en trois couleurs : papier, encre, bleu.
+- RAY-01 : le rayon de 4 px passe à 5 px, le rayon de la marque. Le 8 px ne sert qu'au menu de langue, qui n'est pas un grand conteneur : il passe aussi à 5 px. L'écart est noté dans les corrections à faire sur le site.
+- TYP-05, COL-07, ESP-04 : valeurs par défaut validées. `.lt-big` est fusionné dans `display` en mobile ; la bordure #E5E5E5 du header est gardée ; la marge mobile reste à 20 px.
+
+Aucun point ne reste ouvert.
+
+Pour reprendre à l'étape 2, dans une nouvelle session : rien n'a encore été créé dans Figma. Lire dans l'audit le §1 (toutes les décisions), le §2.5 (structure des couleurs), les §3.1 et §3.4 (polices et styles), le §4 (espacements et grilles) et l'annexe C (état du fichier Figma).
