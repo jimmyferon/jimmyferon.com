@@ -68,11 +68,12 @@ en % pour Figma (−.02em = −2 %). « CAPS » signale `text-transform:uppercas
 
 ## 1. Décisions arbitrées
 
-Audit validé par Jimmy le 7 octobre 2026. Une seconde série d'arbitrages,
-le même jour, a validé les précisions de D1, D7 et D8 et tranché les derniers
-points (blanc d'interface, rayons, valeurs par défaut). Le détail de chaque
-point est en §10. Quand l'arbitrage diffère de ma recommandation, celle-ci est
-rappelée en italique.
+Audit validé par Jimmy le 7 octobre 2026. Le même jour, une seconde série
+d'arbitrages a validé les précisions de D1, D7 et D8 et tranché les derniers
+points (blanc d'interface, rayons, valeurs par défaut). Deux précisions ont
+suivi : les noirs voisins de l'encre et la version claire du logo. Le détail de
+chaque point est en §10. Quand l'arbitrage diffère de ma recommandation,
+celle-ci est rappelée en italique.
 
 | # | Question | Décision |
 |---|---|---|
@@ -97,12 +98,23 @@ rappelée en italique.
 - **Couleur d'interface, décidée** : le blanc `#FFFFFF` est gardé comme
   **surface**, en fond des questions FAQ et des visuels About. Ce n'est pas une
   couleur de marque. Avec D1, c'est son seul usage.
-- **Couleurs d'interface par défaut** : les autres teintes du §2.2 (bleu de
-  survol, bleu clair, gris, noirs voisins, gris du grain) sont rangées dans la
-  même catégorie.
-- **À noter pour la page Marque (étape 4)** : le fichier du logo `app/icon.svg`
-  (identique à `public/Fram_25.svg`) est rempli en blanc pur. Sur le site, le
-  logo clair est en papier : header sur fond sombre, footer, rideau.
+- **Autres couleurs d'interface, validées** : bleu de survol, bleu clair, gris
+  (cartes Services, bordure du header), gris du grain.
+- **Noirs voisins de l'encre** : fondus dans l'encre `#111111` quand ils n'ont
+  pas de rôle distinct.
+  - Fondus : `#161616` (fond du menu de langue sur fond sombre), `#0E0E0E` (fond
+    du visuel de la modale), `#141414` (particules du logo animé, en JS).
+  - Gardés pour leur rôle : le voile de la modale `rgba(10,10,10,.86)` et les
+    ombres noires (`rgba(0,0,0,.6)` et `.9`).
+  - Hors sujet : les deux `#000` sont techniques (masque de la liste Services,
+    canevas de calcul du logo animé, jamais affiché).
+
+  Les écarts sont notés dans les corrections à faire sur le site.
+- **Logo, version claire** : papier `#F5F5F5`, comme sur le site (header sur
+  fond sombre, footer, rideau). C'est la version « blanc » du brief pour la
+  page Marque. Le fichier `app/icon.svg`, rempli en blanc pur, est à corriger
+  (§10). La version sombre est déjà en encre `#111111` sur le site (header
+  clair, logo animé de la page About).
 
 ### D5 — périmètre et construction
 
@@ -197,8 +209,8 @@ autres couleurs du site, alphas compris, sont des couleurs d'interface (§1).
 | `#7D86FF` | bleu clair sur encre | `.ev-modal-camp` (libellé du camp dans la modale) |
 | `#E0E2E8` | fond des cartes Services | `.sv2-card` |
 | `#E5E5E5` | bordure du header clair | `header`, `header::before`, `header.compact` |
-| `#161616` | fond du menu langue sur fond sombre | `header.on-dark .lang-menu` |
-| `#0E0E0E` | fond du visuel de la modale | `.ev-modal-shot` |
+| `#161616` | fond du menu langue sur fond sombre ; fondu dans l'encre (§1) | `header.on-dark .lang-menu` |
+| `#0E0E0E` | fond du visuel de la modale ; fondu dans l'encre (§1) | `.ev-modal-shot` |
 | `#63636A` | gris du grain d'accent, manifeste | `.m-acc .mch` |
 | `#4A4A52` | même grain, « un cran plus foncé », titre mobile | `.hero-mtitle .m-acc .mch` |
 | `#1111118C` | = `--muted` réécrit en hexadécimal | nav, langue, surtitres, `.svx-toggle` (×6) |
@@ -255,7 +267,7 @@ le JS .10 / .14 (halo du logo animé).
 
 **Noir** : `rgba(0,0,0,.6)` (ombre de texte des paliers, menu langue sombre),
 `rgba(0,0,0,.9)` (ombre de la modale), `rgba(10,10,10,.86)` (voile de la
-modale).
+modale). Tous gardés : leur rôle est distinct (§1).
 
 ### 2.4 Couleurs posées dans le JS
 
@@ -264,7 +276,7 @@ modale).
 | Everest (`Everest.js`) | courbes `0x111111` à .4 ; drapeaux, mâts, grimpeur `0x1E29FF` ; trace bleue en 3 tronçons à .22 / .55 / 1 ; brouillard `0xF5F5F5` de 110 à 340 |
 | Mont Blanc (`Benefits.js`) | courbes `0xF5F5F5` à .28 (fines) et .75 (maîtresses) ; trace GPX `0x1E29FF` à .95 ; fanion SVG : mât papier .8, drapeau `#1E29FF` |
 | Lac d'Allos (`Lake3D.js`) | courbes `0xF5F5F5` à .26 / .6 ; hachures d'eau `0x1E29FF` à .55 |
-| Logo animé (`LogoReveal.js`) | carrousel et modale : encre `#1E29FF`, particules `#2A37FF`, halo bleu .14 ; page About : `#111111`, `#141414`, halo bleu .10 |
+| Logo animé (`LogoReveal.js`) | carrousel et modale : encre `#1E29FF`, particules `#2A37FF`, halo bleu .14 ; page About : `#111111`, particules `#141414` (fondu dans l'encre, §1), halo bleu .10 |
 | Champ réactif (`ReactiveField.js`) | fond clair : blanc → `rgb(13,26,255)` en *multiply* ; fond sombre : `rgb(245,245,245)` en *screen* |
 | Illustration « en construction » (`app/work/page.js`) | traits encre .5, fanion `#1E29FF`, points encre .3 à .4 |
 
@@ -304,8 +316,7 @@ propose comme sémantiques dédiées (`color/overlay/…`), pas comme rôles gé
 - **`primitives`**, un seul mode : `paper`, `ink`, `blue`, `white` (couleur
   d'interface, fonds de surface seulement),
   `blue-hover` (#0F17C2), `blue-light` (#7D86FF), `grey-card` (#E0E2E8),
-  `grey-line` (#E5E5E5), `ink-raised` (#161616), `ink-media` (#0E0E0E),
-  `grain-accent` (#63636A), `grain-accent-dark` (#4A4A52), plus les paliers
+  `grey-line` (#E5E5E5), `grain-accent` (#63636A), `grain-accent-dark` (#4A4A52), plus les paliers
   d'alpha retenus (`ink/a55`, `paper/a14`…). Couleurs saisies en {r,g,b,a}.
 - **`semantic`**, deux modes `clair` et `sombre` :
   - `color/bg/primary`, `color/bg/surface` (#FFF), `color/bg/card` (#E0E2E8) ;
@@ -828,7 +839,7 @@ Composants vivants, trouvés dans le code. En gras : ceux que cite le brief.
 | **Tags** | `.svx-pill` (filtres Services) | — | défaut, survol (bordure et texte bleus), actif (fond bleu) |
 | Bascule à chevron | `.svx-toggle`, `.lang-trigger` | — | défaut, survol, ouvert (chevron à 180°) |
 | Sélecteur de langue | `.lang`, `.lang-menu` | clair, sombre | fermé, ouvert ; option courante en gras |
-| Logo | SVG à 5 tracés dans un cercle (`Header.js`, `Footer.js`, `Veil.js`, `app/icon.svg`) | 34 (header), 44 (footer), 54 (menu du footer, opacité .12), 84 (rideau) | survol : rotation de 72° ; rotation continue (rideau, footer) |
+| Logo | SVG à 5 tracés dans un cercle (`Header.js`, `Footer.js`, `Veil.js`, `app/icon.svg`) | 34 (header), 44 (footer), 54 (menu du footer, opacité .12), 84 (rideau) ; encre sur fond clair, papier sur fond sombre (favicon `icon.svg` en blanc : à corriger) | survol : rotation de 72° ; rotation continue (rideau, footer) |
 | **Header flottant** | `header`, `nav`, `Header.js` | desktop, mobile ≤ 900 | haut de page, compact, sur fond sombre, compact sombre ; mobile : barre, compact noir, menu ouvert |
 | Menu mobile | `.hx` (extension du header) | — | fermé, ouvert (liens en cascade .10 / .16 / .22 s) |
 | **Footer** | `Footer.js` : `.lt` (Let's talk), `.foot-body` | avec lac (≥ 1400), sans lac | survols des liens, de l'e-mail, des boutons |
@@ -893,7 +904,7 @@ consolidée de ces corrections clôt la section.
 | COL-07 | Bordure du header en gris opaque `#E5E5E5`, alors que les filets du site sont en `--line` (encre .13, soit environ `#D7D7D7` sur papier). | Garder `#E5E5E5` (`color/border/header`) : le header est translucide, une bordure opaque y est cohérente. **Décidé** : gardée, comme couleur d'interface (§1). |
 | COL-08 | Bordures sur fond sombre : papier .14 en desktop, **blanc .1** pour le header mobile (`globals.css:677,686`). | Papier .14. |
 | COL-09 | 25 paliers d'alpha sur le papier, 17 sur l'encre. | D2 : rôles du §2.5. Écarts à aligner dans le code : .5 → .55, .65 / .72 / .74 → .6, .42 → .45, .16 → .14 (sauf la barre du préchargement). |
-| COL-10 | Noirs voisins : `#161616` (menu langue sombre), `#0E0E0E` (visuel de la modale), voile `rgba(10,10,10,.86)` à côté de l'encre `#111`. | Primitives `ink-raised`, `ink-media` ; sémantique `color/overlay/modal`. |
+| COL-10 | Noirs voisins : `#161616` (menu langue sombre), `#0E0E0E` (visuel de la modale), `#141414` (particules du logo animé, `LogoReveal.js:20,125`), voile `rgba(10,10,10,.86)`, à côté de l'encre `#111`. | **Décidé** : `#161616`, `#0E0E0E` et `#141414` fondus dans l'encre ; le voile reste `color/overlay/modal`, les ombres noires restent des ombres (§1). **À corriger sur le site.** |
 | COL-11 | Deux fonds de carte : blanc (FAQ, visuels About) et gris `#E0E2E8` (Services). | Deux tokens, `color/bg/surface` et `color/bg/card` : l'usage est distinct. |
 | COL-12 | Deux gris de grain d'accent, `#63636A` et `#4A4A52`. | Voulu (commentaire « un cran plus foncé ») : deux primitives. |
 
@@ -992,6 +1003,8 @@ selon les règles du projet.
 | Rayons de 4 et 8 px passés à 5 px : `.ev-help`, focus de `.ev-help-btn`, `.lang-menu` | RAY-01 |
 | Flèches en SVG à la place des glyphes | D8, TYP-13 |
 | États focus et désactivé | D5, CMP-04 |
+| Noirs voisins fondus dans l'encre : `#161616` (`header.on-dark .lang-menu`), `#0e0e0e` (`.ev-modal-shot`), `#141414` (particules, `LogoReveal.js`). Les deux `#111111` écrits en dur (`.lang-menu button.on`, `.hb-val`) passent à `var(--ink)` | COL-10 |
+| Logo clair en papier : `app/icon.svg` (favicon) rempli en `white`, à passer en `#F5F5F5`. Même remplissage dans `public/Fram_25.svg`, copie identique que rien ne référence dans le dépôt | logo (§1) |
 | Variables manquantes : `--blue-hover`, grain unique, courbe du roll | COL-05, EFF-02, MOT-01 |
 | Alignements tablette : filet de Let's talk, footer en `--pad` | ESP-02, ESP-03 |
 | Nettoyage : CSS mort, blocs sans effet, règles en double, seuils hors règle | annexe B, ESP-04, ESP-07, MOT-03, BRK-01, BRK-02, CMP-03, CMP-05 |
@@ -1032,7 +1045,7 @@ i18n et un drapeau `soon` dans `lib/projects.js`. Si elle est fusionnée,
 | Élément | Valeurs |
 |---|---|
 | Grille `.px-grid` | 2 colonnes, gouttière 8 ; retrait de page 8 (« exceptions assumées », reprises de son wireframe) ; 1 colonne ≤ 900 |
-| Tuile `.px-tile` (carte projet de l'index) | 16:9, rayon 5, fond `#0E0E0E` ; zoom du média ×1,05 en 1,1 s `--e` au survol (> 1024, souris) ; focus : contour bleu 2 px décalé de 4 |
+| Tuile `.px-tile` (carte projet de l'index) | 16:9, rayon 5, fond `#0E0E0E` (encre à l'intégration : noirs voisins, §1) ; zoom du média ×1,05 en 1,1 s `--e` au survol (> 1024, souris) ; focus : contour bleu 2 px décalé de 4 |
 | Voile `.px-scrim` | dégradé vers le haut : encre .86 jusqu'à 30 %, .38 à 68 %, 0 en haut ; 42 % de la hauteur |
 | Libellé « View » `.px-view` | Space Mono Bold 11, .08em, CAPS, blanc en *difference*, suit la souris ; fondu .35 s `--e` |
 | Badge « À venir » `.px-soon` | Space Mono 10 (M 9), .12em, CAPS, papier sur encre, retrait 4 / 8, rayon 4 (5 à l'intégration : RAY-01) |

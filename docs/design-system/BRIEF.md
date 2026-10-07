@@ -75,4 +75,11 @@ Scripts de mesure de l'audit : `docs/design-system/outils/`.
 
 Aucun point ne reste ouvert.
 
-Pour reprendre à l'étape 2, dans une nouvelle session : rien n'a encore été créé dans Figma. Lire dans l'audit le §1 (toutes les décisions), le §2.5 (structure des couleurs), les §3.1 et §3.4 (polices et styles), le §4 (espacements et grilles) et l'annexe C (état du fichier Figma).
+## Précisions (7 octobre 2026)
+
+- Couleurs d'interface : validées, sauf les noirs voisins de l'encre #111111. Ils sont fondus dans l'encre quand ils n'ont pas de rôle distinct : #161616, #0E0E0E, #141414. Le voile de la modale et les ombres noires gardent leur valeur. Les écarts sont notés dans les corrections à faire sur le site.
+- Logo : la version claire est en papier #F5F5F5, comme sur le site. app/icon.svg, rempli en blanc pur, est ajouté aux corrections à faire.
+
+## Pour reprendre à l'étape 2
+
+Dans une nouvelle session : rien n'a encore été créé dans Figma. Lire dans l'audit le §1 (toutes les décisions), le §2.5 (structure des couleurs), les §3.1 et §3.4 (polices et styles), le §4 (espacements et grilles) et l'annexe C (état du fichier Figma).
