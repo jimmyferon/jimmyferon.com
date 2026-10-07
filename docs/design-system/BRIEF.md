@@ -42,3 +42,28 @@ Pour chacun : variantes, états (défaut, survol, actif, désactivé), auto layo
 STOP.
 
 Bonus : écris un DESIGN.md du système, au même format que mes références dans ~/.claude/references/design-md/.
+
+---
+
+## Arbitrages de l'étape 1 (7 octobre 2026)
+
+Audit validé : `docs/design-system/audit.md`. Le détail et les valeurs sont au §1 de l'audit.
+D5 et D8 ajoutent dans Figma des éléments absents du code ; chacun porte l'annotation « pas encore dans le code ».
+
+- D0 — Système rationalisé : couleurs et typo par rôle, chaque rôle reprenant une valeur qui existe dans le code ; espacements et rayons fidèles au code.
+- D1 — Texte sur fond coloré en papier #F5F5F5, pour rester sur les trois couleurs de marque.
+- D2 — Mode sombre : cinq rôles d'opacité (texte secondaire .6, libellé .55, discret .45, filet .14, filet appuyé .28).
+- D3 — Marges desktop : 60 pour la nav et le footer, 112 pour les sections.
+- D4 — Un seul composant bouton : primaire, encre, contour ; tailles md et sm.
+- D5 — Exception à la règle 1, pour Figma uniquement : un état désactivé et un état focus clavier visible sur les boutons, les CTA et les autres éléments cliquables. Construits uniquement avec les fondations existantes, sans nouvelle valeur. Chaque état ajouté porte l'annotation « pas encore dans le code ».
+- D6 — 33 styles de texte, en jeux desktop et mobile.
+- D7 — Les huit titres sans interlignage propre prennent l'interlignage des autres titres du code. L'écart est noté au §10 de l'audit comme correction à faire sur le site.
+- D8 — Les flèches → ↗ ↔ sont dessinées en icônes vectorielles (composants), annotées « pas encore dans le code ».
+- D9 — Bricolage Grotesque : axe opsz réglé sur la taille du texte (12–96).
+- D10 — Noms sémantiques en minuscules ; nom CSS en code syntax.
+- D11 — Grain : effet natif et motif image à comparer à l'étape 2.
+- D12 — Page Projets (PR #19) intégrée après sa fusion.
+
+Scripts de mesure de l'audit : `docs/design-system/outils/`.
+
+Pour reprendre à l'étape 2, dans une nouvelle session : rien n'a encore été créé dans Figma. Lire dans l'audit le §1 (décisions et points encore ouverts), le §2.5 (structure des couleurs), les §3.1 et §3.4 (polices et styles), le §4 (espacements et grilles) et l'annexe C (état du fichier Figma).
