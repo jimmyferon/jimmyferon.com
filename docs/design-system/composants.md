@@ -220,6 +220,7 @@ deux lignes existantes :
 |---|---|
 | Flèches des boutons en SVG de 12 px (grille 24, trait 1,6 mis à l'échelle), écart 8 | D8, TYP-13 |
 | Focus visible : contour de 2 px `--blue` décalé de 2 sur les boutons, les liens de nav et les filtres | D5, CMP-04 |
+| Croix de la modale (`.ev-modal-x`) : fond papier .12 et survol des flèches (fond papier, icône encre), au lieu de .1 et .22 | partie 2, arbitrage du 8 octobre |
 
 ## 6. Pour la page Motion (étape 4)
 
@@ -230,6 +231,47 @@ deux lignes existantes :
   décalage : la page Motion doit le montrer.
 - **Flèche des boutons au survol** : rotation de 45° en .3 s, `var(--e)` sur
   `.btnf`, `cubic-bezier(.65,0,.2,1)` sur `.cta`.
+
+## Partie 2 : en cours (8 octobre 2026, interrompue par la limite d’usage)
+
+Construit dans Figma, vérifié par capture, **pas encore validé**. Planches
+ajoutées sous `planche/tag`, empilées à x = 0 :
+
+| Planche | Nœud | Composants |
+|---|---|---|
+| `planche/icones-interface` | `169:134` | `icon/close` `169:141`, `plus` `169:148`, `minus` `169:154`, `fullscreen-enter` `169:160`, `fullscreen-exit` `169:166`, `icon/flake` (open) `170:151`, `chevron-down` `170:156`, `figma` `170:163` |
+| `planche/logo` | `171:134` | `logo` `171:144` |
+| `planche/surtitre` | `172:149` | `eyebrow` `172:153` |
+| `planche/bouton-icone` | `173:161` | `icon-button/solid` `173:185` (38), `tint` `174:204` (40, 36, mode sombre), `bare` `174:251` (30, 26) |
+| `planche/bouton-menu` | `175:221` | `menu-button` `175:340` (button ink · sm + flocon) |
+| `planche/grain` | `176:338` | `grain` `176:345` (site, card, row) |
+| `planche/crete` | `177:344` | `ridge` `177:356` (dark, light × desktop 1200, mobile 390) |
+| `planche/langue` | `178:345` | `lang/option` `178:364`, `lang` `178:392`, `lang/toggle` `180:588` |
+| `planche/header` | `179:368` | `header/desktop` `179:461` (top, compact), `header/mobile` `181:615` (top, compact, menu-open) |
+| `planche/liens` | `180:506` | `link/menu` `180:526`, `link/social` `180:539` |
+| `planche/carte-projet` | `183:586` | `card/project` `183:656` (visuel, logo animé, barre) |
+
+Reste à faire : modale, accordéon FAQ, footer (avec `link/footer`, `link/email`,
+`link/top`, capture du lac), drapeaux de sommet (étiquette, fanion, indicateur
+de bord), altimètre, encadré mode d’emploi, carte et ligne Services ; puis le
+contrôle final (peintures liées, styles, descriptions, annotations).
+
+Ajouts validés le 8 octobre 2026 (aucune valeur nouvelle) :
+
+- jeton `color/overlay/button` (papier .12, `.ev-modal-x` .1 fusionné) ;
+- scope `SHAPE_FILL` sur `color/text/primary` (logo, marque Figma) et
+  `color/text/on-accent` (pastille de la ligne Services) ;
+- survol de `.ev-modal-x` aligné sur celui des flèches (correction à faire,
+  §5) ; icône par défaut commune à chaque jeu de boutons icônes (flèche,
+  plus) ;
+- styles `sign` (± de la FAQ, Bricolage Regular 20,8) et `help-strong` (Bold
+  du mode d’emploi) ; altimètre sur la hiérarchie du hero clair ; papier .26
+  (`.foot-topbtn`) rattaché à `color/text/subtle`.
+
+Notes techniques : les WebP importés ne s’affichent pas dans Figma (convertir
+en JPEG avec le navigateur) ; une planche qui grandit recouvre la suivante,
+il faut réempiler ; la propriété de permutation d’icône est commune à tout un
+jeu. Mesures du site : `outils/mesure-grands-composants.mjs`.
 
 ## 7. Notes pour la partie 2
 

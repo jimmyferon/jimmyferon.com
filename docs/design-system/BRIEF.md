@@ -170,3 +170,44 @@ Dans une nouvelle session :
 l'étape 3 le papier .26 (footer), le composant grain et les variantes des
 cartes et lignes Services, et les décalages de la crête. Ni les cartes
 Services ni la crête ne figurent dans la liste de la partie 2.
+
+## Ouverture de la partie 2 (8 octobre 2026)
+
+Réponse à la question ci-dessus : **oui**. La partie 2 ajoute :
+
+- les cartes et les lignes Services ;
+- le composant grain ;
+- la crête, en variantes claire et sombre. Son animation sera documentée sur
+  la page Motion, à l'étape 4.
+
+Ordre de la partie 2 : bouton icône et bouton menu d'abord, puis les grands
+composants.
+
+## Ajout à l'étape 4 : planche « Univers graphique » (8 octobre 2026)
+
+Sur la page Marque, une planche « Univers graphique » rassemble les motifs du
+site :
+
+- les courbes de niveau ;
+- la trace bleue ;
+- la neige pixel ;
+- le grain ;
+- la crête ;
+- des captures du lac, du Mont Blanc et de l'Everest, tels qu'ils
+  apparaissent sur le site.
+
+## Arbitrages de l'étape 3, partie 2 (8 octobre 2026)
+
+Validés en cours de partie 2, aucune valeur nouvelle :
+
+- jeton `color/overlay/button` (papier .12, fond des boutons de la modale) et
+  scope remplissage sur `color/text/primary` et `color/text/on-accent` ;
+- survol de la croix de la modale aligné sur celui des flèches, noté dans les
+  corrections à faire sur le site ;
+- une icône par défaut par jeu de boutons icônes (flèche, plus), les autres
+  par permutation ;
+- styles `sign` (± de la FAQ) et `help-strong` (gras du mode d'emploi) ;
+- altimètre sur la hiérarchie du hero clair ;
+- papier .26 (`.foot-topbtn`) rattaché à `color/text/subtle`.
+
+Les nouveaux rôles sont ajoutés à la page Fondations.
