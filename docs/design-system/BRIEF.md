@@ -127,3 +127,46 @@ Dans une nouvelle session :
 - relire le fichier Figma lui-même : les corrections faites à la main priment.
 
 L'annexe C de l'audit décrit le fichier avant l'étape 2.
+
+## Étape 3, partie 1 : petits composants (8 octobre 2026)
+
+Construits dans Figma, vérifiés et validés : icônes de flèche, effet roll,
+bouton, lien de navigation, tag. Le détail est dans
+`docs/design-system/composants.md` : inventaire, identifiants, mesures,
+arbitrages.
+
+## Arbitrages de l'étape 3, partie 1 (8 octobre 2026)
+
+- **Boutons** : hauteurs `md` 44 et `sm` 34, issues de l'échelle, validées.
+- **Style `nav-active`** (desktop et mobile) ajouté : les valeurs de `nav` en
+  Bold, aucune valeur nouvelle. 61 styles de texte.
+- **Scope `STROKE_COLOR`** ajouté à `color/text/primary`, `on-accent`,
+  `on-inverse`, `subtle` et `color/bg/inverse` (traits des icônes, bordure de
+  la couleur du fond).
+- **`ghost` · `sm`** gardé, annoté « pas encore dans le code », pour que la
+  grille de variantes reste complète.
+- **`↔`** redessinée : tige de 2 à 22, pointes de la modale et trait de 1,6
+  inchangés, vérifiée à 12 px.
+- **Bouton icône et bouton menu** : en ouverture de la partie 2.
+- **Roll, pour la page Motion (étape 4)** : le site décale chaque lettre de
+  20 ms ; le composant Figma ne le reproduit pas.
+
+## Pour reprendre à la partie 2 de l'étape 3
+
+Dans une nouvelle session :
+
+- lire `docs/design-system/composants.md` : identifiants des planches et des
+  composants, clés des propriétés, choix et mesures, et le §7 (notes
+  techniques pour use_figma) ;
+- relire dans l'audit le §9 (liste des composants) et le §10 (incohérences par
+  composant) ;
+- relire le fichier Figma lui-même : les corrections faites à la main priment ;
+- commencer par le bouton icône (CMP-08) et le bouton menu (`.menu-btn`,
+  flocon, ouvert et fermé), puis les grands composants : header, cartes
+  projet, modale, accordéon FAQ, footer, drapeaux de sommet, altimètre,
+  encadré mode d'emploi.
+
+À trancher en ouvrant la partie 2 : le §7 de `fondations.md` attend encore de
+l'étape 3 le papier .26 (footer), le composant grain et les variantes des
+cartes et lignes Services, et les décalages de la crête. Ni les cartes
+Services ni la crête ne figurent dans la liste de la partie 2.

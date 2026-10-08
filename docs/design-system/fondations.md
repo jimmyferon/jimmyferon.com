@@ -18,7 +18,7 @@ l'audit validé (`docs/design-system/audit.md`).
 | Collection `primitives` | mode `valeur` · 68 variables : 49 couleurs, 14 pas d'espacement `space/…`, 5 `radius/…` |
 | Collection `semantic` | modes `clair` et `sombre` · 26 couleurs, toutes en alias de primitives |
 | Collection `responsive` | modes `desktop` (1440 × 900) et `mobile` (390 × 844) · 21 jetons |
-| Styles de texte | 59 : 29 `text/desktop/…`, 30 `text/mobile/…` |
+| Styles de texte | 61 : 30 `text/desktop/…`, 31 `text/mobile/…` (59 à l'étape 2 ; `nav-active` ajouté à l'étape 3, voir `composants.md`) |
 | Styles d'effet | 13 : 9 `shadow/…`, 4 `blur/…` |
 | Style de remplissage | 1 : `effect/grain` |
 | Styles de grille | 20 : `grid/{largeur}/{usage}` |
@@ -123,7 +123,8 @@ Les pas 48, 80 et 96 servent aux valeurs fluides des composants
 ## 3. Styles
 
 - **Texte.**
-  - Les 33 styles du §3.4, en deux jeux (D6).
+  - Les 33 styles du §3.4, en deux jeux (D6), plus `nav-active` à l'étape 3
+    (les valeurs de `nav` en Bold).
   - Bricolage porte son axe `opsz` réglé sur la taille, borné à 12–96 (D9).
   - Les huit titres de D7 prennent l'interlignage retenu.
   - Classes CSS et formules en description (D10).
