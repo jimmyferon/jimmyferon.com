@@ -23,7 +23,9 @@ Toutes les commandes se lancent depuis la racine du dépôt.
 | `grain-rendu.mjs` | Étape 2, test D11 : rend seul le motif de grain de `body::after` (PNG transparent 240 × 240) et capture `/work` en 1440 × 900. |
 | `grain-mesure.mjs` | Étape 2, test D11 : luminance, écart-type, écart entre voisins et chroma de PNG (captures d'échantillons de grain). |
 | `cta-mobile.mjs` | Étape 2 : le double CTA du hero tient-il en 11 px / .06em à 390 px ? Place attribuée et largeur naturelle de chaque bouton, en FR et en EN, et plus petite largeur d'écran qui tient. |
-| `ecarts-espacement.mjs` | Étape 2 : rattache chaque padding, margin et gap en px fixe au pas le plus proche de l'échelle Figma (base 4) et liste les écarts, règle par règle, en tableau Markdown. Sans réseau ni navigateur. |
+| `ecarts-espacement.mjs` | Historique, étape 2 : rattache chaque padding, margin et gap en px fixe au pas le plus proche de l'échelle base 4, abandonnée le 8 octobre 2026, et liste les écarts. Sans réseau ni navigateur. |
+| `usages-espacement.mjs` | Depuis le 8 octobre 2026 : pour chaque valeur fixe de padding, margin ou gap du code, les règles vivantes qui l'utilisent (tableau Markdown, ou JSON avec `--json`). Sert aux descriptions des primitives `space/…`. |
+| `regles-css.mjs` | Toutes les règles de `globals.css` dont un sélecteur correspond à un motif, avec ligne et contexte `@media` : le code exact d'un composant, états et points de rupture compris. |
 | `mesure-petits-composants.mjs` | Étape 3 : boîtes des boutons, du CTA du header, des liens de nav et des filtres Services en 1440 × 900, et encre réelle des flèches → et ↗ (métriques du canevas, puis pixels d'une capture à l'échelle 8). Sert à dimensionner les icônes de flèche dans les boutons. |
 | `capture-scene.mjs` | Étape 3, partie 2 (et étape 4) : capture un élément du site sur fond transparent, tout le reste de la page masqué (fonds et grain compris). Sert aux scènes WebGL (lac de Let's talk, Everest, Mont Blanc), à poser dans Figma sur leurs propres fonds. Le cadre de découpe peut être un parent, quand la scène déborde de la page (le lac sort à −100,8 px). |
 | `mesure-grands-composants.mjs` | Étape 3, partie 2 : boîtes et styles calculés des grands composants (header, menu mobile, boutons icônes, carte projet, modale, FAQ, footer, étiquettes de sommet, altimètres, mode d'emploi, cartes et lignes Services, crête), en 1440 × 900 à la souris puis en 390 × 844 au doigt. En option, captures de référence (header, modale, FAQ, Let's talk, footer, menu mobile). |
@@ -55,8 +57,14 @@ node docs/design-system/outils/grain-mesure.mjs <chemin du navigateur> <dossier 
 # CTA du hero mobile en 11 px (étape 2)
 node docs/design-system/outils/cta-mobile.mjs <chemin du navigateur> <dossier de profil>
 
-# Écarts entre les espacements du code et l'échelle base 4 (étape 2)
+# Écarts entre les espacements du code et l'échelle base 4 (étape 2, historique)
 node docs/design-system/outils/ecarts-espacement.mjs app/globals.css .
+
+# Usages de chaque valeur d'espacement du code (règle du 8 octobre)
+node docs/design-system/outils/usages-espacement.mjs app/globals.css . [--json]
+
+# Règles d'un composant, @media compris (ici les boutons)
+node docs/design-system/outils/regles-css.mjs app/globals.css '\.(btnf|cta|menu-btn)\b'
 
 # Boîtes des petits composants et encre des flèches (étape 3)
 node docs/design-system/outils/mesure-petits-composants.mjs <chemin du navigateur> <dossier de profil>
