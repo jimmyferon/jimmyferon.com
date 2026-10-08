@@ -211,3 +211,33 @@ Validés en cours de partie 2, aucune valeur nouvelle :
 - papier .26 (`.foot-topbtn`) rattaché à `color/text/subtle`.
 
 Les nouveaux rôles sont ajoutés à la page Fondations.
+
+## Étape 3, partie 2 : grands composants (8 octobre 2026)
+
+Construits dans Figma et contrôlés, en attente de validation : icônes
+d'interface, logo, surtitre, boutons icônes, bouton menu, grain, crête,
+sélecteur de langue, header (desktop et mobile), liens, carte projet,
+modale, accordéon FAQ, altimètre, mode d'emploi, drapeaux de sommet, carte
+et ligne Services, footer. Le détail est dans `docs/design-system/composants.md`,
+§8 à §14 : inventaire, identifiants, choix, mesures, corrections à faire sur
+le site, notes pour la page Motion.
+
+Six points restent à trancher (§11 de `composants.md`) : scope trait sur
+`text/label` et `text/muted`, retrait de première ligne dans `display`,
+« Expert » en `overline`, lueurs liées à une primitive, mode d'emploi rangé
+ouvert à 11 px, rayon des cadres de jeux.
+
+## Pour reprendre à l'étape 4
+
+Dans une nouvelle session :
+
+- lire `docs/design-system/composants.md` (§6 et §13 pour la page Motion,
+  §8 pour les identifiants) et `fondations.md` ;
+- relire le fichier Figma lui-même : les corrections faites à la main
+  priment ;
+- page Marque : logo (construction à 72°, zone de protection, taille
+  minimum, versions encre, papier et bleu ; le composant `logo` existe sur
+  la page Composants), favicon, puis la planche « Univers graphique » ; les
+  captures des scènes se font avec `outils/capture-scene.mjs` (fond
+  transparent, cadre et échelle au choix) ;
+- anatomie, specs et usages de chaque composant ; page Motion.

@@ -16,9 +16,9 @@ l'audit validé (`docs/design-system/audit.md`).
 |---|---|
 | Pages | Fondations `113:3`, Composants `113:4`, Marque `113:5`, Motion `113:6`, ajoutées après Matière et Templates, qui n'ont pas été touchées |
 | Collection `primitives` | mode `valeur` · 68 variables : 49 couleurs, 14 pas d'espacement `space/…`, 5 `radius/…` |
-| Collection `semantic` | modes `clair` et `sombre` · 26 couleurs, toutes en alias de primitives |
+| Collection `semantic` | modes `clair` et `sombre` · 27 couleurs, toutes en alias de primitives (26 à l'étape 2 ; `overlay/button` ajouté à l'étape 3, partie 2) |
 | Collection `responsive` | modes `desktop` (1440 × 900) et `mobile` (390 × 844) · 21 jetons |
-| Styles de texte | 61 : 30 `text/desktop/…`, 31 `text/mobile/…` (59 à l'étape 2 ; `nav-active` ajouté à l'étape 3, voir `composants.md`) |
+| Styles de texte | 64 : 32 `text/desktop/…`, 32 `text/mobile/…` (59 à l'étape 2 ; `nav-active` ajouté à la partie 1 de l'étape 3, `sign` et `help-strong` à la partie 2, voir `composants.md`) |
 | Styles d'effet | 13 : 9 `shadow/…`, 4 `blur/…` |
 | Style de remplissage | 1 : `effect/grain` |
 | Styles de grille | 20 : `grid/{largeur}/{usage}` |
@@ -76,7 +76,7 @@ lui-même (fonds et textes en jetons sémantiques, styles de texte, `space/…`)
 | Texte | `text/primary`, `muted`, `label`, `subtle`, `on-accent`, `on-accent-muted`, `on-accent-subtle`, `on-inverse` |
 | Accent | `accent/default`, `hover`, `on-dark` |
 | Bordure | `border/default`, `strong`, `header` |
-| Voile | `overlay/header`, `header-compact`, `header-mobile` (.97), `modal`, `dim` (.7), `flag` |
+| Voile | `overlay/header`, `header-compact`, `header-mobile` (.97), `modal`, `dim` (.7), `flag`, `button` (papier .12, boutons de la modale ; étape 3, partie 2) |
 | Ombre | `shadow/menu` |
 
 ### `responsive` (desktop / mobile)
@@ -124,7 +124,15 @@ Les pas 48, 80 et 96 servent aux valeurs fluides des composants
 
 - **Texte.**
   - Les 33 styles du §3.4, en deux jeux (D6), plus `nav-active` à l'étape 3
-    (les valeurs de `nav` en Bold).
+    (les valeurs de `nav` en Bold), puis `sign` (± de la FAQ, Bricolage
+    Regular 20,8, desktop et mobile) et `help-strong` (les valeurs de `help`
+    en Bold) à la partie 2.
+  - `display` porte le retrait de première ligne du code (`text-indent`,
+    144 en desktop, 56 en mobile), ajouté à la partie 2 (à valider).
+  - Scopes ajoutés aux jetons de texte pour les icônes et le logo en
+    currentColor : `STROKE_COLOR` sur `primary`, `on-accent`, `on-inverse`,
+    `subtle` (partie 1), `label` et `muted` (partie 2, à valider) ;
+    `SHAPE_FILL` sur `primary` et `on-accent` (partie 2).
   - Bricolage porte son axe `opsz` réglé sur la taille, borné à 12–96 (D9).
   - Les huit titres de D7 prennent l'interlignage retenu.
   - Classes CSS et formules en description (D10).
@@ -271,6 +279,12 @@ crête sont écartés.
   390, puis les rattacher aux pas.
 - **Crête** : ses décalages (470, −604,8…) iront avec le composant.
 - **États focus et désactivé** (D5).
+
+Tout est fait à l'étape 3 (`composants.md`) : papier .26 rattaché à
+`color/text/subtle` ; composant `grain` (site, card, row) ; tailles `md` 44
+et `sm` 34 validées ; valeurs fluides résolues (§10 de `composants.md`) ;
+composant `ridge` avec ses décalages ; états focus et désactivé sur tous les
+éléments cliquables.
 
 ## 8. Outils
 
