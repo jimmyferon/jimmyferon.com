@@ -1,23 +1,22 @@
 # Composants — étape 3
 
 Étape 3 du brief (`docs/design-system/BRIEF.md`) : les composants du site,
-construits dans Figma à partir du code et des seules fondations de l'étape 2
+construits dans Figma à partir du code et des fondations
 (`docs/design-system/fondations.md`).
+
+> **Règle du 8 octobre 2026, prioritaire.** Le site ne change pas : les
+> valeurs du code sont les bonnes, et les composants les reproduisent
+> exactement. Les deux parties ont été reprises ce jour-là (§5 et §12) ; les
+> listes « corrections à faire sur le site » n'existent plus.
 
 - **Date** : 8 octobre 2026
 - **Branche** : `design-system`
 - **Fichier Figma** : `kMLD5Ti9yCpnKU4jdVfWDJ`, page Composants (`113:4`)
-- **Statut** : partie 1 (petits composants) validée le 8 octobre 2026, avec
-  les arbitrages du §4, appliqués dans Figma. Partie 2 (grands composants)
-  construite et contrôlée le 8 octobre 2026 (§8 à §14), en attente de
-  validation pour les points du §11.
+- **Statut** : partie 1 (petits composants) validée le 8 octobre 2026 ; partie
+  2 (grands composants) construite le même jour ; les deux reprises aux
+  valeurs exactes du code le 8 octobre (§5, §12), en attente de validation
 
 ## 1. Ce qui existe dans Figma
-
-Relecture du fichier avant de commencer : variables (68 + 26 + 21), 59 styles
-de texte, 13 styles d'effet, `effect/grain`, 20 grilles et les 9 planches de la
-page Fondations sont identiques à la fin de l'étape 2. Aucune correction
-manuelle ni annotation n'a été trouvée.
 
 La page Composants suit le gabarit de la page Fondations : planches de 1440 de
 large, retrait `space/112`, écart `space/40`, fond `color/bg/primary`, titre en
@@ -28,7 +27,7 @@ large, retrait `space/112`, écart `space/40`, fond `color/bg/primary`, titre en
 | `planche/en-tete` | `143:2` | titre et résumé |
 | `planche/icones` | `143:6` | 4 icônes de flèche ; tailles d'usage 24, 18, 12, et `↔` à 12 (`155:166`) |
 | `planche/roll` | `143:10` | jeu `roll` et légende du mécanisme |
-| `planche/bouton` | `143:14` | jeu `button` en grille (`148:26`) ; exemples en clair et en sombre (`153:90`) |
+| `planche/bouton` | `143:14` | jeu `button` en grille de huit rangées (`148:26`) ; exemples en clair et en sombre (`153:90`) |
 | `planche/lien-nav` | `143:18` | jeu `link/nav` ; nav en clair et en sombre (`155:131`) |
 | `planche/tag` | `143:22` | jeu `tag` ; rangée de filtres de l'index Services (`155:106`) |
 
@@ -39,17 +38,11 @@ large, retrait `space/112`, écart `space/40`, fond `color/bg/primary`, titre en
 | `icon/arrow-left-right` | `144:17` | — | — |
 | `icon/arrow-left` | `144:23` | — | — |
 | `roll` | `145:8` | `state` : default, hover | `label#145:0` |
-| `button` | `148:27` | `style` (primary, ink, ghost) × `size` (md, sm) × `state` (default, hover, focus, disabled) : 24 | `label#148:0`, `icon#148:25`, `show icon#148:50`, `icon start#148:75`, `show icon start#148:100` |
+| `button` | `148:27` | `family` (btnf, btn) × `style` (primary, ink, ghost) × `size` (md, sm) × `state` (default, hover, focus, disabled) : 32 ; la famille `btn` n'a que primary et ink en md, comme le code | `label#148:0`, `icon#148:25`, `show icon#148:50`, `icon start#148:75`, `show icon start#148:100` |
 | `link/nav` | `154:139` | `state` : default, hover, active, focus, disabled | `label#154:0` |
 | `tag` | `155:105` | `state` : default, hover, active, focus, disabled | `label#155:0` |
 
-Contrôle final, après les arbitrages :
-- 346 peintures pleines sur 346 liées à une variable, chacune dans son scope ;
-- aucun retrait, écart ou rayon en dur, hors épaisseurs de trait (§3) ;
-- un style de texte sur chacun des 142 textes ;
-- une description sur chaque composant ;
-- « pas encore dans le code » sur 3 icônes, 18 variantes (focus et disabled
-  partout, plus ghost · sm en default et hover) et les 24 flèches du bouton.
+Le contrôle de toute la page est au §8.
 
 ## 2. Composants
 
@@ -68,8 +61,9 @@ Contrôle final, après les arbitrages :
   comme le `currentColor` du code. Le jeton a le scope `STROKE_COLOR`.
 - Tailles d'usage par mise à l'échelle, le trait suit comme dans un SVG :
   18 px dans la modale (trait 1,2), 12 px dans un bouton (trait 0,8).
-- Annotées « pas encore dans le code » : `arrow-right`, `arrow-up-right`,
-  `arrow-left-right`. `arrow-left` existe tel quel dans le code.
+- Propres à Figma, annotées « pas encore dans le code » : `arrow-right`,
+  `arrow-up-right`, `arrow-left-right`. `arrow-left` existe tel quel dans le
+  code.
 
 ### `roll`
 
@@ -77,68 +71,70 @@ Contrôle final, après les arbitrages :
   la même propriété `label`.
 - `default` : la première copie occupe la fenêtre. `hover` : la pile a monté
   de 100 %.
-- Écarts avec le code, documentés dans la description :
-  - une seule pile pour tout le libellé, sans les 20 ms de décalage par
-    caractère ;
-  - la fenêtre prend l'interlignage du style (18 px pour `button`) au lieu de
-    1,18 em. Le rendu statique est identique.
+- La fenêtre a la hauteur de ligne du code, `.roll .rl{line-height:1.18}` :
+  style `button-roll` (13 px pour 11 px), `nav-roll` dans la nav.
+- Écart avec le code, documenté dans la description : une seule pile pour tout
+  le libellé, sans les 20 ms de décalage par caractère (page Motion).
 
 ### `button` (D4)
 
-| style | default | hover |
-|---|---|---|
-| primary (`.btn-blue`, `.btnf-blue`, `.cta`) | fond et filet `accent/default`, texte et icône `text/on-accent` | fond et filet `accent/hover` |
-| ink (`.btn-ink`, `.btnf-ink`, `.sv2-cta`) | fond et filet `bg/inverse`, texte `text/on-inverse` | fond et filet `accent/default`, texte `text/on-accent` |
-| ghost (`.btnf-ghost`) | sans fond, filet `border/strong`, texte `text/primary` | fond et filet `bg/inverse`, texte `text/on-inverse` |
+Deux familles, comme le code. `.btn-blue` et `.btn-ink` s'emploient toujours
+avec `.btnf`, dont ils ne changent que les survols.
 
-- **focus** : l'apparence de default, plus le contour de focus (§3).
-- **disabled** : sans fond, filet `border/default`, texte et icône
-  `text/subtle`, quel que soit le style.
+| family · style | Classes | default | hover |
+|---|---|---|---|
+| btnf · primary | `.btnf-blue` | fond et filet `accent/default`, texte et icône `text/on-accent` (#fff) | fond `accent/hover`, filet bleu gardé |
+| btnf · ink | `.btnf-ink` | fond et filet `bg/ink`, texte #fff | aucun changement de couleur |
+| btnf · ghost | `.btnf-ghost` | sans fond, filet `border/strong`, texte `text/primary` | fond et filet `bg/inverse`, texte `text/on-inverse` |
+| btn · primary | `.btn-blue` | comme btnf · primary | fond et filet `accent/hover` |
+| btn · ink | `.btn-ink`, `.sv2-cta` | comme btnf · ink | fond et filet `accent/default`, texte #fff |
+
 - **Tailles** :
-  - `md` : retraits `space/12` / `space/24`, bordure de 1 px comprise dans la
-    mise en page, comme la bordure CSS : 44 px ;
-  - `sm` : retraits `space/8` / `space/16`, sans bordure (`.cta`) : 34 px.
-  - Figma arrondit l'interlignage de 160 % à 18 px : 12 + 18 + 12 + 2 = 44 et
-    8 + 18 + 8 = 34, les hauteurs validées. Sur le site corrigé : 43,6 et
-    33,6.
-- Écart `space/8`, rayon `radius/5`, style `text/desktop/button`, libellé
-  papier sur aplat (D1).
+  - `md` = `.btnf` : padding 13px 24px (`space/13`, `space/24`), gap 9px,
+    bordure de 1 px comprise : 45,6 px, comme le site (45,59) ;
+  - `sm` · primary = `.cta` (CTA du header) : padding 9px 14px, gap 7px, sans
+    bordure, libellé papier (`text/cta`), flèche #fff : 35,6 px ;
+  - `sm` · ink = `.menu-btn` : padding 9px 14px, gap 8px, sans bordure, style
+    `nav` (.08em, line-height normal), papier sur encre, encre sur papier en
+    mode sombre, pas de survol : 34 px sans flèche ;
+  - `sm` · ghost : propre à Figma (annoté), padding 9px 14px, gap 7px, filet
+    intérieur.
+- **Roll** : lettres en `button-roll` (13 px de haut). La flèche dessinée se
+  place dans un emplacement de 12 × 17,6, la boîte de ligne du glyphe du code
+  (`.arr`, 11 px × 1,6) : c'est lui qui donne la hauteur du bouton.
+- Rayon `radius/5`.
 - **Survol** : le roll monte et la flèche tourne de 45° autour du centre de son
-  emplacement de 12 px, sans changer la largeur du bouton, comme un
-  `transform` CSS.
-- **Modes** :
-  - en mode sombre, `ink` devient papier sur encre : c'est `.menu-btn` sur fond
-    sombre ;
-  - `ghost` se pose en mode sombre : `.btnf-ghost` n'existe que sur fond
-    sombre.
-- `ghost` · `sm` n'existe pas dans le code. Ses quatre variantes portent
-  « pas encore dans le code » ; elles gardent la grille complète, pour que le
-  changement de taille fonctionne sur toutes les instances.
-- `icon start` : emplacement de tête, masqué par défaut, prévu pour le bouton
-  menu (flocon à gauche, partie 2).
-- Exemples de la planche : libellés i18n réels (`ab.more`, `ab.cv`, `sv.cta`,
-  `cta.together`, `cw.all`, `lt.cta`, `foot.about`).
+  emplacement, sans changer la largeur du bouton, comme un `transform` CSS.
+- **Modes** : `ghost` se pose en mode sombre (`.btnf-ghost` n'existe que sur
+  fond sombre) ; `ink` · `md` garde son encre dans les deux modes, comme le
+  code ; `ink` · `sm` s'inverse en mode sombre, comme `.menu-btn` dans le
+  header compact.
+- `icon start` : emplacement de tête, masqué par défaut, pour le flocon du
+  bouton menu.
+- Exemples de la planche : libellés i18n réels ; About en famille `btn`
+  (`ab.more`, `ab.cv`), Services au survol (`sv.cta`, `.sv2-cta`), CTA du
+  header ; en sombre, `cw.all`, `lt.cta`, `cta.together`, `foot.about`.
 
 ### `link/nav`
 
-- `.nav-mid a` : libellé en roll, style `text/desktop/nav`, 53 px de large pour
-  « Projets » (53,38 mesurés sur le site).
-- `default` : `text/label` (`#1111118C` = `--muted` en clair ; papier .5 → .55
-  en sombre, COL-09).
+- `.nav-mid a` : libellé en roll, lettres en `nav-roll` (Space Mono 11, .08em,
+  line-height 1.18 : 13 de haut), 53 px de large pour « Projets » (53,38 sur
+  le site).
+- `default` : `color/text/label-dim` (`#1111118C` en clair,
+  rgba(245,245,245,.5) sur fond sombre).
 - `hover` : `accent/default`, et la pile du roll monte.
-- `active` : page courante (`data-active`), bleu, style
-  `text/desktop/nav-active` (Space Mono Bold).
+- `active` : page courante (`data-active`), bleu, `nav-active-roll`.
 - `focus` : contour sans rayon, comme un lien. `disabled` : `text/subtle`.
 
 ### `tag`
 
-- `.svx-pill` : style `chip`, retraits `space/8` / `space/12` (6 / 10 dans le
-  code), bordure de 1 px comprise, `radius/5` : 52 × 33 px.
+- `.svx-pill` : style `chip`, padding 6px 10px (`space/6`, `space/10`),
+  bordure de 1 px comprise, `radius/5` : 29 px de haut.
 - `default` : texte `text/primary`, filet `border/strong` (`--line-2`).
 - `hover` : filet et texte `accent/default`.
-- `active` : filtre sélectionné (`.on`), fond et filet bleus, texte papier (D1).
-- Rangée d'exemple : `.svx-filters`, écart `space/8` (6 dans le code), retraits
-  16 / 0 / 12 (14 / 0 / 12), catégories de `lib/services-data.js`.
+- `active` : filtre sélectionné (`.on`), fond et filet bleus, texte #fff.
+- Rangée d'exemple : `.svx-filters`, gap 6px, padding 14px 0 12px, catégories
+  de `lib/services-data.js`.
 
 ## 3. Choix et mesures
 
@@ -155,16 +151,22 @@ Mesure sur jimmyferon.com en 1440 × 900 (`outils/mesure-petits-composants.mjs`)
   largeur, avec une pointe un peu plus haute, celle du tracé de la modale.
 - 12 px est aussi la taille du flocon de `.menu-btn`, seule icône que le code
   pose dans un bouton.
-- Conséquence : un bouton s'élargit de 2 à 4 px (écart 8 et icône de 12, contre
-  9 et une boîte de glyphe de 6,72 ou 8,72).
+- L'icône vit dans un emplacement de 12 × 17,6, la boîte de ligne du glyphe :
+  le bouton garde la hauteur du site. Il s'élargit de 3,3 à 5,3 px (12 contre
+  6,72 ou 8,72) : c'est le seul écart, propre à la flèche dessinée. Les écarts
+  sont ceux du code, 9 (`.btnf`) et 7 (`.cta`).
 
 ### États ajoutés (D5)
 
-- **Focus** : la recette de `.ev-modal-arrow`. Contour de 2 px en
-  `color/accent/default`, décalé de 2, posé en calque absolu qui s'étire avec
-  le composant. Rayon `radius/5` sur le bouton et le tag : le navigateur
-  l'arrondirait à 7 (5 + décalage), et aucun jeton ne vaut 7. Le lien n'a pas
-  de rayon.
+- **Focus**, là où le code n'en a pas : la recette de `.ev-modal-arrow`.
+  Contour de 2 px en `color/accent/default`, décalé de 2, posé en calque
+  absolu qui s'étire avec le composant. Rayon `radius/5` sur le bouton et le
+  tag (le navigateur l'arrondirait à 7, rayon et décalage). Le lien n'a pas de
+  rayon. Annoté « pas encore dans le code ».
+- **Focus du code** (scène Everest), repris tel quel, sans annotation :
+  étiquette de sommet (décalage 3), flèches de la modale (2), bouton du mode
+  d'emploi (−3, rayon 4), plein écran (4, rayon 3). Le contour de l'indicateur
+  de bord est coupé par son `clip-path` : seul le fond bleu se voit.
 - **Disabled** : texte et icône `color/text/subtle`, filet
   `color/border/default`, sans fond.
 - **« Actif » du brief** :
@@ -177,8 +179,8 @@ Mesure sur jimmyferon.com en 1440 × 900 (`outils/mesure-petits-composants.mjs`)
 
 - Les épaisseurs de trait : 1 px pour les bordures, 2 px pour le focus.
   Aucune variable d'épaisseur n'existe dans les fondations.
-- La géométrie fixe : emplacements d'icône de 12 px, décalage du contour de
-  focus, position de la seconde copie du roll.
+- La géométrie fixe : emplacements d'icône (12 × 17,6 dans les boutons),
+  décalage du contour de focus, position de la seconde copie du roll.
 
 ## 4. Arbitrages de la partie 1 (8 octobre 2026)
 
@@ -194,8 +196,8 @@ Mesure sur jimmyferon.com en 1440 × 900 (`outils/mesure-petits-composants.mjs`)
    dans leur description. Aucune valeur nouvelle.
    - `color/text/primary`, `on-accent`, `on-inverse`, `subtle` : traits des
      icônes (`currentColor`).
-   - `color/bg/inverse` : bordure de la couleur du fond (`.btn-ink`, survol de
-     `.btnf-ghost`).
+   - `color/bg/inverse` : bordure de la couleur du fond (survol de
+     `.btnf-ghost` ; `.btn-ink` est passé sur `color/bg/ink` le 8 octobre).
 3. **`ghost` · `sm`, gardé** avec l'annotation « pas encore dans le code »,
    pour que la grille de variantes reste complète.
 4. **`↔`, redessinée.** Les pointes de la modale, à 2 unités l'une de l'autre,
@@ -212,16 +214,27 @@ Mesure sur jimmyferon.com en 1440 × 900 (`outils/mesure-petits-composants.mjs`)
    icônes ne sont pas des flèches, et ils ne servent que dans les grands
    composants (modale, cartes, mode d'emploi, header).
 
-## 5. Corrections à faire sur le site
+## 5. Reprise du 8 octobre (partie 1)
 
-Rien de nouveau par rapport à la liste de l'audit (§10). La partie 1 précise
-deux lignes existantes :
+La liste « corrections à faire sur le site » de la partie 1 est supprimée ;
+chacune de ses lignes est revenue dans Figma à la valeur du site :
 
-| Correction | Origine |
-|---|---|
-| Flèches des boutons en SVG de 12 px (grille 24, trait 1,6 mis à l'échelle), écart 8 | D8, TYP-13 |
-| Focus visible : contour de 2 px `--blue` décalé de 2 sur les boutons, les liens de nav et les filtres | D5, CMP-04 |
-| Croix de la modale (`.ev-modal-x`) : fond papier .12 et survol des flèches (fond papier, icône encre), au lieu de .1 et .22 | partie 2, arbitrage du 8 octobre |
+- flèches des boutons : la flèche dessinée reste (D8), avec les écarts du
+  code, 9 et 7, et l'emplacement de 12 × 17,6 ;
+- focus visible : propre à Figma là où le code n'en a pas (D5) ;
+- croix de la modale : fond .1, survol .22 (`icon-button/tint` 36, §12).
+
+Ce que la reprise a changé dans les petits composants :
+
+- `button` : deux familles (`family`), leurs survols, texte #fff, libellé
+  papier du `.cta`, hauteurs 45,6 / 35,6 / 34, `ink` · `sm` aux valeurs de
+  `.menu-btn` (nav, .08em, écart 8), fond `bg/ink` pour l'encre ;
+- `roll` et `link/nav` : lettres à line-height 1.18 (`button-roll`,
+  `nav-roll`, `nav-active-roll`) ; nav en `color/text/label-dim` ;
+- `tag` : padding 6px 10px, rangée à 6, padding 14px 0 12px.
+
+*Jusqu'au 8 octobre : un seul bouton à survols alignés, 44 et 34 px, écart 8,
+roll à la hauteur de ligne du style.*
 
 ## 6. Pour la page Motion (étape 4)
 
@@ -245,6 +258,12 @@ deux lignes existantes :
 - **Permutation d'icône.** Repasser à `icon` la flèche déjà en place
   réinitialise la couleur de la flèche ; une vraie permutation, aller-retour
   compris, la garde.
+- **Clonage d'une variante.** `clone()` perd les liens de propriétés
+  (`componentPropertyReferences`) : les reposer sur le clone, sinon une
+  instance qui bascule vers lui perd son libellé et son icône.
+- **Jeu créé à partir d'un composant.** `combineAsVariants` renomme les clés
+  de propriétés (`label#172:0` devient `label#222:0`) ; les instances gardent
+  leurs valeurs.
 
 ---
 
@@ -252,8 +271,9 @@ deux lignes existantes :
 
 Construite le 8 octobre 2026, à partir du code et des mesures du site
 (`outils/mesure-grands-composants.mjs`, 1440 × 900 à la souris et
-390 × 844 au doigt). Dix-huit planches ajoutées sous `planche/tag`, au même
-gabarit que la partie 1, empilées à x = 0.
+390 × 844 au doigt), puis reprise le même jour aux valeurs exactes du code
+(§12). Dix-huit planches sous `planche/tag`, au même gabarit que la partie 1,
+empilées à x = 0.
 
 ## 8. Ce qui existe dans Figma
 
@@ -261,7 +281,7 @@ gabarit que la partie 1, empilées à x = 0.
 |---|---|---|---|---|
 | `planche/icones-interface` | `169:134` | `icon/close` `169:141`, `icon/plus` `169:148`, `icon/minus` `169:154`, `icon/fullscreen-enter` `169:160`, `icon/fullscreen-exit` `169:166`, `icon/flake` `170:151`, `icon/chevron-down` `170:156`, `icon/figma` `170:163` | flake : `open` false, true | — |
 | `planche/logo` | `171:134` | `logo` `171:144` | — | — |
-| `planche/surtitre` | `172:149` | `eyebrow` `172:153` | — | `label#172:0` |
+| `planche/surtitre` | `172:149` | `eyebrow` `222:1070` | `class` : sv2-eyebrow, lt-eyebrow | `label#222:0` |
 | `planche/bouton-icone` | `173:161` | `icon-button/solid` `173:185`, `tint` `174:204`, `bare` `174:251` | solid : 38 × default, focus, disabled ; tint : 40, 36 × 4 états ; bare : 30, 26 × 4 états | `icone#173:0`, `icone#174:0`, `icone#174:9` |
 | `planche/bouton-menu` | `175:221` | `menu-button` `175:340` | `open` × default, focus, disabled | — |
 | `planche/grain` | `176:338` | `grain` `176:345` | `usage` site, card, row | — |
@@ -272,7 +292,7 @@ gabarit que la partie 1, empilées à x = 0.
 | `planche/carte-projet` | `183:586` | `card/project` `183:656` | default, focus, disabled | `titre#183:0`, `catégorie#183:4`, `logo animé#183:8` |
 | `planche/modale` | `188:650` | `modal/project` `188:654` | — | `camp`, `titre`, `catégorie`, `résumé`, `rôle`, `année`, `compteur` (`#188:0` à `#188:6`) |
 | `planche/faq` | `189:670` | `faq/item` `189:738` | `breakpoint` × default, open, focus, disabled | `numéro#190:0`, `question#190:9`, `réponse#190:18` |
-| `planche/altimetre` | `191:709` | `altimeter` `191:713` | — | `parcours#191:0`, `flèche#191:1`, `arrivée#191:2`, `altitude#191:3` |
+| `planche/altimetre` | `191:709` | `altimeter` `228:1069` | `type` : bn3-alt, ev-meta | `parcours#228:0`, `flèche#228:1`, `arrivée#228:2`, `altitude#228:3` |
 | `planche/mode-emploi` | `192:736` | `help` `192:792` | centered, docked, docked-open | — |
 | `planche/drapeaux` | `193:794` | `flag/label` `193:822`, `flag/pin` `193:829`, `flag/edge` `193:890` | label : 4 états ; pin : `scene` everest, mont-blanc ; edge : `side` left, right, top × 4 états | `altitude#193:0`, `sommet#193:5`, `projet#193:10`, `projet#193:15` |
 | `planche/services` | `195:815` | `card/service` `195:913`, `row/service` `196:878` | card : `breakpoint` × default, hover ; row : 4 états | `titre#198:0`, `description#198:5` ; `service#196:0`, `type#196:5`, `durée#196:10`, `afficher le type#196:15` |
@@ -280,24 +300,27 @@ gabarit que la partie 1, empilées à x = 0.
 
 Chaque planche montre le jeu de variantes, puis les composants en contexte
 (fond clair, fond sombre, section reconstituée). La page Fondations montre
-les ajouts du §11 (27 rôles sémantiques, 64 styles de texte).
+les fondations de la reprise : 50 rôles sémantiques, 118 styles de texte,
+31 espacements.
 
-**Contrôle final de la page Composants**, après les corrections du §11 :
+**Contrôle final de la page Composants** (8 octobre, après la reprise) :
 
-- 1 749 peintures pleines sur 1 749 liées à une variable, aucune hors de son
-  scope ; deux seulement liées à une primitive, les lueurs du footer
-  (`color/blue/a55`), comme le spécimen de lueur de la page Fondations ;
-- un style de texte sur chacun des 737 textes ;
-- aucun retrait ni écart en dur ; un seul rayon non lié, la découpe ronde du
-  logo (géométrie) ;
-- une description sur les 45 composants (171 avec les variantes) ;
-- 98 nœuds annotés « pas encore dans le code » ;
-- 7 images, toutes lisibles ; aucun nœud hors planche.
+- 863 peintures pleines sur 863 liées à une variable (hors intérieurs
+  d'instances), aucune liée directement à une primitive, aucune hors de son
+  scope ;
+- un style de texte sur chacun des 466 textes ; deux portent deux styles, le
+  « Figma® Expert » du footer ;
+- aucun retrait, écart ou rayon en dur ; un seul rayon non lié, la découpe
+  ronde du logo (géométrie) ;
+- une description sur les 45 composants (181 avec les variantes) ;
+- 107 nœuds annotés « pas encore dans le code » : focus et disabled là où le
+  code n'en a pas, flèches dessinées, `ghost` · `sm` ;
+- aucun nœud hors planche.
 
 ## 9. Composants de la partie 2
 
-Le détail de chaque composant (classes, valeurs, durées, écarts) est dans sa
-description Figma. L'essentiel :
+Le détail de chaque composant (classes, valeurs, durées) est dans sa
+description Figma. L'essentiel, aux valeurs du code :
 
 - **Icônes d'interface** : tracés des SVG du code, grille 24 (le chevron
   garde sa grille 10 × 6, la marque Figma sa forme pleine), traits en
@@ -305,84 +328,129 @@ description Figma. L'essentiel :
   les branches (2,2) et une rotation de 90° à l'ouverture.
 - **Logo** : les cinq tracés dans leur cercle, remplissage
   `color/text/primary` ; tailles d'usage 34, 44, 54 (à .12) et 84.
-- **Surtitre** : pastille de 7 px et libellé `overline`, écart 8 (7).
-- **Bouton icône** (CMP-08) : trois jeux selon le fond, aux tailles du code.
-  `solid` 38 (cartes ; encre en clair, papier en sombre ; pas de survol, il
-  ne vit que sous 1025 px), `tint` 40 et 36 (modale, mode sombre posé, fond
-  `color/overlay/button`), `bare` 30 et 26 (scène Everest). Icônes de 18,
-  16, 15 et 26 px ; le glyphe → de 15 px des cartes devient une icône de 16.
-- **Bouton menu** : une instance de `button` ink · sm, flocon en tête,
-  « Menu » puis « Fermer » ; papier sur encre en mode sombre, comme le code.
+- **Surtitre** : pastille de 7 px relevée de 0,5 px, libellé Bold 11 px
+  .08em, écart 7. Deux variantes : `sv2-eyebrow` (line-height 1) et
+  `lt-eyebrow` (interlignage hérité 1,6, aussi `.uc-eyebrow`).
+- **Bouton icône** (CMP-08) : `solid` 38 (cartes ; encre en clair, papier en
+  sombre, avec `shadow/card-bar` pour `.cw-shot-btn`) ; `tint` 40 (flèches de
+  la modale : fond .12, survol et focus papier et icône encre, focus du code)
+  et 36 (fermer : fond .1, survol .22) ; `bare` 30 (mode d'emploi, focus −3
+  rayon 4) et 26 (plein écran, focus 4 rayon 3). Icônes de 18, 16, 15 et
+  26 px ; le glyphe → de 15 px des cartes devient une icône de 16 (D8).
+- **Bouton menu** : une instance de `button` btnf · ink · sm, soit
+  `.menu-btn` : padding 9px 14px, gap 8px, Space Mono .08em, flocon en tête ;
+  78 × 34 fermé, 93 × 34 ouvert (78,45 et 93,69 sur le site).
 - **Grain** : le motif du code en trois réglages (site .21 difference ;
   carte .6 à 300 px ; ligne .4), à poser étiré au-dessus du contenu.
 - **Crête** : le polygone de `Ridge.js` à pleine amplitude, largeur nominale
   1200 (k = 1) et 390 (k = .55), remplissage `color/bg/primary` dans le mode
   du bloc ; décalages (−604,8 / 470 ; −105 / 260 et −160 / 200) en
   description.
-- **Langue** : déclencheur et menu de 66 (rayon 5 au lieu de 8, RAY-01) et
-  ses options ; bascule FR / EN du menu mobile.
-- **Header** : desktop en haut de page (1440) et compact (980, ombre), clair
-  ou sombre selon le mode ; mobile en barre, compact et menu ouvert, toujours
-  sombre (`color/overlay/header-mobile`). Fond et flou en calque séparé,
-  grain par-dessus.
-- **Liens** : menu mobile (`link/menu`, `link/social`), footer
-  (`link/footer`, ↗ en icône), e-mail (soulignement bleu au survol),
-  « Haut de page » (`link/top`, `color/text/subtle`).
-- **Carte projet** : la carte de la colonne (≤ 1024), visuel en remplissage,
-  montage « logo animé » (nuages, neige pixel, logo bleu), barre papier avec
-  titre, catégorie et `icon-button/solid`.
-- **Modale** : 1440 × 900, fiche de 1180 (1,35fr / 1fr), mode sombre,
-  voile, grain, croix `tint` 36, navigation `tint` 40 et compteur.
-- **Accordéon FAQ** : question blanche (`color/bg/surface`), numéro, ± en
-  `sign`, réponse sous filet ; desktop et mobile ; section complète en
-  exemple.
-- **Altimètre** : un composant pour `.ev-meta`, `.bn3-alt` et `.lt-alt`,
-  hiérarchie du hero clair, flèche en option pour « Chamonix → Mont Blanc ».
-- **Mode d'emploi** : centré, rangé (30 × 30) et rangé ouvert ; touches en
-  `help-strong`, bouton `bare` 30.
-- **Drapeaux** : étiquette de sommet (fond translucide flouté, bleu au
-  survol), fanions Everest et Mont Blanc, indicateur de bord à pointe.
-- **Services** : carte (desktop 529,73 × 320, mobile 350) et ligne de
-  l'index, bleues et grainées au survol ; exemples de la colonne des cartes
-  et de l'index.
-- **Footer** : Let's talk et corps, desktop avec le lac et mobile sans lac ;
-  lueur, grain, crête en polyligne, liens, e-mail, paire de boutons et
-  marque Figma.
+- **Langue** : déclencheur padding 6px 2px, gap 5px ; menu rayon 8px, padding
+  4px, bordure `color/border/menu`, fond `color/bg/menu` (#161616 sur fond
+  sombre), 66 × 70 comme le site ; options padding 7px 10px en
+  `color/text/label-dim` ; bascule FR / EN du menu mobile en 12 px .08em,
+  gap 10px, boutons padding 2px, séparateur .3.
+- **Header** : une bordure de 1 px autour d'une nav de 64, comme le code :
+  tout le contenu est décalé d'un pixel (logo à 57, 16). nav padding 0 56px
+  en desktop, 0 20px en mobile. Mobile : 66 de haut ; compact en encre .94,
+  bordure blanche .1 ; menu ouvert en encre .97, bordure blanche .1, corps
+  padding 19px 20px 22px, grille gap 22px, libellés Bold .12em à .42, liens
+  principaux padding 13px 0 avec filet court .1, réseaux et contact à .85
+  (gap 3px), bas à 34px (gap 16px) : 370 × 398 (397,72 sur le site).
+- **Liens** : menu mobile (`link/menu`, `link/social`), footer (`link/footer`,
+  12 px, padding 4px 0, ↗ en icône), e-mail (soulignement bleu au survol),
+  « Haut de page » (`link/top`, #f4f6f542, `color/text/footer-top`).
+- **Carte projet** : la carte de la colonne (≤ 1024), 350 × 217 ; barre à 10px
+  des bords, 330 × 58, padding 9px 9px 9px 14px, gap 12px ; titre `title-sm`,
+  catégorie `caption-card` (12 px, 1,3), gap 1px, min-height 40px ; bouton
+  `icon-button/solid`.
+- **Modale** : 1440 × 900, padding 56px ; fiche 1180 × 423,66 (1,35fr / 1fr),
+  visuel sur #0E0E0E ; texte padding 30px : camp, titre `heading-3-modal`
+  (33,6, 1,6) à 10px, catégorie `label-sm` en .5 à 7px, résumé
+  `body-xs-modal` (1,65) en .74 à 14px, méta à 20px (gap 36px, intitulés .42,
+  margin 4px) ; fermer à 12px du coin ; navigation à 18px de la fiche, gap
+  14px, compteur `label-count` (min-width 52px).
+- **Accordéon FAQ** : question blanche, padding 2px 26px (2px 18px en
+  mobile), question padding 20px 0, gap 18px (18px 0 et 12px en mobile),
+  réponse padding 16px 0 22px : 1216 × 69 fermée et 156 ouverte, comme le
+  site ; titre de section `heading-2-fq`, margin 16px 0 26px.
+- **Altimètre** : deux variantes. `ev-meta` (scène Everest) : 10 px, 2,
+  .18em, capitales ; parcours en `--muted`, « ALT. » et « M » en `--muted-2`,
+  altitude en encre. `bn3-alt` (Benefits, Let's talk) : 11 px, 1,9, .14em,
+  tout en papier .55, parcours à opacité .6. La ligne d'altitude est un seul
+  texte, avec les espaces du code.
+- **Mode d'emploi** : rayon 4px ; centré padding 24px 30px, gap 11px, texte
+  .72 ; « ou » en .5 (espaces insécables, pour qu'elles comptent), « = » en
+  .5 avec margin 0 6px ; rangé 30 × 30 ; rangé ouvert en 8 px (`help-docked`),
+  padding 38px 14px 12px, gap 6px.
+- **Drapeaux** : étiquette padding 7px 10px 8px, gap 1px, altitude
+  `micro-alt`, projet `micro-proj`, focus du code à 3px : 113 × 55 (112,11 ×
+  54,89 sur le site) ; indicateur de bord en Bold 8 px, padding 7px 10px avec
+  la pointe de 10 (16 côté pointe ; 14px 12px 7px en haut), 22 de haut comme
+  le site, focus = survol ; fanion du Mont Blanc, mât en papier .8.
+- **Services** : carte padding 37,44 (26 en mobile), corps à 14px, liste gap
+  9px (`data-list` en blanc .5, `body-md-list` en #fff) ; ligne padding 9px
+  10px, gap 10px, 585 × 40 comme le site ; exemple : colonnes à 100,8, cartes
+  à 22px, en-tête padding 8px 10px, gap 10px.
+- **Footer** : corps padding 56px (20px en mobile), haut gap 30px (36px),
+  colonnes à 86,4 (32), titres `label-sm-col` en #f4f6f573 à 14px des liens,
+  logo du menu à 18px ; bloc e-mail à 45 (42,2), accroche `label-hook`,
+  e-mail à 14px, boutons à 30,6 (28,7), gap 14px ; marque Figma gap 9px, un
+  texte à deux styles ; crête à 22,5, boîte min 150 (90), dessin 144
+  (135,04), trait .16, altitudes .34 ; bas à 27, padding 18px, filet .16.
+  Let's talk : texte de 705,28 à 43,2 de la marge, bouton à 34px, filet .16 à
+  112 (40 en mobile), altimètre à 36 du bas ; en mobile, surtitre à 46,42 et
+  accroche `display-lt`. Lueur `color/glow` 660 × 420 (360 × 230), centrée sur
+  l'ensemble, opacité .5, `blur/glow-footer`.
 
 ## 10. Choix et mesures
 
-### Rattachements
+### Valeurs exactes
 
-Les valeurs du code suivent les règles déjà validées :
+Chaque retrait, écart, couleur, style et rayon est celui de la classe du
+code ; les valeurs fluides sont résolues à 1440 × 900 et 390 × 844, dans la
+collection `responsive`. Seuls ajouts propres à Figma : flèches dessinées
+(D8), focus et désactivé là où le code n'en a pas (D5), `ghost` · `sm`.
 
-- **Espacements** : rattachés au pas le plus proche de l'échelle (étape 2,
-  §2.4). Les valeurs fluides sont résolues à 1440 et à 390 : retrait des
-  cartes Services 37,44 → 40 et 26 → 24 ; retrait de la modale 30 → 32 ;
-  écart des colonnes du footer 86,4 → 80 ; marge du texte de Let's talk
-  43,2 → 40 ; écart entre surtitre et texte en mobile 46,4 → 48.
-- **Textes** : chaque classe prend le style auquel le §3.4 de l'audit la
-  rattache (D6). Exemples : catégorie de la barre de carte en `caption`
-  (barre de 60 au lieu de 58), étiquette de sommet en `micro` à 160 %
-  (69 de haut au lieu de 55), titre de la modale en `heading-3`, `.lt-big`
-  mobile en `display` (TYP-05).
-- **Couleurs** : rôles du mode sombre (D2, COL-09), papier au lieu du blanc
-  sur aplat (D1), noirs voisins fondus dans l'encre (COL-10).
-- **Rayons** : 5 partout (RAY-01).
+Limites de Figma, sans écart de valeur :
+
+- la hauteur d'une ligne de texte est arrondie au pixel le plus proche
+  (17,6 → 18 ; 28,67 → 29) ; quand le code fixe une hauteur, un cadre de
+  taille exacte la garde (emplacement de flèche de 12 × 17,6) ;
+- l'approche après la dernière lettre n'est pas comptée : les textes très
+  espacés sont 1 à 3 px plus étroits qu'à l'écran (mode d'emploi) ;
+- l'interligne « normal » de Bricolage à 16,32 px vaut 21 dans Figma contre
+  19,5 dans le navigateur : la question FAQ mobile sur deux lignes fait 82 au
+  lieu de 79 ;
+- pas de flex 1,25 / 1 : le type d'une ligne Services a la largeur qu'il
+  prend à 585 ;
+- `translateX(4px)` d'un lien du footer au survol : rendu par un retrait
+  gauche de 4 ;
+- le texte SVG de la crête du footer est étiré par
+  `preserveAspectRatio="none"` (×1,107 en largeur, ×0,847 en hauteur à 1440) :
+  les altitudes sont placées sur leurs coordonnées, sans l'étirement ;
+- le roll décale chaque lettre de 20 ms, la lueur du footer change de forme
+  (footMorph) : documentés sur la page Motion.
 
 ### Mesures comparées
 
-| Élément | Site | Figma | Écart |
-|---|---|---|---|
-| Header desktop, compact | 1440 × 64, 980 × 64 | 1440 × 64, 980 × 64 | — |
-| Bouton menu fermé, ouvert | 78,45 × 34, 93,69 × 34 | 81 × 34, 96 × 34 | retraits 8 / 16 (9 / 14) |
-| Menu mobile ouvert | 370 × 397,72 | 370 × 379 | retraits et écarts à l'échelle |
-| Fiche de la modale | 1180 × 423,66 | 1180 × 423,66 | — |
-| Question FAQ fermée, ouverte | 1216 × 69 et 156 | 1216 × 73 et 162 | retraits 4 / 24 (2 / 26) |
-| Accroche de Let's talk | 705,27 × 285,55 | 705 × 285 | — |
-| Carte Service desktop | 529,73 × 320 | 529,73 × 320 | — |
-| Ligne Services | 585,47 × 40 | 585 × 39 | retraits 8 / 12 |
-| Mode d'emploi centré, rangé | 259,9 × 116,2 et 30 × 30 | 258 × 117 et 30 × 30 | — |
-| Mode d'emploi rangé ouvert | 187 × 96 (texte à 8 px) | 226 × 113 (11 px) | aucun style à 8 px |
+| Élément | Site | Figma |
+|---|---|---|
+| Header desktop, compact | 1440 × 64 et 980 × 64, logo à 57, 16 | idem |
+| Header mobile, compact | 390 × 66 et 370 × 66 | idem |
+| Menu de langue | 66 × 70 | 66 × 70 |
+| Bouton `.btnf`, `.cta` | hauteur 45,59 et 35,59 | 45,6 et 35,6 |
+| Bouton menu fermé, ouvert | 78,45 × 34, 93,69 × 34 | 78 × 34, 93 × 34 |
+| Menu mobile ouvert | 370 × 397,72 | 370 × 398 |
+| Carte projet, barre | 350 × 217, 330 × 58 | idem |
+| Fiche de la modale, avec la navigation | 1180 × 423,66, 1180 × 481,66 | idem |
+| Question FAQ fermée, ouverte | 1216 × 69 et 156 | idem |
+| Étiquette de sommet, indicateur de bord | 112,11 × 54,89, hauteur 22 | 113 × 55, hauteur 22 |
+| Mode d'emploi centré, rangé ouvert | 261,23 × 112,81, 187,42 × 95,56 | 257 × 115, 183 × 95 |
+| Carte Services desktop, ligne Services | 529,73 × 320, 585,47 × 40 | 529,73 × 320, 585 × 40 |
+| Accroche de Let's talk | 705,27 × 285,55 | 705,28 × 285 |
+| Footer desktop, mobile | 1440 × 1494,7, 390 × 1381,5 | 1440 × 1493,7, 390 × 1379,3 |
 
 ### Images
 
@@ -396,52 +464,63 @@ Les valeurs du code suivent les règles déjà validées :
 
 ## 11. Arbitrages de la partie 2
 
-Validés le 8 octobre 2026, en cours de partie (aucune valeur nouvelle) :
+Validés le 8 octobre 2026, en cours de partie :
 
-- jeton `color/overlay/button` (papier .12, `.ev-modal-x` .1 fusionné) ;
-- scope `SHAPE_FILL` sur `color/text/primary` (logo, marque Figma) et
+- jeton `color/overlay/button` (papier .12, flèches de la modale) ; scope
+  `SHAPE_FILL` sur `color/text/primary` (logo, marque Figma) et
   `color/text/on-accent` (pastille de la ligne Services) ;
-- survol de `.ev-modal-x` aligné sur celui des flèches (correction à faire,
-  §5) ; icône par défaut commune à chaque jeu de boutons icônes (flèche,
-  plus) ;
+- icône par défaut commune à chaque jeu de boutons icônes (flèche, plus) ;
 - styles `sign` (± de la FAQ, Bricolage Regular 20,8) et `help-strong` (Bold
-  du mode d'emploi) ; altimètre sur la hiérarchie du hero clair ; papier .26
-  (`.foot-topbtn`) rattaché à `color/text/subtle`.
+  du mode d'emploi).
 
-À valider, apparus en fin de partie et au contrôle final :
+Remplacés par la règle du 8 octobre : la croix de la modale garde son fond
+.1 et son survol .22 ; l'altimètre sombre garde sa couleur unique (.55) et
+son parcours à .6 ; « Haut de page » garde son #f4f6f542.
+
+Réponses du 8 octobre aux six points ouverts :
 
 1. **Scope `STROKE_COLOR` sur `color/text/label` et `color/text/muted`** :
-   le chevron du sélecteur de langue et la flèche de l'altimètre sont en
-   currentColor. C'est la règle du §4, arbitrage 2, étendue à deux jetons.
-2. **Retrait de première ligne dans `display`** : 144 en desktop, 56 en
-   mobile (`text-indent: clamp(56px,10vw,170px)`, commun à `.manif-big` et
-   `.lt-big`). Posé sur le nœud, il détachait le style de l'accroche de
-   Let's talk. Les spécimens de la page Fondations l'affichent.
-3. **« Expert » de la marque Figma en `overline`** (Space Mono Bold 11,
-   +8 %) : `.foot-figma b` est en Bold 10 px, et aucun style Bold n'existe à
-   10 px. Autre voie : un style `label-sm-strong`, sur le modèle de
-   `nav-active`.
-4. **Lueurs du footer liées à la primitive `color/blue/a55`**, comme le
-   spécimen de la page Fondations : il n'existe pas de rôle sémantique pour
-   la lueur.
-5. **Mode d'emploi rangé ouvert à 11 px** au lieu de 8 (aucun style à 8 px).
-6. **Rayon des cadres de jeux de variantes** lié à `radius/5` : c'est le
-   rayon par défaut de Figma pour ces cadres de présentation.
+   validé (et posé aussi sur `label-dim`, pour le chevron de langue).
+2. **Retrait de première ligne dans `display`** (144 / 56) : validé ; aussi
+   sur `display-lt`.
+3. **« Expert » de la marque Figma** : nouveau style `label-sm-strong`, aux
+   valeurs de `.foot-figma b` (Bold 10 px, .12em, capitales) ; il sert aussi
+   aux libellés du menu mobile (`.hx-label`).
+4. **Lueurs** : nouveau rôle sémantique `color/glow`, bleu .5 en clair (hero)
+   et .55 en sombre (footer), avec `blur/glow-hero` et `blur/glow-footer`.
+5. **Mode d'emploi rangé ouvert** : les 8 px du site, styles `help-docked` et
+   `help-docked-strong`.
+6. **Rayon des cadres de jeux de variantes** lié à `radius/5` : validé.
 
-## 12. Corrections à faire sur le site (partie 2)
+## 12. Reprise du 8 octobre (partie 2)
 
-Elles complètent le §5 et la liste de l'audit (§10). Chacune relève de sa
-propre branche, avec diagnostic et validation visuelle avant modification.
+La liste « corrections à faire sur le site » de la partie 2 est supprimée ;
+chacune de ses lignes est revenue dans Figma à la valeur du site :
+altimètres sombres (.55, parcours à .6), « Haut de page » (#f4f6f542),
+menu mobile (.85, .42, .3, .1, bordures blanc .1), crête du footer (trait
+.16, altitudes .34 ; la règle .3 des textes est recouverte par `.peak`),
+espacements exacts. Les glyphes restent dessinés (D8) et les focus et
+désactivés propres à Figma (D5).
 
-| Correction | Origine |
-|---|---|
-| Altimètres sombres (`.bn3-alt`, `.lt-alt`) : parcours en papier .6, « ALT. » et « M » en papier .45, valeur en papier | arbitrage du 8 octobre |
-| `.foot-topbtn` : papier .26 → .45 | arbitrage du 8 octobre |
-| Glyphes en SVG : → des cartes (`.pcard-bar-btn`, `.cw-shot-btn`) à 16 px ; ↗ des liens du footer, → de `.svx-go` et de « CHAMONIX → MONT BLANC » à 12 px | D8, TYP-13 |
-| Menu mobile : liens secondaires papier .85 → .6, libellés .42 → .45, barre FR / EN .3 → .45, filet court .1 → .14, bordures blanc .1 → papier .14 | D2, COL-08, COL-09 |
-| Crête du footer : trait papier .16 → .14, altitudes .3 et .34 → .45 | COL-09 |
-| Focus visible et état désactivé sur les éléments cliquables de la partie 2 | D5, CMP-04 |
-| Espacements alignés sur l'échelle (étiquette de sommet, question FAQ, menu mobile, modale, footer…) | fondations §6 |
+Ce que la reprise a changé, en plus des valeurs du §9 :
+
+- styles de texte par classe : `display-lt`, `heading-2-fq`,
+  `heading-3-modal`, `body-xs-modal`, `body-md-list`, `caption-name`,
+  `caption-type`, `caption-card`, `overline-lt`, `overline-go`, `label-count`,
+  `label-hook`, `label-sm-col`, `label-sm-figma`, `label-sm-strong`,
+  `micro-alt`, `micro-proj`, `micro-edge`, `micro-ridge`, `data-time`,
+  `data-list`, `meta-lang`, `altimeter-ev`, `help-docked` ;
+- couleurs : texte #fff sur les aplats, voiles .94 et .97 séparés, fond
+  #161616 du menu de langue, #0E0E0E du visuel de la modale, bordures .16,
+  textes du footer en #F4F6F5, rôles `label-dim`, `label-faint`, `menu-link`,
+  `modal-summary`, `help`, `ridge`… (fondations, §2) ;
+- deux nouveaux jeux : `eyebrow` (`class`) et `altimeter` (`type`) ;
+- headers restructurés comme le code (bordure autour d'une nav de 64) ;
+- espacements fluides exacts : carte Services 37,44, colonnes du footer 86,4,
+  marge de Let's talk 43,2, surtitre mobile 46,42, colonnes Services 100,8.
+
+*Jusqu'au 8 octobre, ces valeurs étaient rattachées à l'échelle et aux rôles
+fusionnés, avec une liste de corrections à faire sur le site.*
 
 ## 13. Pour la page Motion (étape 4)
 
@@ -483,3 +562,13 @@ propre branche, avec diagnostic et validation visuelle avant modification.
   style.
 - **Git Bash** : il convertit un argument « / » en chemin Windows ; préfixer
   par `MSYS_NO_PATHCONV=1`.
+- **Hauteur de texte** : Figma arrondit la hauteur d'une ligne au pixel. Un
+  texte de hauteur fixe garde une valeur fractionnaire mais ne suit plus son
+  contenu : pour tenir une hauteur du code, préférer un cadre de taille exacte
+  (emplacement de flèche de 12 × 17,6).
+- **Espaces** : un texte en largeur auto ignore une espace finale ordinaire,
+  mais compte une espace insécable (« ou » du mode d'emploi).
+- **Descriptions** : Figma réécrit l'apostrophe droite, `>` et le guillemet
+  droit en entités HTML : écrire ’, « au-dessus de 1024 », « ».
+- **Script en erreur** : il est annulé en bloc ; vérifier l'état, corriger,
+  relancer.

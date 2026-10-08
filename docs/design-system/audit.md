@@ -72,19 +72,30 @@ Audit validé par Jimmy le 7 octobre 2026. Le même jour, une seconde série
 d'arbitrages a validé les précisions de D1, D7 et D8 et tranché les derniers
 points (blanc d'interface, rayons, valeurs par défaut). Trois précisions ont
 suivi : les noirs voisins de l'encre, la version claire du logo et le favicon.
-Le détail de chaque point est en §10. Quand l'arbitrage diffère de ma recommandation,
-celle-ci est rappelée en italique.
+Le détail de chaque point est en §10.
+
+> **Règle du 8 octobre 2026, prioritaire sur tout ce qui suit.** Le site ne
+> change pas : les valeurs du code sont les bonnes, et le design system les
+> reproduit exactement (`BRIEF.md`). Les décisions de rationalisation (D0 à
+> D4, D6, D7, RAY-01, fusions de couleurs et de voiles, échelle d'espacement)
+> sont remplacées par la valeur exacte de chaque classe ; il n'y a plus de
+> « corrections à faire sur le site ». Restent propres à Figma, annotés « pas
+> encore dans le code » : les états focus et désactivé (D5), les flèches
+> dessinées (D8), `ghost` · `sm` et le favicon.
+
+Le tableau donne l'état en vigueur ; quand une décision a été remplacée le
+8 octobre, l'ancienne est rappelée en italique.
 
 | # | Question | Décision |
 |---|---|---|
-| **D0** | Figma doit-il copier le code à l'identique, ou un système rationalisé ? | **Système rationalisé.** Couleurs et typo par rôle, chaque rôle reprenant une valeur qui existe dans le code. Espacements et rayons fidèles : toutes les valeurs vivantes deviennent des primitives. Chaque écart avec le site est listé en §10. |
-| **D1** | Texte posé sur un aplat bleu ou encre (COL-04) | **Papier `#F5F5F5`**, pour rester sur les trois couleurs de marque : papier, encre, bleu. Prolongement validé : les opacités du blanc posé sur un aplat (.5, .75) deviennent papier .5 et .75. *Recommandation : `#FFFFFF`.* |
-| **D2** | Opacités du mode sombre (COL-09) | Cinq rôles (§2.5) : texte secondaire .6, libellé .55, discret .45, filet .14, filet appuyé .28. |
-| **D3** | Marges de page desktop (ESP-01) | 60 pour nav et footer (= `--pad`, le logo s'aligne sur le nom du hero) ; 112 pour les sections. |
-| **D4** | Boutons (CMP-01) | Un seul composant `button` : primaire, encre, contour sur fond sombre ; tailles `md` (46 px) et `sm` (36 px) ; survols de `.btn-blue` et `.btn-ink`. |
+| **D0** | Figma doit-il copier le code à l'identique, ou un système rationalisé ? | **À l'identique** (8 octobre) : chaque classe garde ses valeurs, couleurs, opacités, styles, espacements et rayons compris. *Avant : système rationalisé par rôle.* |
+| **D1** | Texte posé sur un aplat bleu ou encre (COL-04) | **`#FFFFFF` là où le code l'écrit, papier là où il écrit papier** (`.cta .roll`, `.menu-btn`, `.pcard-bar-btn`) ; blanc .5 et .75 sur la carte et la ligne Services. *Avant : papier partout.* |
+| **D2** | Opacités du mode sombre (COL-09) | **Les opacités exactes du code**, chacune sur un jeton (§2.5) : .85, .74, .72, .6, .55, .5, .45, .42, .34, .3, .16, .14, .1, et #F4F6F5 à .45 et .26. *Avant : cinq rôles.* |
+| **D3** | Marges de page desktop (ESP-01) | **56 pour la nav et le footer** (`layout/nav-pad`, `layout/footer-pad`), 60 pour `--pad` (hero, `.wrap`, scène), 112 pour les sections. *Avant : 60 pour la nav et le footer.* |
+| **D4** | Boutons (CMP-01) | **Deux familles, comme le code** : propriété `family` (`btnf` : `.btnf-blue`, `.btnf-ink`, `.btnf-ghost` ; `btn` : `.btn-blue`, `.btn-ink` et `.sv2-cta`), chacune avec ses survols ; `md` = `.btnf` (45,6 px, écart 9), `sm` = `.cta` (35,6 px, écart 7) et `.menu-btn` (34 px, écart 8, .08em). *Avant : un seul composant, 44 et 34 px.* |
 | **D5** | États désactivé et focus (CMP-04) | **Exception à la règle 1 du brief, pour Figma uniquement.** Un état désactivé et un état focus clavier visible sur les boutons, les CTA et tous les autres éléments cliquables. Construits **uniquement avec les fondations existantes**, sans nouvelle valeur. Chaque état ajouté porte l'annotation « pas encore dans le code ». *Recommandation : ne pas les créer.* |
-| **D6** | Typographie (§3.4) | 33 styles, en deux jeux `text/desktop/…` et `text/mobile/…`. |
-| **D7** | Titres sans interlignage propre (TYP-01) | **Ils prennent l'interlignage des autres titres du code** (valeurs ci-dessous, validées). L'écart avec le site est une correction à faire (§10). *Recommandation : reproduire le 160 % rendu.* |
+| **D6** | Typographie (§3.4) | **Un style par classe du code** : 118 styles, 66 `text/desktop/…` et 52 `text/mobile/…` (§3.4). *Avant : 33 styles fusionnés.* |
+| **D7** | Titres sans interlignage propre (TYP-01) | **Le 160 % hérité du body**, celui que le navigateur rend. *Avant : l'interlignage d'autres titres du code.* |
 | **D8** | Flèches `→ ↗ ↔` (TYP-13) | **Icônes vectorielles, en composants**, annotées « pas encore dans le code » (tracés ci-dessous, validés). *Recommandation : tester d'abord le rendu Figma des glyphes.* |
 | **D9** | Taille optique de Bricolage (TYP-14) | Axe `opsz` réglé sur la taille du texte, borné à 12–96, dans chaque style. |
 | **D10** | Nommage | Noms sémantiques en minuscules (`color/text/muted`, `text/heading-2`). Le nom CSS va en *code syntax* (variables) ou en description (styles). |
@@ -95,21 +106,18 @@ celle-ci est rappelée en italique.
 
 - **Couleurs de marque** : papier `#F5F5F5`, encre `#111111`, bleu `#1E29FF`.
   Rien d'autre.
-- **Couleur d'interface, décidée** : le blanc `#FFFFFF` est gardé comme
-  **surface**, en fond des questions FAQ et des visuels About. Ce n'est pas une
-  couleur de marque. Avec D1, c'est son seul usage.
-- **Autres couleurs d'interface, validées** : bleu de survol, bleu clair, gris
-  (cartes Services, bordure du header), gris du grain.
-- **Noirs voisins de l'encre** : fondus dans l'encre `#111111` quand ils n'ont
-  pas de rôle distinct.
-  - Fondus : `#161616` (fond du menu de langue sur fond sombre), `#0E0E0E` (fond
-    du visuel de la modale), `#141414` (particules du logo animé, en JS).
-  - Gardés pour leur rôle : le voile de la modale `rgba(10,10,10,.86)` et les
-    ombres noires (`rgba(0,0,0,.6)` et `.9`).
+- **Couleurs d'interface** : le blanc `#FFFFFF` (surface des questions FAQ et
+  des visuels About, texte sur les aplats bleus et encre là où le code l'écrit),
+  le bleu de survol, le bleu clair, les gris (cartes Services, bordure du
+  header), les gris du grain, le blanc cassé `#F4F6F5` du footer et du rideau.
+- **Noirs voisins de l'encre** : chacun garde sa valeur (règle du 8 octobre).
+  - `#161616` (fond du menu de langue sur fond sombre), `#0E0E0E` (fond du
+    visuel de la modale), `#141414` (particules du logo animé, en JS) : trois
+    primitives, `color/ink-soft`, `ink-deep`, `ink-particle`.
+  - Le voile de la modale `rgba(10,10,10,.86)` et les ombres noires
+    (`rgba(0,0,0,.6)` et `.9`).
   - Hors sujet : les deux `#000` sont techniques (masque de la liste Services,
     canevas de calcul du logo animé, jamais affiché).
-
-  Les écarts sont notés dans les corrections à faire sur le site.
 - **Logo, version claire** : papier `#F5F5F5`, comme sur le site (header sur
   fond sombre, footer, rideau). C'est la version « blanc » du brief pour la
   page Marque. La version sombre est déjà en encre `#111111` sur le site
@@ -119,10 +127,10 @@ celle-ci est rappelée en italique.
   sombres.
   - Il est prévu sur la page Marque, à l'étape 4. La forme du fond et la marge
     autour du logo y seront définies avec les fondations existantes.
-  - Sur le site, il remplacera `app/icon.svg`, aujourd'hui le logo en blanc pur
-    sans fond.
-  - `public/Fram_25.svg`, copie du même fichier que rien n'utilise, sera
-    supprimé (§10).
+  - Il n'existe que dans Figma, annoté « pas encore dans le code » : le site
+    garde `app/icon.svg`, le logo en blanc pur sans fond.
+  - `public/Fram_25.svg` est une copie du même fichier que rien n'utilise
+    (annexe B) ; signalé seulement.
 
 ### D5 — périmètre et construction
 
@@ -135,26 +143,22 @@ celle-ci est rappelée en italique.
   - étiquette de sommet, indicateur de bord.
 - **Focus** : la seule recette du code, celle de la scène Everest. Contour de
   2 px en `--blue`, décalé de 2 à 4 px (`globals.css:1552,1573,1614,1727,1759`).
+  Là où le code définit ce focus (étiquette de sommet, indicateur de bord,
+  flèches de la modale, boutons du mode d'emploi et du plein écran), Figma
+  reprend le sien, décalage et rayon compris, sans annotation.
 - **Désactivé** : composé à l'étape 3 avec des tokens existants (par exemple
   texte `color/text/subtle`, filet `color/border/default`), sans opacité ni
   couleur nouvelle.
 - **Annotation** : propriété `annotations` du nœud Figma (annotation Dev Mode),
   libellé « pas encore dans le code ».
 
-### D7 — interlignages retenus (validés)
+### D7 — interlignage des huit titres
 
-Règle : un titre rattaché à un style prend l'interlignage de ce style. Sinon, il
-prend celui du titre du code le plus proche en taille, parmi les titres dont
-l'interlignage est déclaré. Les quatre valeurs existent déjà dans le code.
-
-| Titre | Sur le site | Figma | Repris de |
-|---|---|---|---|
-| `.uc-title` (desktop) | 160 % (hérité) | 100 % | `heading-1` (`.bn3-title`) |
-| `.fq-title` | 160 % (hérité) | 105 % | `heading-2` (`.sv2-title`) |
-| `.bn3-summit h3`, `.ev-modal-txt h3` | 160 % (hérité) | 108 % | `.f-mail` : 38 px, le plus proche de 36,8 |
-| `.sv2-card h3` | 160 % (hérité) | 105 % | `.sv2-title` en mobile : 29,6 px, même taille |
-| `.bn3-camp h3` | 160 % (hérité) | 108 % | `.f-mail` en mobile : 24,96 px, le plus proche de 24 |
-| `.cw-name`, `.home-msg .nm` | 160 % (hérité) | 120 % | `.pcard-bar-txt b` : 15,2 px, le plus proche de 17,6 |
+Les huit titres sans `line-height` propre (TYP-01) gardent dans Figma le 160 %
+hérité du body, celui que le navigateur rend : `heading-1-uc` (desktop),
+`heading-2-fq`, `heading-3`, `heading-3-modal`, `heading-4`, `heading-5`,
+`title`, `title-strong`. *Jusqu'au 8 octobre, ils prenaient l'interlignage
+d'autres titres du code (100 à 120 %).*
 
 ### D8 — dessin des flèches (validé)
 
@@ -176,18 +180,17 @@ extrémités et angles arrondis, comme les flèches de navigation de la modale
 
 ### Derniers points tranchés
 
-- **RAY-01** — Le 4 px passe à 5 px, le rayon de la marque : encadré mode
-  d'emploi `.ev-help` et contour de focus de son bouton. Le 8 px ne vit plus
-  que sur le menu de langue, un petit menu déroulant d'environ 66 × 70 px :
-  ce n'est pas un grand conteneur, il passe donc aussi à 5 px. Les grands
-  conteneurs qui l'utilisaient (`.wcard`, `.portrait`, `.proj-cover`, `.gimg`)
-  sont du CSS mort. L'écart est noté dans les corrections à faire sur le site.
-- **TYP-05** — `.lt-big` en mobile est fusionné dans `display` (28,8 · 102 %),
-  comme le prévoient les 33 styles de D6. Correction à faire sur le site.
+- **RAY-01** — Les rayons du code sont gardés : 5 px partout, 4 px pour
+  l'encadré mode d'emploi `.ev-help` et le contour de focus de son bouton
+  (`radius/4`), 8 px pour le menu de langue (`radius/8`). Les grands
+  conteneurs qui utilisaient 8 px (`.wcard`, `.portrait`, `.proj-cover`,
+  `.gimg`) sont du CSS mort. *Jusqu'au 8 octobre : 5 px partout.*
+- **TYP-05** — `.lt-big` a son propre style en mobile, `display-lt`
+  (33,15 · 112 %) ; en desktop, il partage `display` avec `.manif-big`.
 - **COL-07** — La bordure opaque `#E5E5E5` du header est gardée, comme couleur
   d'interface.
-- **ESP-04** — 20 px en mobile, la valeur réelle. Côté site : supprimer le bloc
-  mort plutôt que d'activer les 16 px, pour rester aligné sur Figma (nettoyage).
+- **ESP-04** — 20 px en mobile, la valeur réelle ; le bloc de tête sans effet
+  est signalé seulement (§11).
 
 ---
 
@@ -303,38 +306,35 @@ Le site a un vrai mode sombre par section :
 
 Correspondance des rôles observée dans le code :
 
-| Rôle | Clair | Sombre : valeurs observées (usages) | Retenu en sombre (D2) |
+| Rôle | Clair | Sombre : valeurs observées (usages) | Jetons Figma (règle du 8 octobre) |
 |---|---|---|---|
-| fond | `--paper` | `--ink` | `--ink` |
-| texte principal | `--ink` | `--paper` | `--paper` |
-| texte secondaire (paragraphes) | `--muted` .55 | .6 (×2), .65, .72, .74, .85 | **.6** |
-| libellé, surtitre | `--muted` .55 | .55 (×6), .5 (×9) | **.55** (même alpha qu'en clair) |
-| texte discret | `--muted-2` .38 | .45 (×8 avec `#F4F6F5`), .42 (×2), .3 | **.45** |
-| filet | `--line` .13 | .14 (×7), .16 (×4), .1 (×2) | **.14** |
-| filet appuyé | `--line-2` .26 | .28 (bouton contour), .2 (rail mobile) | **.28** |
-| accent | `--blue` | `--blue` ; `#7D86FF` pour un libellé | `--blue` ; `#7D86FF` en `accent/on-dark` |
-| texte sur aplat | `#FFF` (≈ 18), papier (3) | idem | **papier `#F5F5F5`, en clair comme en sombre (D1)** |
+| fond | `--paper` | `--ink` | `bg/primary` |
+| texte principal | `--ink` | `--paper` | `text/primary` |
+| texte secondaire (paragraphes) | `--muted` .55 | .6 (×2), .65, .72, .74, .85 | `text/muted` (.6), `text/help` (.72), `text/modal-summary` (.74), `text/menu-link` (.85) ; .65 en primitive |
+| libellé, surtitre | `--muted` .55 | .55 (×6), .5 (×9) | `text/label` (.55), `text/label-dim` (.5) |
+| texte discret | `--muted-2` .38 | .45, `#F4F6F5` à .45 et .26, .42 (×2), .34, .3 | `text/subtle` (.45), `text/footer` et `text/footer-top` (#F4F6F5), `text/label-faint` (.42), `text/ridge` (.34), `text/menu-separator` (.3) |
+| filet | `--line` .13 | .14 (×7), .16 (×4), .1 (×2) | `border/default` (.14), `border/menu` et `border/footer` (.16), `border/menu-rule` (.1), `border/header-mobile` (blanc .1) |
+| filet appuyé | `--line-2` .26 | .28 (bouton contour), .2 (rail mobile) | `border/strong` (.28) ; .2 en primitive |
+| accent | `--blue` | `--blue` ; `#7D86FF` pour un libellé | `accent/default`, `accent/on-dark` |
+| texte sur aplat | `#FFF` (≈ 18), papier (3) | idem | `text/on-accent` (#fff), `text/cta` (papier, `.cta .roll`), `text/on-inverse` (`.menu-btn`, `.pcard-bar-btn`) |
 
 Les fonds translucides du header (papier .78 / .92, encre .72 / .86 / .94 /
-.97) et les voiles (modale, cal.com) sont des valeurs de composant : je les
-propose comme sémantiques dédiées (`color/overlay/…`), pas comme rôles généraux.
+.97) et les voiles (modale, cal.com .65, indicateur de bord .7) sont des
+valeurs de composant : chacun a sa sémantique dédiée (`color/overlay/…`).
 
-**Structure Figma retenue** (D0, D1, D10) :
+**Structure Figma** (règle du 8 octobre, D10) :
 
-- **`primitives`**, un seul mode : `paper`, `ink`, `blue`, `white` (couleur
-  d'interface, fonds de surface seulement),
-  `blue-hover` (#0F17C2), `blue-light` (#7D86FF), `grey-card` (#E0E2E8),
-  `grey-line` (#E5E5E5), `grain-accent` (#63636A), `grain-accent-dark` (#4A4A52), plus les paliers
-  d'alpha retenus (`ink/a55`, `paper/a14`…). Couleurs saisies en {r,g,b,a}.
-- **`semantic`**, deux modes `clair` et `sombre` :
-  - `color/bg/primary`, `color/bg/surface` (#FFF), `color/bg/card` (#E0E2E8) ;
-  - `color/text/primary`, `/muted`, `/label`, `/subtle`, `/on-accent`
-    (papier, D1) ;
-  - `color/accent/default`, `/hover`, `/on-dark` ;
-  - `color/border/default`, `/strong`, `/header` ;
-  - `color/overlay/…` ;
-  - chacune en alias d'une primitive, avec la variable CSS en *code syntax*
-    quand elle existe (`var(--muted)`…).
+- **`primitives`**, un seul mode : les trois couleurs de marque, les couleurs
+  d'interface (dont `ink-soft` #161616, `ink-deep` #0E0E0E, `ink-particle`
+  #141414, `ink-scroll`) et tous les paliers d'alpha vivants du code (papier,
+  encre, blanc, blanc cassé #F4F6F5, bleu, noir). Couleurs saisies en
+  {r,g,b,a}.
+- **`semantic`**, deux modes `clair` et `sombre`, 50 jetons : fonds, textes,
+  accent, bordures, voiles, ombre, lueur. Chaque jeton reprend les valeurs
+  exactes d'un usage du code en clair et en sombre ; un usage qui n'existe que
+  sur fond sombre a la même valeur dans les deux modes. Chacun en alias d'une
+  primitive, avec la variable CSS en *code syntax* quand une seule expression
+  vaut dans les deux modes.
 
 ---
 
@@ -478,48 +478,96 @@ en M.
 **Chopin** : `.pre-word`, 500 italique, D 40 / 1,2, M 24 / 1,2,
 `clamp(1.5rem,3.6vw,2.5rem)`. Préchargement : intouchable, documenté seulement.
 
-### 3.4 Styles de texte retenus (D6)
+### 3.4 Styles de texte (D6, règle du 8 octobre)
 
-33 styles, en deux jeux `text/desktop/…` et `text/mobile/…` (validé : D6).
-Chaque style reprend la valeur d'une classe existante (la première citée),
-sauf l'interlignage des quatre styles marqués D7, repris d'autres titres du
-code (§1). Les autres classes rattachées sont indiquées avec leur écart.
+Un style par classe du code, à ses valeurs exactes : 118 styles, 66 dans
+`text/desktop/…` et 52 dans `text/mobile/…` (un style n'existe que dans le
+jeu où sa classe est visible). Deux classes ne partagent un style que si
+toutes leurs valeurs sont identiques. Bricolage porte son axe `opsz` réglé sur
+la taille, borné à 12–96 (D9). « = » : comme en desktop.
 
-| Style proposé | Figma | D : taille · interl. · approche | M | Classes rattachées (écart) |
+| Style | Police | D : taille · interl. · approche | M | Classes |
 |---|---|---|---|---|
-| `display` | Bricolage SemiBold | 56 · 102 % · −2,5 % | 28,8 · 102 % | `.manif-big`, `.lt-big` (fusionné en mobile, au lieu de 33,15 · 112 % : TYP-05) |
-| `heading-1` | Bricolage Bold | 54,4 · 100 % · −3 % | 33,15 · 100 % | `.bn3-title`, `.uc-title` (TYP-04) |
-| `heading-2` | Bricolage SemiBold | 44 · 105 % · −2 % | 29,6 · 105 % | `.sv2-title`, `.cw-title` (107 %), `.fq-title` (TYP-03) |
-| `heading-3` | Bricolage Bold | 36,8 · 108 % (D7) · −2 % | 20,8 · 108 % | `.bn3-summit h3`, `.ev-modal-txt h3` (33,6, D seul) |
-| `heading-4` | Bricolage SemiBold | 29,6 · 105 % (D7) · −2 % | 22,4 · 105 % | `.sv2-card h3` |
-| `heading-5` | Bricolage SemiBold | 24 · 108 % (D7) · −1,5 % | 17,92 · 108 % | `.bn3-camp h3` |
-| `heading-6` | Bricolage SemiBold | 20,8 · auto · −1 % | 16,32 · auto | `.fq-q` |
-| `title` | Bricolage SemiBold | 17,6 · 120 % (D7) · −1 % | 18,4 · 120 % | `.cw-name`, `.home-msg .nm` (Bold) |
+| `display` | Bricolage SemiBold | 56 · 102 % · −2,5 % · retrait 144 | 28,8 · 102 % · −2,5 % · retrait 56 | `.manif-big` ; `.lt-big` en desktop |
+| `display-lt` | Bricolage SemiBold | — | 33,15 · 112 % · −2,5 % · retrait 56 | `.lt-big` ≤ 760 |
+| `heading-1` | Bricolage Bold | 54,4 · 100 % · −3 % | 33,15 · 100 % · −3 % | `.bn3-title` |
+| `heading-1-uc` | Bricolage Bold | 57,6 · 160 % · −2,5 % | 32 · 106 % · −2 % | `.uc-title` |
+| `heading-2` | Bricolage SemiBold | 44 · 105 % · −2 % | 29,6 · 105 % · −2 % | `.sv2-title` |
+| `heading-2-cw` | Bricolage SemiBold | 44 · 107 % · −2 % | 29,6 · 107 % · −2 % | `.cw-title` |
+| `heading-2-fq` | Bricolage SemiBold | 41,6 · 160 % · −2 % | 25,6 · 160 % · −2 % | `.fq-title` |
+| `heading-3` | Bricolage Bold | 36,8 · 160 % · −2 % | 20,8 · 160 % · −2 % | `.bn3-summit h3` |
+| `heading-3-modal` | Bricolage Bold | 33,6 · 160 % · −2 % | — | `.ev-modal-txt h3` |
+| `heading-4` | Bricolage SemiBold | 29,6 · 160 % · −2 % | 22,4 · 160 % · −2 % | `.sv2-card h3` |
+| `heading-5` | Bricolage SemiBold | 24 · 160 % · −1,5 % | 17,92 · 160 % · −1,5 % | `.bn3-camp h3` |
+| `heading-6` | Bricolage SemiBold | 20,8 · auto · −1 % | 16,32 · auto · −1 % | `.fq-q` |
+| `sign` | Bricolage Regular | 20,8 · 100 % · −1 % | = | `.fq-x` (± de la FAQ) |
+| `title` | Bricolage SemiBold | 17,6 · 160 % · −1 % | 18,4 · 160 % · −1 % | `.cw-name` |
+| `title-strong` | Bricolage Bold | 17,6 · 160 % · −1 % | — | `.home-msg .nm` |
 | `title-sm` | Bricolage Bold | — | 15,2 · 120 % · −1 % | `.pcard-bar-txt b` |
 | `title-xs` | Bricolage SemiBold | 13,76 · 125 % · −1 % | — | `.ev-mark-name` |
 | `hero` | Bricolage SemiBold | — | 42,9 · 103 % · −3 % | `.hero-mtitle` |
-| `email` | Bricolage Bold | 38 · 108 % · −2 % | 24,96 · 108 % | `.f-mail` |
+| `email` | Bricolage Bold | 38 · 108 % · −2 % | 24,96 · 108 % · −2 % | `.f-mail` |
 | `menu` | Bricolage Bold | — | 25,6 · 112 % · −2 % | `.hx-nav a` |
 | `lead-lg` | Roboto Medium | 22 · 140 % | 15,2 · 140 % | `.manif-sub` |
-| `lead` | Roboto Medium | 18 · 138 % | 18 · 138 % | `.sv2-lead` |
-| `body-md` | Roboto Medium | 16 · 142 % | = | `.sv2-desc`, `.sv2-list li span` (SemiBold, 145 %) |
-| `body` | Roboto Regular | 15,12 · 160 % | 15 · 160 % | `body`, `.fq-a p`, `.uc-sub`, `.uc-cv p` |
-| `body-sm` | Roboto Medium | 15,2 · 155 % | = | `.bn3-summit p`, `.bn3-sub` (D 15,84), `.bn3-camp p` (14,72 · 150 %) |
-| `body-xs` | Roboto Regular | 14,72 · 160 % | 14,04 · 138 % | `.home-msg p`, `.ev-modal-over` (165 %), `.hx-links a` (M) |
-| `caption` | Roboto Medium | 13,6 · 160 % | = | `.cw-type`, `.svx-name` (13,12), `.svx-type` (12,16), `.pcard-bar-txt span` (Regular 12 · 130 %) |
-| `overline` | Space Mono Bold | 11 · 100 % · +8 % · CAPS | = | surtitres ×3, `.svx-go` (11,52), `.hx-label` (10 · +12 %) |
-| `nav` | Space Mono Regular | 11 · auto · +8 % · CAPS | = | nav, langue, `.menu-btn`, `.svx-toggle` (actif : Bold) |
-| `button` | Space Mono Regular | 11 · 160 % · +6 % · CAPS | 10 · +5 % (hero mobile) | `.btnf`, `.cta` |
-| `label` | Space Mono Regular | 10 · 160 % · +18 % · CAPS | = | `.hero-scroll`, `.veil-mark`, `.hb-lbl` (100 %), `.ev-modal-camp`, `dt`, `.ev-modal-count`, `.f-hook` (11,52) |
-| `label-sm` | Space Mono Regular | 10 · 160 % · +14 % · CAPS | = | `.foot-copy`, `.foot-loc`, `.foot-topbtn`, `.ev-modal-cat`, `.foot-col h4` (+16 %), `.foot-figma` (+12 %) |
-| `micro` | Space Mono Regular | 9 · 160 % · +14 % · CAPS | = | `.svx-head`, `.ev-mark-proj`, `.ev-mark-alt` (+16 %), `.ev-edge` (Bold 8) |
-| `meta` | Space Mono Regular | 12 · 160 % | = | `.foot-col a`, `.hx-lang`, `dd`, `.hb-val` (120 %) |
-| `data` | Space Mono Regular | 11 · auto · +8 % | = | `.fq-q i`, `.cw-year`, `.svx-time`, `.sv2-list li i`, `.bn3-campalt` |
-| `altimeter` | Space Mono Regular | 11 · 190 % · +14 % | — | `.bn3-alt`, `.lt-alt`, `.ev-meta` (TYP-09) |
-| `help` | Space Mono Regular | 11 · 140 % · 1,5 px · CAPS | — | `.ev-help-body` |
+| `lead` | Roboto Medium | 18 · 138 % | = | `.sv2-lead` |
+| `body-md` | Roboto Medium | 16 · 142 % | = | `.sv2-desc` |
+| `body-md-list` | Roboto SemiBold | 16 · 145 % | = | `.sv2-list li span` |
+| `body` | Roboto Regular | 15,12 · 160 % | 15 · 160 % | `body`, `.fq-a p`, `.uc-sub` (desktop), `.uc-cv p` |
+| `body-uc` | Roboto Regular | — | 16 · 160 % | `.uc-sub` ≤ 760 |
+| `body-sm` | Roboto Medium | 15,2 · 155 % | = | `.bn3-summit p` ; `.bn3-sub` en mobile |
+| `body-sm-sub` | Roboto Medium | 15,84 · 155 % | — | `.bn3-sub` |
+| `body-xs` | Roboto Regular | 14,72 · 160 % | — | `.home-msg p` |
+| `body-xs-camp` | Roboto Medium | 14,72 · 150 % | = | `.bn3-camp p` |
+| `body-xs-modal` | Roboto Regular | 14,72 · 165 % | — | `.ev-modal-over` |
+| `body-menu` | Roboto Regular | — | 14,04 · 138 % | `.hx-links a`, `.hx-hook`, `.hx-mail` |
+| `caption` | Roboto Medium | 13,6 · 160 % | — | `.cw-type` |
+| `caption-name` | Roboto Medium | 13,12 · 160 % | = | `.svx-name` |
+| `caption-type` | Roboto Medium | 12,16 · 160 % | — | `.svx-type` |
+| `caption-card` | Roboto Regular | — | 12 · 130 % | `.pcard-bar-txt span` |
+| `preloader` | Chopin-Trial VF Medium Italic | 40 · 120 % | 24 · 120 % | `.pre-word` (intouchable) |
+| `overline` | Space Mono Bold | 11 · 100 % · +8 % · CAPS | = | `.sv2-eyebrow` |
+| `overline-lt` | Space Mono Bold | 11 · 160 % · +8 % · CAPS | = | `.lt-eyebrow`, `.uc-eyebrow` |
+| `overline-go` | Space Mono Bold | 11,52 · 160 % · +8 % · CAPS | — | `.svx-go` |
+| `nav` | Space Mono Regular | 11 · auto · +8 % · CAPS | = | `.nav-mid a`, `.lang-trigger`, `.lang-menu button`, `.menu-btn`, `.svx-toggle` |
+| `nav-active` | Space Mono Bold | 11 · auto · +8 % · CAPS | = | état actif de `nav` |
+| `nav-roll` | Space Mono Regular | 11 · 118 % · +8 % · CAPS | — | lettres du roll de `.nav-mid a` |
+| `nav-active-roll` | Space Mono Bold | 11 · 118 % · +8 % · CAPS | — | page courante, lettres du roll |
+| `button` | Space Mono Regular | 11 · 160 % · +6 % · CAPS | = | `.btnf`, `.cta` |
+| `button-roll` | Space Mono Regular | 11 · 118 % · +6 % · CAPS | — | lettres du roll d'un bouton (`.roll .rl`, line-height 1.18) |
+| `button-hero` | Space Mono Regular | — | 10 · 160 % · +5 % · CAPS | `.hero-mcta .btnf` |
+| `label` | Space Mono Regular | 10 · 160 % · +18 % · CAPS | = | `.hero-scroll`, `.veil-mark`, `.ev-modal-camp`, `.ev-modal-meta dt` |
+| `label-hb` | Space Mono Regular | 10 · 100 % · +18 % · CAPS | — | `.hb-lbl` |
+| `label-count` | Space Mono Regular | 10 · 160 % · +18 % | — | `.ev-modal-count` |
+| `label-hook` | Space Mono Regular | 11,52 · 160 % · +18 % · CAPS | = | `.f-hook` |
+| `label-sm` | Space Mono Regular | 10 · 160 % · +14 % · CAPS | = | `.foot-copy`, `.foot-loc`, `.foot-topbtn`, `.ev-modal-cat` |
+| `label-sm-col` | Space Mono Regular | 10 · 160 % · +16 % · CAPS | = | `.foot-col h4` |
+| `label-sm-figma` | Space Mono Regular | 10 · 160 % · +12 % · CAPS | = | `.foot-figma` |
+| `label-sm-strong` | Space Mono Bold | 10 · 160 % · +12 % · CAPS | = | `.foot-figma b`, `.hx-label` |
+| `micro` | Space Mono Regular | 9 · 160 % · +14 % · CAPS | = | `.svx-head` |
+| `micro-alt` | Space Mono Regular | 9 · 100 % · +16 % · CAPS | — | `.ev-mark-alt` |
+| `micro-proj` | Space Mono Regular | 9 · 130 % · +14 % · CAPS | — | `.ev-mark-proj` |
+| `micro-edge` | Space Mono Bold | 8 · 100 % · +14 % · CAPS | — | `.ev-edge` |
+| `micro-ridge` | Space Mono Regular | 9 · auto · +14 % | = | altitudes de la crête du footer (texte SVG) |
+| `meta` | Space Mono Regular | 12 · 160 % | = | `.foot-col a`, `.ev-modal-meta dd` |
+| `meta-hb` | Space Mono Regular | 12 · 120 % | — | `.hb-val` |
+| `meta-lang` | Space Mono Regular | — | 12 · 160 % · +8 % | `.hx-lang` |
+| `data` | Space Mono Regular | 11 · auto · +8 % | = | `.fq-q i` |
+| `data-year` | Space Mono Regular | 11,2 · 160 % | 12,48 · 160 % | `.cw-year` |
+| `data-time` | Space Mono Regular | 10,88 · 160 % | = | `.svx-time` |
+| `data-list` | Space Mono Regular | 10 · 145 % | = | `.sv2-list li i` |
+| `data-camp` | Space Mono Regular | 10 · 160 % · +12 % | = | `.bn3-campalt` |
+| `altimeter` | Space Mono Regular | 11 · 190 % · +14 % | — | `.bn3-alt`, `.lt-alt` |
+| `altimeter-ev` | Space Mono Regular | 10 · 200 % · +18 % · CAPS | — | `.ev-meta` |
+| `help` | Space Mono Regular | 11 · 140 % · 1,512 px · CAPS | — | `.ev-help-body` |
+| `help-strong` | Space Mono Bold | 11 · 140 % · 1,512 px · CAPS | — | `.ev-help b` |
+| `help-docked` | Space Mono Regular | 8 · 140 % · 1,512 px · CAPS | — | `.ev-help.docked .ev-help-body` |
+| `help-docked-strong` | Space Mono Bold | 8 · 140 % · 1,512 px · CAPS | — | `.ev-help b`, rangé ouvert |
 | `chip` | Space Mono Regular | 10 · auto · +5 % · CAPS | = | `.svx-pill` |
 | `hero-meta` | Space Mono Regular | — | 9,36 · 140 % · +1 % | `.hero-meyebrow` |
-| `preloader` | Chopin-Trial VF Medium Italic | 40 · 120 % | 24 · 120 % | `.pre-word` (intouchable) |
+
+*Jusqu'au 8 octobre : 33 styles qui rattachaient plusieurs classes à une
+même valeur (approches mono ramenées à quatre, tailles mono entières, titres
+à l'interlignage d'autres titres).*
 
 Le compteur du préchargement (`.pre-count`) reste documenté dans le composant
 Préchargement, sans style propre.
@@ -640,8 +688,8 @@ code n'en a pas.
 | Valeur | Où | Statut |
 |---|---|---|
 | **5 px** | header compact et menu ouvert, boutons, `.cta`, `.menu-btn`, cartes carrousel et barres, cartes Services, lignes et puces Services, aperçu Client work, visuels About, questions FAQ, étiquettes de sommet, modale et ses boutons, boutons carrés 38 | **rayon de la marque** (23 règles) |
-| 4 px | encadré mode d'emploi `.ev-help`, contour de focus de son bouton | **passe à 5 px** (RAY-01) |
-| 8 px | menu langue `.lang-menu`, petit menu déroulant | **passe à 5 px** : ce n'est pas un grand conteneur (RAY-01) |
+| 4 px | encadré mode d'emploi `.ev-help`, contour de focus de son bouton | `radius/4` (RAY-01) |
+| 8 px | menu langue `.lang-menu`, petit menu déroulant | `radius/8` (RAY-01) |
 | 2 px | soulignement de l'e-mail du footer, poignée de la barre de défilement | détail |
 | 3 px | contour de focus du bouton plein écran | détail |
 | 38 → 20 px | coins hauts du footer, `clamp(20px,3vw,38px)` : 38 en D, 30,7 à 1024, 20 en M | fluide (RAY-02) |
@@ -894,129 +942,104 @@ occupe le hero au-dessus de 1024 px.
 
 ## 10. Doublons et incohérences
 
-Chaque ligne : le constat, la preuve, la recommandation ou la décision.
-« Figma » = ce qui sera fait aux étapes suivantes ; « code » et « À corriger
-sur le site » = alignement à faire plus tard, sur une branche dédiée. La liste
-consolidée de ces corrections clôt la section.
+Chaque ligne : le constat, la preuve, et ce que fait Figma. Depuis le 8 octobre
+(règle prioritaire, `BRIEF.md`), Figma reproduit la valeur exacte du code : les
+incohérences du code sont documentées, pas corrigées. Le site ne change pas.
 
 ### Couleurs
 
-| ID | Constat | Recommandation |
+| ID | Constat | Dans Figma |
 |---|---|---|
-| COL-01 | `#1111118C` écrit en dur ×6 : c'est `--muted` (`globals.css:75,81,88,314,343,494`). | Figma : lier à `color/text/label`. Code : `var(--muted)`. |
-| COL-02 | Blanc cassé `#F4F6F5` ×6 (`#f4f6f573`, `#f4f6f542`, `rgba(244,246,245,.45)`) au lieu du papier : footer et rideau. Écart de 1 sur une composante, invisible. | Papier `#F5F5F5`. |
-| COL-03 | `.hero-scroll` en `rgba(16,19,18,.45)` : presque l'encre, alpha absent de l'échelle (`globals.css:278`). | `color/text/subtle` (`--muted-2`, .38), comme les autres libellés du hero. |
-| COL-04 | Texte sur aplat : `#FFF` (≈ 18 usages : boutons bleus et encre, puce active, survols bleus) ou papier (3 : `.cta .roll`, `.menu-btn`, `.pcard-bar-btn`). Le CTA du header mélange les deux : libellé papier, flèche blanche. | **D1 (décidé)** : papier `#F5F5F5`. **À corriger sur le site** : `var(--paper)` à la place de `#fff` sur ces textes. |
-| COL-05 | Bleu de survol `#0F17C2` ×4, sans variable. | Primitive `blue-hover` ; sémantique `color/accent/hover`. Code : `--blue-hover`. |
+| COL-01 | `#1111118C` écrit en dur ×6 : c'est `--muted` (`globals.css:75,81,88,314,343,494`). | Même valeur : `color/text/label` et `color/text/label-dim` en clair (`ink/a55`, aussi écrit `#1111118C`). |
+| COL-02 | Blanc cassé `#F4F6F5` ×6 (`#f4f6f573`, `#f4f6f542`, `rgba(244,246,245,.45)`) au lieu du papier : footer et rideau. Écart de 1 sur une composante, invisible. | Gardé : primitives `off-white/a45` et `off-white/a26`, jetons `color/text/footer` et `color/text/footer-top`. |
+| COL-03 | `.hero-scroll` en `rgba(16,19,18,.45)` : presque l'encre, alpha absent de l'échelle (`globals.css:278`). | Gardé : primitive `color/ink-scroll`. |
+| COL-04 | Texte sur aplat : `#FFF` (≈ 18 usages : boutons bleus et encre, puce active, survols bleus) ou papier (3 : `.cta .roll`, `.menu-btn`, `.pcard-bar-btn`). Le CTA du header mélange les deux : libellé papier, flèche blanche. | Gardé tel quel (D1) : `color/text/on-accent` (#fff), `color/text/cta` (papier, libellé du CTA du header), `color/text/on-inverse` (`.menu-btn`, `.pcard-bar-btn`). |
+| COL-05 | Bleu de survol `#0F17C2` ×4, sans variable. | Primitive `blue-hover`, sémantique `color/accent/hover` ; code syntax `#0f17c2`, la valeur écrite dans le code. |
 | COL-06 | Bleu clair `#7D86FF`, un seul usage (modale). | Primitive `blue-light`, sémantique `color/accent/on-dark`. |
-| COL-07 | Bordure du header en gris opaque `#E5E5E5`, alors que les filets du site sont en `--line` (encre .13, soit environ `#D7D7D7` sur papier). | Garder `#E5E5E5` (`color/border/header`) : le header est translucide, une bordure opaque y est cohérente. **Décidé** : gardée, comme couleur d'interface (§1). |
-| COL-08 | Bordures sur fond sombre : papier .14 en desktop, **blanc .1** pour le header mobile (`globals.css:677,686`). | Papier .14. |
-| COL-09 | 25 paliers d'alpha sur le papier, 17 sur l'encre. | D2 : rôles du §2.5. Écarts à aligner dans le code : .5 → .55, .65 / .72 / .74 → .6, .42 → .45, .16 → .14 (sauf la barre du préchargement). |
-| COL-10 | Noirs voisins : `#161616` (menu langue sombre), `#0E0E0E` (visuel de la modale), `#141414` (particules du logo animé, `LogoReveal.js:20,125`), voile `rgba(10,10,10,.86)`, à côté de l'encre `#111`. | **Décidé** : `#161616`, `#0E0E0E` et `#141414` fondus dans l'encre ; le voile reste `color/overlay/modal`, les ombres noires restent des ombres (§1). **À corriger sur le site.** |
-| COL-11 | Deux fonds de carte : blanc (FAQ, visuels About) et gris `#E0E2E8` (Services). | Deux tokens, `color/bg/surface` et `color/bg/card` : l'usage est distinct. |
+| COL-07 | Bordure du header en gris opaque `#E5E5E5`, alors que les filets du site sont en `--line` (encre .13, soit environ `#D7D7D7` sur papier). | Gardée : `color/border/header`, couleur d'interface (§1). |
+| COL-08 | Bordures sur fond sombre : papier .14 en desktop, **blanc .1** pour le header mobile (`globals.css:677,686`). | Les deux : `color/border/default` (papier .14 en sombre) et `color/border/header-mobile` (blanc .1). |
+| COL-09 | 25 paliers d'alpha sur le papier, 17 sur l'encre. | Tous les paliers vivants en primitives ; un jeton sémantique par usage, à son opacité exacte (§2.5). |
+| COL-10 | Noirs voisins : `#161616` (menu langue sombre), `#0E0E0E` (visuel de la modale), `#141414` (particules du logo animé, `LogoReveal.js:20,125`), voile `rgba(10,10,10,.86)`, à côté de l'encre `#111`. | Gardés : `color/ink-soft`, `ink-deep`, `ink-particle` ; jetons `color/bg/menu` et `color/bg/modal-shot` ; le voile reste `color/overlay/modal`, les ombres noires restent des ombres. |
+| COL-11 | Deux fonds de carte : blanc (FAQ, visuels About) et gris `#E0E2E8` (Services). | Deux jetons, `color/bg/surface` et `color/bg/card` : l'usage est distinct. |
 | COL-12 | Deux gris de grain d'accent, `#63636A` et `#4A4A52`. | Voulu (commentaire « un cran plus foncé ») : deux primitives. |
 
 ### Typographie
 
-| ID | Constat | Recommandation |
+| ID | Constat | Dans Figma |
 |---|---|---|
-| TYP-01 | Huit titres sans `line-height` héritent du 1,6 du body : `.fq-title`, `.sv2-card h3`, `.bn3-camp h3`, `.bn3-summit h3`, `.uc-title` (desktop), `.ev-modal-txt h3`, `.home-msg .nm`, `.cw-name`. | **D7 (décidé)** : dans Figma, ils prennent l'interlignage des autres titres du code (100, 105, 108 ou 120 %, tableau du §1). **À corriger sur le site** : déclarer ces interlignages sur les huit titres. |
-| TYP-02 | `.sv2-title` (1,05) et `.cw-title` (1,07) : même style à 0,02 près. | `heading-2` à 105 %. |
-| TYP-03 | `.fq-title` (41,6, interlignage hérité 1,6) est un `heading-2` à 2,4 px près. | Rattaché à `heading-2` (D6) : 44 en desktop et 29,6 en mobile, au lieu de 41,6 et 25,6. |
-| TYP-04 | `.uc-title` (57,6, −.025em) et `.bn3-title` (54,4, −.03em) : deux grands titres voisins. | Un `heading-1` calé sur `.bn3-title` (D6). |
-| TYP-05 | `.lt-big` = `.manif-big` en desktop, mais diverge en mobile (33,15 / 1,12 contre 28,8 / 1,02 : règle ajoutée en section 6). | **Décidé** : `.lt-big` fusionné dans `display` (mobile 28,8 · 102 %). **À corriger sur le site** : aligner `.lt-big` mobile sur `.manif-big`. |
-| TYP-06 | Neuf approches en mono capitales : .05, .06, .08, .1 (fixe), .12, .14, .16, .18, .22em. | Quatre : .06 bouton, .08 nav et surtitre, .14 petit libellé, .18 libellé. .22 reste au préchargement. |
-| TYP-07 | Tailles mono mêlant px et rem : 10,88 (`.68rem`), 11,2 (`.7rem`), 11,52 (`.72rem`) à côté de 10 / 11 / 12 px. | Entiers 10 / 11 / 12 ; 8 et 9 restent pour la scène Everest. |
-| TYP-08 | Corps Roboto : 14 combinaisons taille / interlignage (22 → 10,88 ; 1,3 → 1,65). | Sept styles (§3.4). |
-| TYP-09 | Trois altimètres : `.ev-meta` (10 / 2 / .18em, CAPS) n'est pas « calqué » sur `.bn3-alt` et `.lt-alt` (11 / 1,9 / .14em), contrairement à ce que dit son commentaire (`globals.css:1531`). | Un style `altimeter` calé sur `.bn3-alt`. |
-| TYP-10 | Surtitre défini trois fois (`.sv2-`, `.lt-`, `.uc-eyebrow`), interlignage 1 ou 1,6 selon la classe ; `.hx-label` en est une variante (10 / .12em). | Un composant `eyebrow`, un style `overline`. |
-| TYP-11 | L'approche du mode d'emploi est calculée sur la taille du body (.1em × 15,12 = 1,512 px), puis héritée : elle grossit en relatif quand le texte passe à 8 px. | Documenter 1,5 px. Code : poser `letter-spacing` sur `.ev-help-body`. |
-| TYP-12 | Chargés pour rien : Bricolage 800 (CSS mort uniquement), Space Mono italique. Bricolage 400 ne sert qu'au glyphe ± de la FAQ. | Code : retirer 800 et l'italique de l'URL Google Fonts (performance, chantier séparé). |
-| TYP-13 | Flèches `→ ↗ ↔` dessinées par Consolas et Segoe UI Symbol (§3.2). | **D8 (décidé)** : icônes vectorielles `icon/arrow-right`, `icon/arrow-up-right`, `icon/arrow-left-right` (tracés au §1), annotées « pas encore dans le code ». **À corriger sur le site** : remplacer les glyphes par ces SVG. |
+| TYP-01 | Huit titres sans `line-height` héritent du 1,6 du body : `.fq-title`, `.sv2-card h3`, `.bn3-camp h3`, `.bn3-summit h3`, `.uc-title` (desktop), `.ev-modal-txt h3`, `.home-msg .nm`, `.cw-name`. | Figma garde le 160 % hérité, celui que le navigateur rend (D7). |
+| TYP-02 | `.sv2-title` (1,05) et `.cw-title` (1,07) : même style à 0,02 près. | Deux styles : `heading-2` (1,05) et `heading-2-cw` (1,07). |
+| TYP-03 | `.fq-title` (41,6, interlignage hérité 1,6) est un `heading-2` à 2,4 px près. | Son propre style : `heading-2-fq` (41,6 et 25,6, interlignage 1,6). |
+| TYP-04 | `.uc-title` (57,6, −.025em) et `.bn3-title` (54,4, −.03em) : deux grands titres voisins. | Deux styles : `heading-1` (`.bn3-title`) et `heading-1-uc` (`.uc-title`). |
+| TYP-05 | `.lt-big` = `.manif-big` en desktop, mais diverge en mobile (33,15 / 1,12 contre 28,8 / 1,02 : règle ajoutée en section 6). | `display` pour les deux en desktop ; `display-lt` pour `.lt-big` en mobile (33,15 · 112 %). |
+| TYP-06 | Neuf approches en mono capitales : .05, .06, .08, .1 (fixe), .12, .14, .16, .18, .22em. | Toutes gardées, chacune dans son style (§3.4). |
+| TYP-07 | Tailles mono mêlant px et rem : 10,88 (`.68rem`), 11,2 (`.7rem`), 11,52 (`.72rem`) à côté de 10 / 11 / 12 px. | Gardées : `data-time` (10,88), `data-year` (11,2 ; 12,48 en mobile), `overline-go` et `label-hook` (11,52). |
+| TYP-08 | Corps Roboto : 14 combinaisons taille / interlignage (22 → 10,88 ; 1,3 → 1,65). | Un style par combinaison vivante (§3.4). |
+| TYP-09 | Trois altimètres : `.ev-meta` (10 / 2 / .18em, CAPS) n'est pas « calqué » sur `.bn3-alt` et `.lt-alt` (11 / 1,9 / .14em), contrairement à ce que dit son commentaire (`globals.css:1531`). | Deux styles et deux variantes du composant `altimeter` : `altimeter-ev` (`.ev-meta`) et `altimeter` (`.bn3-alt`, `.lt-alt`). |
+| TYP-10 | Surtitre défini trois fois (`.sv2-`, `.lt-`, `.uc-eyebrow`), interlignage 1 ou 1,6 selon la classe ; `.hx-label` en est une variante (10 / .12em). | Composant `eyebrow` à deux variantes (`class=sv2-eyebrow`, `class=lt-eyebrow`), styles `overline` et `overline-lt` ; `.hx-label` en `label-sm-strong`. |
+| TYP-11 | L'approche du mode d'emploi est calculée sur la taille du body (.1em × 15,12 = 1,512 px), puis héritée : elle grossit en relatif quand le texte passe à 8 px. | Reproduit : 1,512 px dans `help` (11 px) et `help-docked` (8 px). |
+| TYP-12 | Chargés pour rien : Bricolage 800 (CSS mort uniquement), Space Mono italique. Bricolage 400 ne sert qu'au glyphe ± de la FAQ. | Signalé seulement (§11). |
+| TYP-13 | Flèches `→ ↗ ↔` dessinées par Consolas et Segoe UI Symbol (§3.2). | D8 : icônes vectorielles `icon/arrow-right`, `icon/arrow-up-right`, `icon/arrow-left-right` (tracés au §1), propres à Figma, annotées « pas encore dans le code » ; le site garde ses glyphes. |
 | TYP-14 | Axe optique de Bricolage réglé automatiquement par le navigateur. | D9 : `opsz` = taille (bornée 12–96) dans chaque style Figma. |
-| TYP-15 | Famille Chopin : « Chopin » dans le code, `Chopin-Trial VF` dans Figma. | Utiliser `Chopin-Trial VF` / `Medium Italic` (même dessin) et noter la correspondance dans le style. |
-| TYP-16 | `.cw-name` est plus grand en mobile (18,4) qu'en desktop (17,6). | Signalé seulement. Probablement voulu (lisibilité au doigt). |
+| TYP-15 | Famille Chopin : « Chopin » dans le code, `Chopin-Trial VF` dans Figma. | `Chopin-Trial VF` / `Medium Italic` (même dessin), correspondance notée dans le style. |
+| TYP-16 | `.cw-name` est plus grand en mobile (18,4) qu'en desktop (17,6). | Reproduit dans `title` (17,6 et 18,4). |
 
 ### Espacements et mise en page
 
-| ID | Constat | Recommandation |
+| ID | Constat | Dans Figma |
 |---|---|---|
-| ESP-01 | Trois marges desktop : 56 (nav, footer : `globals.css:69,541`), 60 (`--pad` : hero, `.wrap`, scène), 112 (sections). Le logo est à x = 56, le nom du hero à x = 60. | D3 : `layout/page-pad` = 60 / 20, `layout/section-inset` = 112 / 20. |
-| ESP-02 | Sous 1400, le contenu de Let's talk passe à `--pad`, mais son filet `.lt::after` reste à 112, puis à 40 sous 760 (`globals.css:486,507,837-846`). À 390, contenu à 20 et filet à 40. | Code : filet à `--pad` sous 1400. |
-| ESP-03 | Footer ≤ 760 en 20 px fixes (`globals.css:588`), le reste du site en `--pad` (38 à 760). | Code : `--pad`. |
-| ESP-04 | Le bloc « correctifs mobile » (`globals.css:3-22`) précède les règles de base et perd la cascade. `--pad:16px` sous 480 ne s'applique jamais, ni la plupart des autres lignes. | **Décidé** : 20 en mobile, la valeur réelle. **À corriger sur le site** : supprimer le bloc mort plutôt que d'activer les 16 px (nettoyage). |
-| ESP-05 | Pas d'échelle : 26 valeurs fixes, dont des irrégulières (7, 9, 13, 22, 26, 34, 36…). | D0 : toutes les valeurs vivantes en primitives `space/…`. Les irrégulières sont signalées pour un alignement du code ; aucune n'est arrondie dans Figma. |
-| ESP-06 | Rythme vertical en `vh` : il change avec la hauteur d'écran. | Figma : valeurs à 900 et 844 de haut, formule `clamp` en description. |
-| ESP-07 | Marges mobiles de 40 px (`globals.css:377,502-512,520-523`) presque toutes écrasées plus loin par `--pad`. Seul le filet de Let's talk les garde (ESP-02). | Code mort à nettoyer. |
+| ESP-01 | Trois marges desktop : 56 (nav, footer : `globals.css:69,541`), 60 (`--pad` : hero, `.wrap`, scène), 112 (sections). Le logo est à x = 56, le nom du hero à x = 60. | Les trois : `layout/nav-pad` et `layout/footer-pad` (56 / 20), `layout/page-pad` (60 / 20), `layout/section-inset` (112 / 20) (D3). |
+| ESP-02 | Sous 1400, le contenu de Let's talk passe à `--pad`, mais son filet `.lt::after` reste à 112, puis à 40 sous 760 (`globals.css:486,507,837-846`). À 390, contenu à 20 et filet à 40. | Reproduit : `section/lets-talk/rule-inset` (112 ; 40 sous 760). |
+| ESP-03 | Footer ≤ 760 en 20 px fixes (`globals.css:588`), le reste du site en `--pad` (38 à 760). | Reproduit : `layout/footer-pad` (20 en mobile). |
+| ESP-04 | Le bloc « correctifs mobile » (`globals.css:3-22`) précède les règles de base et perd la cascade. `--pad:16px` sous 480 ne s'applique jamais, ni la plupart des autres lignes. | 20 en mobile, la valeur réelle ; le bloc sans effet est signalé seulement (§11). |
+| ESP-05 | Pas d'échelle : 26 valeurs fixes, dont des irrégulières (7, 9, 13, 22, 26, 34, 36…). | Toutes les valeurs vivantes en primitives `space/…` (31), sans arrondi. |
+| ESP-06 | Rythme vertical en `vh` : il change avec la hauteur d'écran. | Figma : valeurs à 900 et 844 de haut, formule `clamp` en description (collection `responsive`). |
+| ESP-07 | Marges mobiles de 40 px (`globals.css:377,502-512,520-523`) presque toutes écrasées plus loin par `--pad`. Seul le filet de Let's talk les garde (ESP-02). | Seule valeur vivante : le filet de Let's talk (ESP-02). |
 
 ### Rayons
 
-| ID | Constat | Recommandation |
+| ID | Constat | Dans Figma |
 |---|---|---|
-| RAY-01 | 5 px partout, sauf l'encadré mode d'emploi (4 px) et le menu langue (8 px). | **Décidé** : 5 px, le rayon de la marque, partout. Le 4 px passe à 5 ; le 8 px aussi, car il ne sert qu'au menu de langue, qui n'est pas un grand conteneur (§1). **À corriger sur le site.** |
+| RAY-01 | 5 px partout, sauf l'encadré mode d'emploi (4 px) et le menu langue (8 px). | Les trois : `radius/5`, `radius/4` (`.ev-help`, focus de `.ev-help-btn`) et `radius/8` (`.lang-menu`). |
 | RAY-02 | Coins du footer fluides (38 → 20). | `radius/footer` avec modes desktop et mobile. |
 
 ### Ombres et effets
 
-| ID | Constat | Recommandation |
+| ID | Constat | Dans Figma |
 |---|---|---|
 | EFF-01 | Neuf ombres, toutes différentes, aucune variable. | Un style d'effet par usage (§6.1). |
-| EFF-02 | Motif du grain recopié en data-URI dans 8 règles. | Un seul style ou asset `effect/grain` (D11). Code : une variable CSS. |
-| EFF-03 | Six flous différents (14, 8, 4 ; 58, 66, 22). | Styles d'effet : `blur/header`, `blur/flag`, `blur/overlay`, `blur/glow`. |
-| EFF-04 | Lueurs du hero et du footer quasi identiques (bleu .5 et .55 à opacité .5 ; flous 58 et 66). | Une seule lueur documentée, deux mouvements. |
+| EFF-02 | Motif du grain recopié en data-URI dans 8 règles. | Un seul style `effect/grain` (D11) et le composant `grain`. |
+| EFF-03 | Six flous différents (14, 8, 4 ; 58, 66, 22). | Styles d'effet : `blur/header`, `blur/flag`, `blur/overlay`, `blur/glow-hero`, `blur/glow-footer`. |
+| EFF-04 | Lueurs du hero et du footer quasi identiques (bleu .5 et .55 à opacité .5 ; flous 58 et 66). | Les deux, exactes : jeton `color/glow` (bleu .5 en clair pour le hero, .55 en sombre pour le footer), `blur/glow-hero` (58) et `blur/glow-footer` (66). |
 
 ### Points de rupture
 
-| ID | Constat | Recommandation |
+| ID | Constat | Dans Figma |
 |---|---|---|
-| BRK-01 | Hors règle : 480, 560, 620, 680, 930 / 761, 1440. | Figma : cadres 1440 / 1400 / 1024 / 900 / 760 / 390. Code : ramener aux quatre seuils officiels. |
-| BRK-02 | 680 : une seule règle encore vivante, `.veil-mark{left:20px}`. | Code : la passer à 760. |
+| BRK-01 | Hors règle : 480, 560, 620, 680, 930 / 761, 1440. | Figma : cadres 1440 / 1400 / 1024 / 900 / 760 / 390 ; les seuils hors règle sont signalés. |
+| BRK-02 | 680 : une seule règle encore vivante, `.veil-mark{left:20px}`. | Signalé. |
 
 ### Mouvement
 
-| ID | Constat | Recommandation |
+| ID | Constat | Dans Figma |
 |---|---|---|
-| MOT-01 | Courbe du roll `cubic-bezier(.65,0,.2,1)` ×4, sans nom. | Token `ease/roll`. |
+| MOT-01 | Courbe du roll `cubic-bezier(.65,0,.2,1)` ×4, sans nom. | Courbe documentée sur la page Motion (étape 4). |
 | MOT-02 | 26 durées distinctes. | Documenter les six groupes du §8.2 ; échelle de durées sur la page Motion. |
-| MOT-03 | `.reveal` déclaré deux fois (`globals.css:597` et `1437`) : la courbe `.2,.7,.2,1` est écrasée. Règle `cal-modal-box` en double (`633` et `1495`). | Code mort à nettoyer. |
+| MOT-03 | `.reveal` déclaré deux fois (`globals.css:597` et `1437`) : la courbe `.2,.7,.2,1` est écrasée. Règle `cal-modal-box` en double (`633` et `1495`). | Signalé (CSS mort). |
 | MOT-04 | Trois régimes d'apparition : .85 s `--e` (desktop), 1,05 s `--rv-e` (groupes), 1,2 s (≤ 1024). | Documenter les trois, sans fusionner. |
 
 ### Composants
 
-| ID | Constat | Recommandation |
+| ID | Constat | Dans Figma |
 |---|---|---|
-| CMP-01 | Deux familles de boutons : `.btnf-blue` / `-ink` / `-ghost` d'un côté, `.btn-blue` / `.btn-ink` / `.sv2-cta` de l'autre (`globals.css:320-323,441-455,559-566`). `.btnf-blue` garde au survol une bordure `#1E29FF` autour d'un fond `#0F17C2` (liseré visible) ; `.btn-blue` change aussi la bordure. `.btnf-ink` n'a pas de survol ; `.btn-ink` et `.sv2-cta` passent au bleu. | D4 : un composant `button`, survols de `.btn-blue` et `.btn-ink`. |
-| CMP-02 | `.cta` (header) = bouton bleu en petit (9 / 14) ; `.menu-btn` a une approche de .08em, contre .06em pour les autres boutons. | Taille `sm` du composant `button` ; `.menu-btn` à .06em (alignement du code). |
-| CMP-03 | Classes de bouton mortes : `.btn-dark`, `.btn-paper`, que `useMagnetic.js` et `ReactiveField.js` visent encore. | Code : nettoyer. |
-| CMP-04 | Aucun état désactivé dans le code. Focus visible seulement sur les composants Everest (contour bleu de 2 px, décalé de 2 à 4 px). État actif seulement au tap du menu mobile. | **D5 (décidé)** : désactivé et focus créés dans Figma sur tous les éléments cliquables, avec les seules fondations existantes, annotés « pas encore dans le code ». **À corriger sur le site** : les ajouter. |
-| CMP-05 | Badge curseur et carrousel 3D inatteignables. | Ne pas les reproduire ; code mort à retirer. |
-| CMP-06 | Surtitre défini trois fois (TYP-10). | Un composant `eyebrow` (modes clair et sombre). |
-| CMP-07 | Altimètre implémenté trois fois (TYP-09). | Un composant `altimeter` (modes clair et sombre). |
-| CMP-08 | Six boutons icônes, cinq tailles (26, 30, 36, 38, 40), trois traitements. | Un composant `icon-button` à variantes de taille et de fond. |
-
-### Corrections à faire sur le site
-
-Les écarts que les arbitrages créent entre Figma et le site. Chacun relève de
-sa propre branche, avec diagnostic et validation visuelle avant modification,
-selon les règles du projet.
-
-| Correction | Origine |
-|---|---|
-| Texte sur aplat en `var(--paper)` au lieu de `#fff` | D1, COL-04 |
-| Interlignage déclaré sur les huit titres (100, 105, 108 ou 120 %, §1) | D7, TYP-01 |
-| Nav et footer à `--pad` (60) au lieu de 56 | D3, ESP-01 |
-| Opacités ramenées aux rôles : `--muted` au lieu de `#1111118C`, papier au lieu de `#F4F6F5`, cinq rôles en mode sombre | D2, COL-01 à COL-03, COL-08, COL-09 |
-| Une seule famille de boutons, survols alignés, `.menu-btn` à .06em | D4, CMP-01, CMP-02 |
-| Styles fusionnés (`display` pour `.lt-big` en mobile, `heading-1`, `heading-2`, surtitre, altimètre), approches mono à quatre valeurs, tailles mono entières | D6, TYP-02 à TYP-10 |
-| Rayons de 4 et 8 px passés à 5 px : `.ev-help`, focus de `.ev-help-btn`, `.lang-menu` | RAY-01 |
-| Flèches en SVG à la place des glyphes | D8, TYP-13 |
-| États focus et désactivé | D5, CMP-04 |
-| Noirs voisins fondus dans l'encre : `#161616` (`header.on-dark .lang-menu`), `#0e0e0e` (`.ev-modal-shot`), `#141414` (particules, `LogoReveal.js`). Les deux `#111111` écrits en dur (`.lang-menu button.on`, `.hb-val`) passent à `var(--ink)` | COL-10 |
-| Favicon : remplacer `app/icon.svg` (logo blanc sans fond) par le favicon défini à l'étape 4, logo papier sur fond bleu `#1E29FF` | favicon (§1) |
-| Supprimer `public/Fram_25.svg`, copie du logo que rien n'utilise | favicon (§1), annexe B |
-| Variables manquantes : `--blue-hover`, grain unique, courbe du roll | COL-05, EFF-02, MOT-01 |
-| Alignements tablette : filet de Let's talk, footer en `--pad` | ESP-02, ESP-03 |
-| Nettoyage : CSS mort, blocs sans effet, règles en double, seuils hors règle | annexe B, ESP-04, ESP-07, MOT-03, BRK-01, BRK-02, CMP-03, CMP-05 |
+| CMP-01 | Deux familles de boutons : `.btnf-blue` / `-ink` / `-ghost` d'un côté, `.btn-blue` / `.btn-ink` / `.sv2-cta` de l'autre (`globals.css:320-323,441-455,559-566`). `.btnf-blue` garde au survol une bordure `#1E29FF` autour d'un fond `#0F17C2` (liseré visible) ; `.btn-blue` change aussi la bordure. `.btnf-ink` n'a pas de survol ; `.btn-ink` et `.sv2-cta` passent au bleu. | Reproduites : propriété `family` du composant `button` (`btnf`, `btn`), chacune avec ses survols (D4). |
+| CMP-02 | `.cta` (header) = bouton bleu en petit (9 / 14) ; `.menu-btn` a une approche de .08em, contre .06em pour les autres boutons. | `size=sm` : `.cta` (9 / 14, écart 7, .06em) et `.menu-btn` (9 / 14, écart 8, .08em, line-height normal). |
+| CMP-03 | Classes de bouton mortes : `.btn-dark`, `.btn-paper`, que `useMagnetic.js` et `ReactiveField.js` visent encore. | Signalé (CSS mort, annexe B). |
+| CMP-04 | Aucun état désactivé dans le code. Focus visible seulement sur les composants Everest (contour bleu de 2 px, décalé de 2 à 4 px). État actif seulement au tap du menu mobile. | D5 : désactivé et focus dans Figma, annotés « pas encore dans le code » ; là où le code a un focus (scène Everest), Figma reprend le sien. |
+| CMP-05 | Badge curseur et carrousel 3D inatteignables. | Non reproduits. |
+| CMP-06 | Surtitre défini trois fois (TYP-10). | Composant `eyebrow`, deux variantes (TYP-10). |
+| CMP-07 | Altimètre implémenté trois fois (TYP-09). | Composant `altimeter`, deux variantes (TYP-09). |
+| CMP-08 | Six boutons icônes, cinq tailles (26, 30, 36, 38, 40), trois traitements. | Trois jeux `icon-button` (`solid`, `tint`, `bare`) aux tailles du code ; la croix de la modale garde son fond .1 et son survol .22. |
 
 ---
 
@@ -1087,8 +1110,8 @@ S'y ajoutent :
   `globals.css:3-22`, l'essentiel du bloc 680 ;
 - les règles du carrousel 3D et du badge curseur (CMP-05) ;
 - l'entrée `havas` de `CARD_BG` ;
-- le fichier `public/Fram_25.svg`, copie du logo que rien n'utilise, à
-  supprimer.
+- le fichier `public/Fram_25.svg`, copie du logo que rien n'utilise
+  (signalé seulement).
 
 ## Annexe C — État du fichier Figma
 
