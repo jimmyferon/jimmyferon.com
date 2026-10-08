@@ -241,3 +241,35 @@ Dans une nouvelle session :
   captures des scènes se font avec `outils/capture-scene.mjs` (fond
   transparent, cadre et échelle au choix) ;
 - anatomie, specs et usages de chaque composant ; page Motion.
+
+## Changement de règle (8 octobre 2026) — prioritaire
+
+Cette règle prime sur tous les arbitrages précédents : D0 à D12, étapes 2
+et 3.
+
+> Mon site ne change pas. Les valeurs du code sont les bonnes, et le design
+> system les reproduit exactement.
+
+- **Plus de rationalisation.** Couleurs, opacités, styles de texte,
+  espacements, rayons et voiles reprennent la valeur exacte de chaque classe
+  du code. Rien n'est fusionné, arrondi à une échelle ni aligné.
+- **Les listes « corrections à faire sur le site » disparaissent** (audit
+  §10, fondations §6, composants §5 et §12). Chacune de leurs lignes est
+  remise dans Figma à la valeur actuelle du site.
+- **Restent propres à Figma**, avec l'annotation « pas encore dans le code » :
+  - les états désactivé et focus (D5) ;
+  - les flèches dessinées (D8) ;
+  - `ghost` · `sm` ;
+  - le favicon.
+
+  Quand le code définit déjà un focus (scène Everest), Figma reprend le
+  sien : couleur, décalage et rayon.
+
+Réponses au §11 de `composants.md` :
+
+1. Scope trait sur `text/label` et `text/muted` : validé.
+2. Retrait de première ligne dans `display` (144 / 56) : validé.
+3. « Expert » de la marque Figma : nouveau style `label-sm-strong`.
+4. Lueur : nouveau rôle sémantique.
+5. Mode d'emploi rangé ouvert : on garde les 8 px du site, avec leur style.
+6. Rayon des cadres de jeux de variantes lié à `radius/5` : validé.
