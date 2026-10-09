@@ -9,7 +9,8 @@ composants (`composants.md`).
 - **Branche** : `design-system`
 - **Fichier Figma** : `kMLD5Ti9yCpnKU4jdVfWDJ`, pages Marque (`113:5`) et
   Motion (`113:6`)
-- **Statut** : construite et contrôlée, en attente de validation
+- **Statut** : construite et contrôlée ; validée le 9 octobre 2026, avec deux
+  précisions appliquées le même jour (§6)
 
 Avant la partie 1, les 111 annotations de la page Composants ont été réécrites
 en une phrase courte (règle « Annotations » du BRIEF).
@@ -56,6 +57,9 @@ Composant ajouté : `favicon` (`252:131`), avec description et annotation
 - **Motion** : 560 peintures sur 560 et 112 traits sur 112 liés ; un style
   sur chacun des 489 textes ; aucun nœud hors planche.
 - **Composants** : la description du composant `logo` renvoie à la page Marque.
+
+Après la partie 2 (`documentation.md`, §8), la ligne d'exception du favicon
+porte la page Marque à 115 peintures sur 115 et à 84 textes stylés sur 84.
 
 ## 2. Logo
 
@@ -104,8 +108,12 @@ signature : il n'entre pas dans la mesure.
 
 La taille du logo dans le header, la plus petite de la page. Les autres
 tailles du code : 44 (footer), 54 (menu du footer), 64 à 100 (carte
-Portfolio, 19,5 % de sa largeur : 68 à 390), 84 (rideau). Dans l'onglet,
-16 et 32 px relèvent du favicon.
+Portfolio, 19,5 % de sa largeur : 68 à 390), 84 (rideau).
+
+Seule exception : le favicon, une application à part. Le logo y descend à
+24 px dans son carré de 32, et à 12 px quand l'onglet le réduit à 16. La
+planche le montre sur une ligne à part, sous la rangée des tailles (précision
+du 9 octobre).
 
 ### Versions
 
@@ -177,9 +185,11 @@ Valeurs lues dans `globals.css` (`outils/extraire-css.mjs`, section
   couleurs des étiquettes de sommet).
 - **Occurrences** : les nombres de la planche Courbes comptent les
   occurrences dans `globals.css`, comme l'audit.
-- **Durées** : 23 durées de transition, groupées par ordre de grandeur pour
-  la lecture (les six groupes de l'audit, §8.2) ; aucune n'est arrondie. Avec
-  les délais .10, .16 et .24 s, ce sont les 26 valeurs de l'audit.
+- **Durées** : 23 durées de transition, rangées dans les six groupes de
+  l'audit (§8.2) ; les groupes ne servent qu'au classement, chaque durée garde
+  la valeur exacte du code (précision du 9 octobre, vérifiée durée par durée
+  et barre par barre). Avec les délais .10, .16 et .24 s, ce sont les
+  26 valeurs de l'audit.
 - **Roll** : chaque lettre suit `.3 s cubic-bezier(.65,0,.2,1)` avec 20 ms
   de retard. Les images clés sont calculées avec cette courbe (résolution de
   la bézier en x), lettres dans des fenêtres de 7,626 × 12,98 px : la largeur
@@ -187,13 +197,18 @@ Valeurs lues dans `globals.css` (`outils/extraire-css.mjs`, section
 - **Rideau** : positions calculées avec `var(--e)` ; à 100 ms, le rideau
   couvre déjà 63 % de l'écran.
 
-## 6. Choix à valider
+## 6. Choix validés (9 octobre 2026)
+
+Les six choix sont validés. Deux précisions, appliquées le même jour
+(`documentation.md`, §1) : la planche dit que le favicon est l'exception à la
+taille minimum ; chaque durée garde sa valeur exacte, le regroupement ne sert
+qu'au classement.
 
 1. **Zone de protection** : le plus petit vide mesuré sur le site, 13 px pour
    34, rapporté au diamètre (13/34 D). Aucune autre valeur n'existe dans le
    code.
-2. **Taille minimum** : 34 px, la plus petite taille de la page ; 16 et
-   32 px laissés au favicon.
+2. **Taille minimum** : 34 px, la plus petite taille de la page ; le favicon
+   en est l'exception.
 3. **Favicon** : carré de 32, `radius/5`, marge `space/4`, logo de 24.
 4. **Construction** : axes tracés depuis le centre du cercle, calés sur la
    moyenne des pointes ; l'écart du tracé est montré, pas lissé.
@@ -201,17 +216,16 @@ Valeurs lues dans `globals.css` (`outils/extraire-css.mjs`, section
    redessinées ; neige posée sur le visuel de la carte Portfolio.
 6. **Motion** : durées présentées dans les six groupes de l'audit.
 
-## 7. Pour la partie 2
+## 7. Ce que la partie 2 a repris
 
-- **Descriptions de composants** : 22 descriptions disent encore « pas encore
-  dans le code » pour les focus, les désactivés et les flèches dessinées. La
-  règle du 9 octobre ne vise que les annotations ; ces descriptions sont à
-  reprendre avec la documentation de chaque composant.
-- **Carte projet** : le calque `visuel` du composant `card/project` porte une
-  image de projet par défaut. Sur le site, la carte Portfolio pose
-  `redesign-bg` sous les nuages et la neige (planche Univers graphique).
-- **DESIGN.md** : rangé dans `docs/design-system/` (BRIEF, « Étape 4 en deux
-  parties »).
+Fait le 9 octobre, détail dans `documentation.md` :
+
+- **Descriptions de composants** : les 23 descriptions (et non 22) qui
+  disaient encore « pas encore dans le code » reprennent les phrases du BRIEF
+  (§5).
+- **Carte projet** : `redesign-bg` est le visuel par défaut, avec la carte
+  Portfolio entière, comme la première carte de la colonne du site (§6).
+- **DESIGN.md** : écrit et rangé dans `docs/design-system/` (§9).
 
 ## 8. Notes techniques
 

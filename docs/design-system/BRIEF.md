@@ -337,3 +337,34 @@ Dans une nouvelle session :
   éviter ; reprendre au passage les 22 descriptions qui disent encore « pas
   encore dans le code » ;
 - puis écrire `docs/design-system/DESIGN.md`.
+
+## Validation de la partie 1 de l'étape 4 (9 octobre 2026)
+
+Les six choix du §6 de `marque-motion.md` sont validés, avec deux précisions :
+
+- **Taille minimum de 34 px** : la planche précise que le favicon en est
+  l'exception.
+- **Durées** : chaque durée du code garde sa valeur exacte ; le regroupement
+  ne sert qu'au classement.
+
+Les deux sont appliquées : `documentation.md`, §1.
+
+## Étape 4, partie 2 : documentation et DESIGN.md (9 octobre 2026)
+
+Construite dans Figma et contrôlée, en attente de validation. Le détail est
+dans `docs/design-system/documentation.md` : kit de documentation,
+documentation de chaque planche (anatomie, specs, usages), descriptions
+reprises avec les phrases du BRIEF (23, et non 22), carte projet, correction
+du grain de la ligne Services, contrôle final. Le `DESIGN.md` est rangé dans
+`docs/design-system/`.
+
+Quatre points à valider (§11 de `documentation.md`) :
+
+1. le kit de documentation : trois composants `_doc/…`, non publiés, sur une
+   planche en fin de page Composants ;
+2. la carte Portfolio entière comme carte projet par défaut ;
+3. la correction du grain de `row/service` · hover, trouvée en construisant
+   l'anatomie ;
+4. le `DESIGN.md` : titres H2 en anglais pour le format, contenu en français.
+
+Après validation, toutes les étapes du brief sont faites, bonus compris.

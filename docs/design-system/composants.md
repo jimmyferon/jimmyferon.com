@@ -304,6 +304,11 @@ Chaque planche montre le jeu de variantes, puis les composants en contexte
 les fondations de la reprise : 50 rôles sémantiques, 118 styles de texte,
 31 espacements.
 
+Depuis l'étape 4 (9 octobre), chaque planche se termine par sa
+documentation : anatomie, specs, usages à faire et à éviter. Le kit qui la
+construit est sur une planche de plus, en fin de page
+(`planche/documentation`, `282:1065`). Détail dans `documentation.md`.
+
 **Contrôle final de la page Composants** (8 octobre, après la reprise) :
 
 - 863 peintures pleines sur 863 liées à une variable (hors intérieurs
@@ -320,6 +325,9 @@ les fondations de la reprise : 50 rôles sémantiques, 118 styles de texte,
   `sm`. 107 sont posées sur des nœuds, 4 sur des flèches d'instances (header
   et footer) ;
 - aucun nœud hors planche.
+
+Contrôle repris le 9 octobre, après la documentation de l'étape 4 :
+`documentation.md`, §8.
 
 ## 9. Composants de la partie 2
 
@@ -368,7 +376,9 @@ description Figma. L'essentiel, aux valeurs du code :
 - **Carte projet** : la carte de la colonne (≤ 1024), 350 × 217 ; barre à 10px
   des bords, 330 × 58, padding 9px 9px 9px 14px, gap 12px ; titre `title-sm`,
   catégorie `caption-card` (12 px, 1,3), gap 1px, min-height 40px ; bouton
-  `icon-button/solid`.
+  `icon-button/solid`. Par défaut, la carte Portfolio (`redesign-bg`, logo
+  animé), comme la première carte de la colonne (9 octobre,
+  `documentation.md`, §6).
 - **Modale** : 1440 × 900, padding 56px ; fiche 1180 × 423,66 (1,35fr / 1fr),
   visuel sur #0E0E0E ; texte padding 30px : camp, titre `heading-3-modal`
   (33,6, 1,6) à 10px, catégorie `label-sm` en .5 à 7px, résumé
@@ -396,7 +406,9 @@ description Figma. L'essentiel, aux valeurs du code :
 - **Services** : carte padding 37,44 (26 en mobile), corps à 14px, liste gap
   9px (`data-list` en blanc .5, `body-md-list` en #fff) ; ligne padding 9px
   10px, gap 10px, 585 × 40 comme le site ; exemple : colonnes à 100,8, cartes
-  à 22px, en-tête padding 8px 10px, gap 10px.
+  à 22px, en-tête padding 8px 10px, gap 10px. Le grain de la ligne au survol,
+  retourné au-dessus de la ligne, est remis à l'endroit le 9 octobre
+  (`documentation.md`, §7).
 - **Footer** : corps padding 56px (20px en mobile), haut gap 30px (36px),
   colonnes à 86,4 (32), titres `label-sm-col` en #f4f6f573 à 14px des liens,
   logo du menu à 18px ; bloc e-mail à 45 (42,2), accroche `label-hook`,
