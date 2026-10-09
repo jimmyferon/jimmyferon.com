@@ -29,11 +29,12 @@ planches de 1440 de large, retrait `space/112`, écart `space/40`, fond
 | `planche/construction` | `248:2` | le logo du code à 456 px, cercle de découpe, axes à 72°, une branche en bleu, secteur de 72° ; la mesure du tracé |
 | `planche/protection-taille` | `249:7` | zone de protection à l'échelle 4 ; header desktop à l'échelle 1, coté 15 · 13 · 56 ; les tailles du code, 34 à 84 |
 | `planche/versions` | `251:109` | encre, papier, bleu, chacun sur son fond, avec son jeton et ses usages |
-| `planche/favicon` | `252:124` | composant `favicon`, vue à l'échelle 8, en situation à 16 et 32 px sur papier et sur encre, à côté de `app/icon.svg` |
+| `planche/favicon` | `252:124` | composant `favicon`, vue à l'échelle 8, en situation à 16 et 32 px sur papier et sur encre, à côté de l'ancien favicon |
 | `planche/univers-graphique` | `254:179` | motifs (courbes de niveau, trace bleue, neige pixel, grain, crête) et scènes (Everest, Mont Blanc, lac) |
 
-Composant ajouté : `favicon` (`252:131`), avec description et annotation
-« Favicon proposé, absent du site. ».
+Composant ajouté : `favicon` (`252:131`), avec sa description. Il était
+annoté « Favicon proposé, absent du site. » jusqu'au 9 octobre : il est alors
+passé sur le site (PR #20) et l'annotation est retirée (§3).
 
 ### Page Motion
 
@@ -60,6 +61,8 @@ Composant ajouté : `favicon` (`252:131`), avec description et annotation
 
 Après la partie 2 (`documentation.md`, §8), la ligne d'exception du favicon
 porte la page Marque à 115 peintures sur 115 et à 84 textes stylés sur 84.
+Depuis que le favicon est sur le site (PR #20), la page n'a plus aucune
+annotation.
 
 ## 2. Logo
 
@@ -123,10 +126,12 @@ du 9 octobre).
 | Papier #F5F5F5 | `color/text/primary`, mode sombre | header sur fond sombre, mobile compact et menu ouvert ; footer ; rideau ; menu du footer à .12 |
 | Bleu #1E29FF | `color/accent/default` | logo animé des cartes (carte Portfolio de la colonne et de la modale), sur le visuel clair `redesign-bg` |
 
-## 3. Favicon (proposé)
+## 3. Favicon
 
 Décision du 7 octobre : le logo papier sur un fond bleu, lisible sur les
 onglets clairs comme sombres, forme et marge prises dans les fondations.
+Construit ici à l'étape 4, il est sur le site depuis la PR #20 du 9 octobre :
+`app/icon.svg` reprend ce favicon.
 
 - Carré de 32, rayon `radius/5` (le rayon de la marque), marge `space/4`,
   logo de 24 en `color/text/primary` (mode sombre posé sur le composant),
@@ -135,9 +140,12 @@ onglets clairs comme sombres, forme et marge prises dans les fondations.
   logo 12. Les instances mises à l'échelle (`rescale`) gardent leurs
   liaisons ; Figma y applique l'échelle.
 - En situation sur papier et sur encre, qui tiennent lieu d'onglets clair et
-  sombre, à côté de `app/icon.svg` tel qu'il est servi : le logo blanc
-  #FFFFFF sans fond, qui disparaît sur papier.
-- Annoté « Favicon proposé, absent du site. ». Le site garde `app/icon.svg`.
+  sombre, à côté de l'ancien favicon : le logo blanc #FFFFFF sans fond, servi
+  jusqu'à la PR #20, qui disparaît sur papier.
+- Dans `app/icon.svg`, les cinq tracés du code sont inchangés ; la viewBox
+  fait 1520 unités pour 32 px (rayon 237,5, marge 190, logo de 1140), pour
+  garder exactement la géométrie du composant.
+- Plus d'annotation : l'élément n'est plus propre à Figma.
 
 ## 4. Univers graphique
 

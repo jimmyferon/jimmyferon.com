@@ -62,7 +62,6 @@ D5 et D8 ajoutent dans Figma des éléments absents du code ; chacun porte l'ann
 - D9 — Bricolage Grotesque : axe opsz réglé sur la taille du texte (12–96).
 - D10 — Noms sémantiques en minuscules ; nom CSS en code syntax.
 - D11 — Grain : effet natif et motif image à comparer à l'étape 2.
-- D12 — Page Projets (PR #19) intégrée après sa fusion.
 
 Scripts de mesure de l'audit : `docs/design-system/outils/`.
 
@@ -244,7 +243,7 @@ Dans une nouvelle session :
 
 ## Changement de règle (8 octobre 2026) — prioritaire
 
-Cette règle prime sur tous les arbitrages précédents : D0 à D12, étapes 2
+Cette règle prime sur tous les arbitrages précédents : D0 à D11, étapes 2
 et 3.
 
 > Mon site ne change pas. Les valeurs du code sont les bonnes, et le design
@@ -260,7 +259,7 @@ et 3.
   - les états désactivé et focus (D5) ;
   - les flèches dessinées (D8) ;
   - `ghost` · `sm` ;
-  - le favicon.
+  - le favicon, jusqu'au 9 octobre : il passe alors sur le site (PR #20).
 
   Quand le code définit déjà un focus (scène Everest), Figma reprend le
   sien : couleur, décalage et rayon.
@@ -292,10 +291,12 @@ phrases remplacent le libellé unique « pas encore dans le code ».
 | État désactivé (D5) | « Désactivé ajouté dans Figma : le site n’en a pas. » |
 | Flèche dessinée (D8) | « Flèche : caractère texte sur le site, icône ici. » |
 | `ghost` · `sm` | « Variante ajoutée pour compléter la grille. » |
-| Favicon | « Favicon proposé, absent du site. » |
 
-Ces cinq phrases sont celles de Jimmy, à reprendre telles quelles. Un cas
-nouveau reçoit sa propre phrase, sur le même modèle.
+Ces phrases sont celles de Jimmy, à reprendre telles quelles. Un cas nouveau
+reçoit sa propre phrase, sur le même modèle.
+
+Le favicon avait la sienne, « Favicon proposé, absent du site. », jusqu'au
+9 octobre : il est passé sur le site (PR #20) et son annotation est retirée.
 
 ## Étape 4 en deux parties (9 octobre 2026)
 
@@ -368,3 +369,18 @@ Quatre points à valider (§11 de `documentation.md`) :
 4. le `DESIGN.md` : titres H2 en anglais pour le format, contenu en français.
 
 Après validation, toutes les étapes du brief sont faites, bonus compris.
+
+## Partie 2 validée, favicon et PR #19 (9 octobre 2026)
+
+Les quatre points du §11 de `documentation.md` sont validés : toutes les
+étapes du brief sont faites, bonus compris.
+
+- **Favicon sur le site.** La PR #20 (branche `feat/favicon`) remplace
+  `app/icon.svg`, le seul fichier de favicon du site, par le favicon de la page
+  Marque : le logo papier sur un carré bleu. Dans Figma, son annotation est
+  retirée ; sa description, sa planche et l'en-tête de la page Marque le
+  disent sur le site.
+- **PR #19 fermée sans fusion** (page Projets) : D12 et l'annexe A de l'audit
+  sont retirés. La branche `feat/page-projets` est supprimée : le dépôt
+  distant ne l'avait déjà plus, la branche locale l'est à son tour (sommet
+  `e123f28`).

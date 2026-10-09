@@ -689,7 +689,9 @@ Arrière-plan : 14 px (header), 8 px (étiquettes de sommet), 4 px (voile de la 
 Les pastilles (flocon des surtitres, points de statut) sont des cercles.
 
 ### Logo
-Cinq branches dans un cercle de découpe (viewBox 1140, `rx 570`), pensées sur des axes à 72° : le survol fait tourner le logo de 72° en .6 s. Encre sur fond clair, papier sur fond sombre, bleu pour le logo animé des cartes. Taille minimum 34 px (le header) ; seul le favicon proposé descend en dessous. Zone de protection : 13/34 du diamètre.
+Cinq branches dans un cercle de découpe (viewBox 1140, `rx 570`), pensées sur des axes à 72° : le survol fait tourner le logo de 72° en .6 s. Encre sur fond clair, papier sur fond sombre, bleu pour le logo animé des cartes. Taille minimum 34 px (le header) ; seul le favicon descend en dessous. Zone de protection : 13/34 du diamètre.
+
+Le favicon (`app/icon.svg`) pose le logo `{colors.paper}` sur un carré `{colors.blue}` : carré de 32, rayon `{rounded.brand}`, marge de 4, logo de 24. Il reste lisible sur les onglets clairs comme sombres.
 
 ### Images
 Les visuels de projet sont des WebP plein cadre (`object-fit:cover`), dans la vignette de 5 px. La carte Portfolio pose `redesign-bg` sous des nuages (`clouds.png` à .9) et une neige pixel (`pixels.png` en mosaïque de 64 à .65), avec le logo animé en bleu.
@@ -829,7 +831,7 @@ Vingt-trois durées de transition, chacune gardée à sa valeur exacte ; les gro
 
 ## Known Gaps
 
-- **Ajouts propres à Figma**, absents du site et annotés : les états focus et désactivé là où le code n'en a pas, les flèches dessinées en icônes, la variante `ghost` · `sm`, le favicon proposé.
+- **Ajouts propres à Figma**, absents du site et annotés : les états focus et désactivé là où le code n'en a pas, les flèches dessinées en icônes, la variante `ghost` · `sm`.
 - **Limites de Figma** : la hauteur d'une ligne de texte est arrondie au pixel ; l'approche après la dernière lettre n'est pas comptée ; le roll n'y décale pas les lettres ; les scènes WebGL n'y existent qu'en captures.
 - **Ce fichier résume** : les 118 styles de texte, les 50 rôles de couleur en clair et en sombre et les 31 espacements sont dans le fichier Figma et dans `audit.md` et `fondations.md`.
 - **Pages en construction** : `/work` et `/about` affichent encore « Sentier fermé, ça déneige » ; leur design n'est pas documenté.

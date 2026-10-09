@@ -25,7 +25,6 @@ Rien n'a encore été créé dans Figma, rien n'a été modifié dans le code.
 9. [Composants](#9-composants)
 10. [Doublons et incohérences](#10-doublons-et-incohérences)
 11. [Hors périmètre, signalé](#11-hors-périmètre-signalé)
-- [Annexe A — PR #19, page Projets](#annexe-a--pr-19-page-projets-non-fusionnée)
 - [Annexe B — CSS mort](#annexe-b--css-mort)
 - [Annexe C — État du fichier Figma](#annexe-c--état-du-fichier-figma)
 - [Annexe D — Plans (z-index)](#annexe-d--plans-z-index)
@@ -56,8 +55,6 @@ Rien n'a encore été créé dans Figma, rien n'a été modifié dans le code.
 - **Figma, en lecture seule** : noms des pages, collections et styles existants
   (pour éviter les collisions), styles et axes des quatre polices. Aucune valeur
   des pages Matière et Templates n'a été lue (annexe C).
-- **PR #19** (page Projets), ouverte et non fusionnée, est traitée à part
-  (annexe A).
 - **Scripts versionnés** dans [`outils/`](outils/README.md), pour rejouer
   l'audit sur la prod ou sur une preview.
 
@@ -80,10 +77,11 @@ Le détail de chaque point est en §10.
 > D4, D6, D7, RAY-01, fusions de couleurs et de voiles, échelle d'espacement)
 > sont remplacées par la valeur exacte de chaque classe ; il n'y a plus de
 > « corrections à faire sur le site ». Restent propres à Figma : les états
-> focus et désactivé (D5), les flèches dessinées (D8), `ghost` · `sm` et le
-> favicon. Depuis le 9 octobre, chacun porte une annotation d'une phrase
-> courte qui dit pourquoi il n'est pas sur le site (`BRIEF.md`, « Annotations ») ;
-> le libellé « pas encore dans le code », cité plus bas, n'a plus cours.
+> focus et désactivé (D5), les flèches dessinées (D8) et `ghost` · `sm`.
+> Depuis le 9 octobre, chacun porte une annotation d'une phrase courte qui dit
+> pourquoi il n'est pas sur le site (`BRIEF.md`, « Annotations ») ; le libellé
+> « pas encore dans le code », cité plus bas, n'a plus cours. Le favicon,
+> d'abord propre à Figma, passe sur le site le 9 octobre (PR #20).
 
 Le tableau donne l'état en vigueur ; quand une décision a été remplacée le
 8 octobre, l'ancienne est rappelée en italique.
@@ -102,7 +100,6 @@ Le tableau donne l'état en vigueur ; quand une décision a été remplacée le
 | **D9** | Taille optique de Bricolage (TYP-14) | Axe `opsz` réglé sur la taille du texte, borné à 12–96, dans chaque style. |
 | **D10** | Nommage | Noms sémantiques en minuscules (`color/text/muted`, `text/heading-2`). Le nom CSS va en *code syntax* (variables) ou en description (styles). |
 | **D11** | Grain (EFF-02) | À tester à l'étape 2 : effet « Bruit » natif contre motif image, comparés à une capture du site. |
-| **D12** | Page Projets (PR #19) | Intégrée après sa fusion : rebaser `design-system` sur `main`, puis ajouter tuile projet et badge « À venir ». |
 
 ### Couleurs de marque et couleurs d'interface
 
@@ -127,10 +124,10 @@ Le tableau donne l'état en vigueur ; quand une décision a été remplacée le
 - **Favicon** : une application à part entière. C'est le logo en papier
   `#F5F5F5` sur un fond bleu `#1E29FF`, lisible sur les onglets clairs comme
   sombres.
-  - Il est prévu sur la page Marque, à l'étape 4. La forme du fond et la marge
-    autour du logo y seront définies avec les fondations existantes.
-  - Il n'existe que dans Figma, annoté « pas encore dans le code » : le site
-    garde `app/icon.svg`, le logo en blanc pur sans fond.
+  - Construit sur la page Marque à l'étape 4, avec les fondations existantes :
+    carré de 32, rayon `radius/5`, marge `space/4`, logo de 24.
+  - Il remplace sur le site `app/icon.svg`, le logo en blanc pur sans fond
+    (PR #20, 9 octobre). *Jusque-là, il n'existait que dans Figma, annoté.*
   - `public/Fram_25.svg` est une copie du même fichier que rien n'utilise
     (annexe B) ; signalé seulement.
 
@@ -1066,29 +1063,6 @@ Découverts en chemin. Rien n'a été touché ; chacun mérite sa propre branche
    Everest (boutons, liens, FAQ, menu).
 6. **Polices chargées inutilement** : Bricolage 800, Space Mono italique (TYP-12).
 7. **Désalignements en tablette** (ESP-02, ESP-03).
-
----
-
-## Annexe A — PR #19, page Projets (non fusionnée)
-
-Branche `feat/page-projets`, PR #19 ouverte. Elle ajoute la section 15 de
-`globals.css`, `components/WorkIndex.js`, `app/work/layout.js`, quatre clés
-i18n et un drapeau `soon` dans `lib/projects.js`. Si elle est fusionnée,
-`/work` cesse d'être une page « en construction ».
-
-| Élément | Valeurs |
-|---|---|
-| Grille `.px-grid` | 2 colonnes, gouttière 8 ; retrait de page 8 (« exceptions assumées », reprises de son wireframe) ; 1 colonne ≤ 900 |
-| Tuile `.px-tile` (carte projet de l'index) | 16:9, rayon 5, fond `#0E0E0E` (encre à l'intégration : noirs voisins, §1) ; zoom du média ×1,05 en 1,1 s `--e` au survol (> 1024, souris) ; focus : contour bleu 2 px décalé de 4 |
-| Voile `.px-scrim` | dégradé vers le haut : encre .86 jusqu'à 30 %, .38 à 68 %, 0 en haut ; 42 % de la hauteur |
-| Libellé « View » `.px-view` | Space Mono Bold 11, .08em, CAPS, blanc en *difference*, suit la souris ; fondu .35 s `--e` |
-| Badge « À venir » `.px-soon` | Space Mono 10 (M 9), .12em, CAPS, papier sur encre, retrait 4 / 8, rayon 4 (5 à l'intégration : RAY-01) |
-| Titre et catégorie | `.px-name` : Bricolage Bold `clamp(1.2rem,1.7vw,1.6rem)`, −.01em, papier, ombre de texte ; `.px-cat` : `.85rem`, papier .74 ; M 1,15 rem / .8 rem |
-| Apparition | `animation-timeline: view()`, de 0 à 55 % de l'entrée ; repli `IntersectionObserver` avec les tokens `--rv-*` |
-
-À l'intégration, elle apporterait deux composants (tuile projet, badge
-« À venir ») et des valeurs déjà connues : 8 px, papier .74, rayon 4 ramené à
-5 (RAY-01).
 
 ---
 

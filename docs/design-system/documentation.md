@@ -9,7 +9,7 @@ défaut de la carte projet, puis le `DESIGN.md` du système.
 - **Branche** : `design-system`
 - **Fichier Figma** : `kMLD5Ti9yCpnKU4jdVfWDJ`, page Composants (`113:4`) ;
   retouches sur les pages Marque (`113:5`) et Motion (`113:6`)
-- **Statut** : construite et contrôlée, en attente de validation
+- **Statut** : construite, contrôlée et validée le 9 octobre 2026 (§11, §12)
 
 ## 1. Les deux précisions de la partie 1
 
@@ -141,8 +141,8 @@ reprennent les phrases du BRIEF, telles quelles.
 - Une phrase qui ne vaut que pour une variante est précédée de son nom :
   « size=36 — Focus ajouté dans Figma : le site n’en a pas. »
 - Par cohérence, la description de `altimeter` reprend la phrase de la flèche
-  dessinée, et celle du `favicon` (page Marque) commence par « Favicon
-  proposé, absent du site. ».
+  dessinée, et celle du `favicon` (page Marque) commençait par « Favicon
+  proposé, absent du site. », jusqu'à son passage sur le site (§12).
 - La description de `card/project` est réécrite en entier : elle gardait une
   phrase d'avant le 8 octobre (« à 12 des bords (10 dans le code), retraits
   8 / 8 / 8 / 16 »), contredite par le composant, qui est aux valeurs du code.
@@ -225,7 +225,7 @@ de structure.
 - **Captures réduites** : un trait bleu de 1 px y paraît gris ; lire les pixels
   avant de conclure.
 
-## 11. Points à valider
+## 11. Points validés (9 octobre 2026)
 
 1. **Kit de documentation** : trois composants `_doc/…` sur une planche en fin
    de page Composants, non publiés.
@@ -235,3 +235,28 @@ de structure.
    ce qui dépasse.
 4. **`DESIGN.md`** : titres H2 en anglais pour le format, contenu en
    français ; un résumé, pas l'inventaire complet.
+
+## 12. Après validation : favicon et PR #19 (9 octobre)
+
+**Le favicon passe sur le site.** La PR #20 (branche `feat/favicon`, partie
+de `main`) remplace `app/icon.svg`, le seul fichier de favicon du site, par
+le favicon de la page Marque. Les cinq tracés du code sont inchangés ; la
+viewBox fait 1520 unités pour 32 px, pour garder la géométrie du composant.
+Valeurs mesurées dans le navigateur, identiques à Figma : fond `#1E29FF`,
+logo `#F5F5F5`, carré de 32, rayon 5, logo de 4 à 28.
+
+Dans Figma, page Marque :
+
+- composant `favicon` (`252:131`) : annotation retirée, description qui le
+  dit sur le site (`app/icon.svg` depuis la PR #20) ;
+- planche `planche/favicon` (`252:124`) : surtitre « Favicon », paragraphe à
+  jour, libellés « favicon » et « ancien favicon » pour la comparaison en
+  situation ;
+- en-tête de la page (`247:5`) : plus d'ajout propre à Figma sur la page ;
+- la page Marque n'a plus aucune annotation ; planches réempilées.
+
+Docs mises à jour : `BRIEF.md`, `audit.md`, `marque-motion.md`, `DESIGN.md`.
+
+**PR #19 fermée sans fusion** (page Projets) : D12 et l'annexe A de l'audit
+sont retirés ; les autres annexes gardent leur lettre, pour que les renvois
+restent justes. La branche `feat/page-projets` est supprimée.
