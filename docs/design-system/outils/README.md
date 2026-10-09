@@ -1,7 +1,9 @@
 # Outils de l'audit
 
-Les scripts qui ont produit les mesures de [`../audit.md`](../audit.md) et
-celles de l'étape 2, dans [`../fondations.md`](../fondations.md).
+Les scripts qui ont produit les mesures de [`../audit.md`](../audit.md), puis
+celles des étapes suivantes : [`../fondations.md`](../fondations.md),
+[`../composants.md`](../composants.md) et
+[`../marque-motion.md`](../marque-motion.md).
 
 Ils ne font que lire : ni le code du site ni le fichier Figma ne sont modifiés.
 Aucune dépendance à installer. Il faut Node 24 (voir `.nvmrc`), et un
@@ -27,8 +29,11 @@ Toutes les commandes se lancent depuis la racine du dépôt.
 | `usages-espacement.mjs` | Depuis le 8 octobre 2026 : pour chaque valeur fixe de padding, margin ou gap du code, les règles vivantes qui l'utilisent (tableau Markdown, ou JSON avec `--json`). Sert aux descriptions des primitives `space/…`. |
 | `regles-css.mjs` | Toutes les règles de `globals.css` dont un sélecteur correspond à un motif, avec ligne et contexte `@media` : le code exact d'un composant, états et points de rupture compris. |
 | `mesure-petits-composants.mjs` | Étape 3 : boîtes des boutons, du CTA du header, des liens de nav et des filtres Services en 1440 × 900, et encre réelle des flèches → et ↗ (métriques du canevas, puis pixels d'une capture à l'échelle 8). Sert à dimensionner les icônes de flèche dans les boutons. |
-| `capture-scene.mjs` | Étape 3, partie 2 (et étape 4) : capture un élément du site sur fond transparent, tout le reste de la page masqué (fonds et grain compris). Sert aux scènes WebGL (lac de Let's talk, Everest, Mont Blanc), à poser dans Figma sur leurs propres fonds. Le cadre de découpe peut être un parent, quand la scène déborde de la page (le lac sort à −100,8 px). |
+| `capture-scene.mjs` | Étape 3, partie 2 (et étape 4) : capture un élément du site sur fond transparent, tout le reste de la page masqué (fonds et grain compris). Sert aux scènes WebGL (lac de Let's talk, Everest, Mont Blanc), à poser dans Figma sur leurs propres fonds. Le cadre de découpe peut être un parent, quand la scène déborde de la page (le lac sort à −100,8 px). Le défilement accepte une fraction de la course d'un bloc (`.bn3@0.95`), pour les scènes pilotées par le défilement. |
 | `mesure-grands-composants.mjs` | Étape 3, partie 2 : boîtes et styles calculés des grands composants (header, menu mobile, boutons icônes, carte projet, modale, FAQ, footer, étiquettes de sommet, altimètres, mode d'emploi, cartes et lignes Services, crête), en 1440 × 900 à la souris puis en 390 × 844 au doigt. En option, captures de référence (header, modale, FAQ, Let's talk, footer, menu mobile). |
+| `geometrie-logo.mjs` | Étape 4 : géométrie du logo, lue dans le SVG du code. Les cinq branches sont-elles la même forme, de combien tourne-t-on de l'une à la suivante et autour de quel point, de combien le logo tourné de 72° s'écarte de lui-même ; phase des axes à 72° de la page Marque. Sans réseau ni navigateur. |
+| `mesure-logo.mjs` | Étape 4 : vide autour du logo du header, en haut de page et en compact, en 1440 × 900 puis en 390 × 844 au doigt. C'est la mesure qui fixe la zone de protection. |
+| `webp-jpeg.mjs` | Étape 4 : convertit une image WebP du site en JPEG avec le navigateur, car Figma n'affiche pas les WebP importés. |
 
 Commandes :
 
@@ -75,11 +80,27 @@ node docs/design-system/outils/mesure-grands-composants.mjs <chemin du navigateu
 # Scène sur fond transparent : ici le lac, découpé sur le bloc Let's talk
 # (sous Git Bash, préfixer par MSYS_NO_PATHCONV=1, sinon « / » devient un chemin)
 node docs/design-system/outils/capture-scene.mjs <chemin du navigateur> <dossier de profil> lac.png / .lt-3d .foot-dark 6000 .lt 1
+
+# Les trois scènes de la planche « Univers graphique » (étape 4), à l'échelle 2 :
+# Everest au chargement, Mont Blanc en fin d'ascension (95 % de la course de .bn3), lac
+node docs/design-system/outils/capture-scene.mjs <chemin du navigateur> <dossier de profil> everest.png / .ev-gl "" 4500 .ev-gl 2
+node docs/design-system/outils/capture-scene.mjs <chemin du navigateur> <dossier de profil> montblanc.png / .bn3-gl .bn3@0.95 6000 .bn3-stick 2
+node docs/design-system/outils/capture-scene.mjs <chemin du navigateur> <dossier de profil> lac.png / .lt-3d .foot-dark 7000 .lt 2
+
+# Géométrie du logo (étape 4)
+node docs/design-system/outils/geometrie-logo.mjs app/icon.svg
+
+# Vide autour du logo du header, desktop et mobile (étape 4)
+node docs/design-system/outils/mesure-logo.mjs <chemin du navigateur> <dossier de profil>
+
+# WebP du site en JPEG, pour l'importer dans Figma
+node docs/design-system/outils/webp-jpeg.mjs <chemin du navigateur> <dossier de profil> public/images/redesign-bg-1600.webp redesign-bg-1600.jpg
 ```
 
 `grain-rendu.mjs` utilise le port 9336, `grain-mesure.mjs` le 9337,
 `cta-mobile.mjs` le 9338, `mesure-petits-composants.mjs` le 9339,
-`mesure-grands-composants.mjs` le 9340, `capture-scene.mjs` le 9342.
+`mesure-grands-composants.mjs` le 9340, `capture-scene.mjs` le 9342,
+`mesure-logo.mjs` le 9343, `webp-jpeg.mjs` le 9344.
 
 ## Mesurer une preview plutôt que la prod
 

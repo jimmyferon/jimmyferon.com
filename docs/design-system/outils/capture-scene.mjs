@@ -3,7 +3,10 @@
 // Tout le reste de la page est masqué, fonds et grain compris.
 // Usage : node capture-scene.mjs <navigateur.exe> <dossier profil> <sortie.png> <chemin> <sélecteur> [<sélecteur de défilement>] [<attente ms>] [<cadre>] [<échelle>]
 // <cadre> : l'élément dont la boîte sert de découpe (par défaut le sélecteur ; utile quand la scène déborde de la page).
+// <sélecteur de défilement> : « .bloc » amène le haut du bloc en haut de l'écran ; « .bloc@0.9 » fait défiler
+// 90 % de sa course (hauteur du bloc moins celle de l'écran), pour les scènes pilotées par le défilement.
 // Exemple (lac de Let's talk) : node capture-scene.mjs brave.exe /tmp/profil lac.png / .lt-3d .foot-dark 6000 .lt 1
+// Exemple (Mont Blanc dessiné en entier) : node capture-scene.mjs brave.exe /tmp/profil mb.png / .bn3-gl .bn3@0.95 5000 .bn3-stick 2
 import { spawn } from "node:child_process";
 import { writeFileSync } from "node:fs";
 
@@ -32,7 +35,13 @@ await send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, dev
 const loaded = once("Page.loadEventFired");
 await send("Page.navigate", { url: "https://jimmyferon.com" + PATH }); await loaded;
 await sleep(7000); // préchargement, rideau
-if (SCROLL) await evaluate(`document.querySelector(${JSON.stringify(SCROLL)}).scrollIntoView({ block: 'start' }); true`);
+if (SCROLL) {
+  const [BLOC, COURSE] = SCROLL.split("@");
+  await evaluate(COURSE === undefined
+    ? `document.querySelector(${JSON.stringify(BLOC)}).scrollIntoView({ block: 'start' }); true`
+    : `(() => { const e = document.querySelector(${JSON.stringify(BLOC)}); const haut = e.getBoundingClientRect().top + scrollY;
+        scrollTo({ top: haut + ${+COURSE} * (e.offsetHeight - innerHeight), behavior: 'instant' }); return true; })()`);
+}
 await sleep(+WAIT); // la scène se dessine
 // Tout devient transparent, sauf l'élément visé.
 await evaluate(`(() => { const s = document.createElement('style'); s.textContent =
