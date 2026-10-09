@@ -305,3 +305,35 @@ nouveau reçoit sa propre phrase, sur le même modèle.
    à faire et à éviter), puis le `DESIGN.md` du système, au format des
    références de `~/.claude/references/design-md/`, rangé dans
    `docs/design-system/` et pas à la racine. STOP.
+
+## Étape 4, partie 1 : pages Marque et Motion (9 octobre 2026)
+
+Construites dans Figma et contrôlées, en attente de validation. Le détail est
+dans `docs/design-system/marque-motion.md` : planches et identifiants, mesure
+du logo, captures des scènes, valeurs de mouvement.
+
+Six choix sont à valider (§6 de `marque-motion.md`) :
+
+1. zone de protection : 13 px pour 34, le plus petit vide mesuré sur le site
+   (sous le logo du header desktop), soit 13/34 du diamètre ;
+2. taille minimum : 34 px, celle du header ;
+3. favicon : carré de 32, `radius/5`, marge `space/4`, logo de 24 ;
+4. construction : axes à 72° depuis le centre du cercle ; le tracé du code
+   s'en écarte (rotations de 70,0° à 75,4° d'une branche à l'autre), l'écart
+   est montré ;
+5. univers graphique : courbes et trace en recadrages des captures, neige sur
+   le visuel de la carte Portfolio ;
+6. Motion : durées présentées dans les six groupes de l'audit.
+
+## Pour reprendre à la partie 2 de l'étape 4
+
+Dans une nouvelle session :
+
+- lire `docs/design-system/marque-motion.md` (§7, points laissés à la
+  partie 2) et `composants.md` (§1 et §8 pour les identifiants) ;
+- relire le fichier Figma lui-même : les corrections faites à la main
+  priment ;
+- documenter chaque composant : anatomie, specs, usages à faire et à
+  éviter ; reprendre au passage les 22 descriptions qui disent encore « pas
+  encore dans le code » ;
+- puis écrire `docs/design-system/DESIGN.md`.
