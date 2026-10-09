@@ -79,9 +79,11 @@ Le détail de chaque point est en §10.
 > reproduit exactement (`BRIEF.md`). Les décisions de rationalisation (D0 à
 > D4, D6, D7, RAY-01, fusions de couleurs et de voiles, échelle d'espacement)
 > sont remplacées par la valeur exacte de chaque classe ; il n'y a plus de
-> « corrections à faire sur le site ». Restent propres à Figma, annotés « pas
-> encore dans le code » : les états focus et désactivé (D5), les flèches
-> dessinées (D8), `ghost` · `sm` et le favicon.
+> « corrections à faire sur le site ». Restent propres à Figma : les états
+> focus et désactivé (D5), les flèches dessinées (D8), `ghost` · `sm` et le
+> favicon. Depuis le 9 octobre, chacun porte une annotation d'une phrase
+> courte qui dit pourquoi il n'est pas sur le site (`BRIEF.md`, « Annotations ») ;
+> le libellé « pas encore dans le code », cité plus bas, n'a plus cours.
 
 Le tableau donne l'état en vigueur ; quand une décision a été remplacée le
 8 octobre, l'ancienne est rappelée en italique.

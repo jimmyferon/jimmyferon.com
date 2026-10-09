@@ -273,3 +273,35 @@ Réponses au §11 de `composants.md` :
 4. Lueur : nouveau rôle sémantique.
 5. Mode d'emploi rangé ouvert : on garde les 8 px du site, avec leur style.
 6. Rayon des cadres de jeux de variantes lié à `radius/5` : validé.
+
+## Reprise de fidélité validée (9 octobre 2026)
+
+Validés : les noms des nouveaux styles de texte, les rôles sémantiques par
+usage, les valeurs de `label-sm-strong` et le renommage en `body-menu`. Les
+fondations et les composants repris le 8 octobre sont validés.
+
+## Annotations (9 octobre 2026) — règle
+
+Chaque élément propre à Figma garde son annotation. Elle dit, en une phrase
+très courte (8 mots maximum), pourquoi l'élément n'est pas sur le site. Ces
+phrases remplacent le libellé unique « pas encore dans le code ».
+
+| Cas | Annotation |
+|---|---|
+| État focus, là où le code n'en a pas (D5) | « Focus ajouté dans Figma : le site n’en a pas. » |
+| État désactivé (D5) | « Désactivé ajouté dans Figma : le site n’en a pas. » |
+| Flèche dessinée (D8) | « Flèche : caractère texte sur le site, icône ici. » |
+| `ghost` · `sm` | « Variante ajoutée pour compléter la grille. » |
+| Favicon | « Favicon proposé, absent du site. » |
+
+Ces cinq phrases sont celles de Jimmy, à reprendre telles quelles. Un cas
+nouveau reçoit sa propre phrase, sur le même modèle.
+
+## Étape 4 en deux parties (9 octobre 2026)
+
+1. **Partie 1** : page Marque (logo, favicon, planche « Univers graphique »)
+   et page Motion. STOP.
+2. **Partie 2** : documentation de chaque composant (anatomie, specs, usages
+   à faire et à éviter), puis le `DESIGN.md` du système, au format des
+   références de `~/.claude/references/design-md/`, rangé dans
+   `docs/design-system/` et pas à la racine. STOP.

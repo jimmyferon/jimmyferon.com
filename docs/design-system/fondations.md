@@ -13,8 +13,8 @@ l'audit validé (`docs/design-system/audit.md`).
 - **Date** : 7 octobre 2026 ; reprise aux valeurs exactes le 8 octobre 2026
 - **Branche** : `design-system`
 - **Fichier Figma** : `kMLD5Ti9yCpnKU4jdVfWDJ`, page Fondations (`113:3`)
-- **Statut** : validé le 7 octobre 2026 ; reprise du 8 octobre construite et
-  contrôlée, en attente de validation
+- **Statut** : validé le 7 octobre 2026 ; reprise du 8 octobre construite,
+  contrôlée et validée le 9 octobre
 
 ## 1. Ce qui existe dans Figma
 

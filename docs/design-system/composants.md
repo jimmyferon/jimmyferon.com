@@ -14,7 +14,7 @@ construits dans Figma à partir du code et des fondations
 - **Fichier Figma** : `kMLD5Ti9yCpnKU4jdVfWDJ`, page Composants (`113:4`)
 - **Statut** : partie 1 (petits composants) validée le 8 octobre 2026 ; partie
   2 (grands composants) construite le même jour ; les deux reprises aux
-  valeurs exactes du code le 8 octobre (§5, §12), en attente de validation
+  valeurs exactes du code le 8 octobre (§5, §12), validées le 9 octobre
 
 ## 1. Ce qui existe dans Figma
 
@@ -61,9 +61,9 @@ Le contrôle de toute la page est au §8.
   comme le `currentColor` du code. Le jeton a le scope `STROKE_COLOR`.
 - Tailles d'usage par mise à l'échelle, le trait suit comme dans un SVG :
   18 px dans la modale (trait 1,2), 12 px dans un bouton (trait 0,8).
-- Propres à Figma, annotées « pas encore dans le code » : `arrow-right`,
-  `arrow-up-right`, `arrow-left-right`. `arrow-left` existe tel quel dans le
-  code.
+- Propres à Figma, annotées « Flèche : caractère texte sur le site, icône
+  ici. » : `arrow-right`, `arrow-up-right`, `arrow-left-right`, et chaque
+  instance qui remplace un glyphe. `arrow-left` existe tel quel dans le code.
 
 ### `roll`
 
@@ -162,13 +162,14 @@ Mesure sur jimmyferon.com en 1440 × 900 (`outils/mesure-petits-composants.mjs`)
   Contour de 2 px en `color/accent/default`, décalé de 2, posé en calque
   absolu qui s'étire avec le composant. Rayon `radius/5` sur le bouton et le
   tag (le navigateur l'arrondirait à 7, rayon et décalage). Le lien n'a pas de
-  rayon. Annoté « pas encore dans le code ».
+  rayon. Annoté « Focus ajouté dans Figma : le site n’en a pas. »
 - **Focus du code** (scène Everest), repris tel quel, sans annotation :
   étiquette de sommet (décalage 3), flèches de la modale (2), bouton du mode
   d'emploi (−3, rayon 4), plein écran (4, rayon 3). Le contour de l'indicateur
   de bord est coupé par son `clip-path` : seul le fond bleu se voit.
 - **Disabled** : texte et icône `color/text/subtle`, filet
-  `color/border/default`, sans fond.
+  `color/border/default`, sans fond. Annoté « Désactivé ajouté dans Figma :
+  le site n’en a pas. »
 - **« Actif » du brief** :
   - le bouton n'en a pas : le code n'en définit aucun, et D5 n'ouvre que focus
     et désactivé ;
@@ -313,8 +314,11 @@ les fondations de la reprise : 50 rôles sémantiques, 118 styles de texte,
 - aucun retrait, écart ou rayon en dur ; un seul rayon non lié, la découpe
   ronde du logo (géométrie) ;
 - une description sur les 45 composants (181 avec les variantes) ;
-- 107 nœuds annotés « pas encore dans le code » : focus et disabled là où le
-  code n'en a pas, flèches dessinées, `ghost` · `sm` ;
+- 111 annotations, chacune une phrase qui dit pourquoi l'élément n'est pas
+  sur le site (règle du 9 octobre, `BRIEF.md`) : 46 flèches dessinées,
+  27 focus et 34 désactivés là où le code n'en a pas, 4 variantes `ghost` ·
+  `sm`. 107 sont posées sur des nœuds, 4 sur des flèches d'instances (header
+  et footer) ;
 - aucun nœud hors planche.
 
 ## 9. Composants de la partie 2
