@@ -2,8 +2,10 @@
 
 Les scripts qui ont produit les mesures de [`../audit.md`](../audit.md), puis
 celles des étapes suivantes : [`../fondations.md`](../fondations.md),
-[`../composants.md`](../composants.md) et
-[`../marque-motion.md`](../marque-motion.md).
+[`../composants.md`](../composants.md),
+[`../marque-motion.md`](../marque-motion.md) et
+[`../documentation.md`](../documentation.md), avec le contrôle de
+[`../DESIGN.md`](../DESIGN.md).
 
 Ils ne font que lire : ni le code du site ni le fichier Figma ne sont modifiés.
 Aucune dépendance à installer. Il faut Node 24 (voir `.nvmrc`), et un
@@ -34,6 +36,7 @@ Toutes les commandes se lancent depuis la racine du dépôt.
 | `geometrie-logo.mjs` | Étape 4 : géométrie du logo, lue dans le SVG du code. Les cinq branches sont-elles la même forme, de combien tourne-t-on de l'une à la suivante et autour de quel point, de combien le logo tourné de 72° s'écarte de lui-même ; phase des axes à 72° de la page Marque. Sans réseau ni navigateur. |
 | `mesure-logo.mjs` | Étape 4 : vide autour du logo du header, en haut de page et en compact, en 1440 × 900 puis en 390 × 844 au doigt. C'est la mesure qui fixe la zone de protection. |
 | `webp-jpeg.mjs` | Étape 4 : convertit une image WebP du site en JPEG avec le navigateur, car Figma n'affiche pas les WebP importés. |
+| `verifier-design-md.mjs` | Étape 4, partie 2 : contrôle de structure du `DESIGN.md`, sans dépendance ni réseau. Clés en double, couleurs et dimensions au format CSS, propriétés connues du format, références `{groupe.jeton}` résolues, ordre des huit sections canoniques. Les jetons qu'aucun composant ne cite sont comptés à part : le lint du format ne les signale qu'en avertissement. Sort en erreur s'il trouve un problème. |
 
 Commandes :
 
@@ -95,6 +98,9 @@ node docs/design-system/outils/mesure-logo.mjs <chemin du navigateur> <dossier d
 
 # WebP du site en JPEG, pour l'importer dans Figma
 node docs/design-system/outils/webp-jpeg.mjs <chemin du navigateur> <dossier de profil> public/images/redesign-bg-1600.webp redesign-bg-1600.jpg
+
+# Structure du DESIGN.md (étape 4, partie 2)
+node docs/design-system/outils/verifier-design-md.mjs docs/design-system/DESIGN.md
 ```
 
 `grain-rendu.mjs` utilise le port 9336, `grain-mesure.mjs` le 9337,
